@@ -15,8 +15,6 @@ caps.latest.revision: 3
 # Entity Framework Relationships and Navigation Properties
 This topic gives an overview of how Entity Framework manages relationships between the entities. It also gives some guidance on how to map and manipulate relationships.
 
- 
-
 ## Relationships, Navigation Properties, and Foreign Keys
 
 In relational databases, relationships (also called associations) between the tables are defined through foreign keys. A foreign key (FK) is a column or combination of columns that is used to establish and enforce a link between the data in two tables. There are three types of relationships: one-to-one, one-to-many, and many-to-many. In a one-to-many relationship, the foreign key is defined on the table that represents the many end of the relationship. The many-to-many relationship involves defining a third table (called a junction or join table), whose primary key is composed of the foreign keys from both related tables. In a one-to-one relationship, the primary key acts additionally as a foreign key and there is no separate foreign key column for either table.

@@ -23,7 +23,7 @@ Some of the content we built for previous versions is still relevant to the late
 
 Run the following command in the [Package Manager Console](http://docs.nuget.org/docs/start-here/using-the-package-manager-console) to install Entity Framework 5.
 
-```
+``` powershell
 Install-Package EntityFramework -Version 5.0.0
 ```
 
@@ -106,7 +106,7 @@ Here is a list of content we put together specifically for the EF 5 release.
 
 Run the following command in the [Package Manager Console](http://docs.nuget.org/docs/start-here/using-the-package-manager-console) to install Entity Framework 4.3.
 
-```
+``` powershell
 Install-Package EntityFramework -Version 4.3.1
 ```
 
@@ -122,7 +122,7 @@ Here is a list of content we put together specifically for the EF 4.3 release, m
 
 Run the following command in the [Package Manager Console](http://docs.nuget.org/docs/start-here/using-the-package-manager-console) to install Entity Framework 4.2.
 
-```
+``` powershell
 Install-Package EntityFramework -Version 4.2
 ```
 
@@ -136,7 +136,7 @@ Here is a list of content we put together specifically for the EF 4.2 release, t
 
 Run the following command in the [Package Manager Console](http://docs.nuget.org/docs/start-here/using-the-package-manager-console) to install Entity Framework 4.1.
 
-```
+``` powershell
 Install-Package EntityFramework -Version 4.1.10715
 ```
 

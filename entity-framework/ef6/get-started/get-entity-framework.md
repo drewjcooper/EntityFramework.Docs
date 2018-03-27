@@ -5,8 +5,6 @@ ms.date: "2016-10-23"
 ms.prod: "entity-framework"
 ms.author: divega
 ms.manager: avickers
-
-
 ms.technology: entity-framework-6
 ms.topic: "article"
 ms.assetid: 122c38a2-f9e8-4ecc-9c72-a83bc9af7814
@@ -17,9 +15,9 @@ Entity Framework is made up of the EF Tools for Visual Studio and the EF Runtime
 
 ## ![VisualStudio_lg](../ef6/media/visualstudio-lg.png) EF Tools for Visual Studio
 
-The Entity Framework 6 Tools are included in Visual Studio 2013 and up. If you are using Visual Studio 2012, the tooling is [available on the Microsoft Download Center](https://www.microsoft.com/en-us/download/details.aspx?id=40762).
+The Entity Framework 6 Tools are included in current versions of Visual Studio. For some past versions of Visual Studio, tooling is [available on the Microsoft Download Center](https://www.microsoft.com/en-us/download/details.aspx?id=40762).
 
-If you perform a custom install of Visual Studio you will need to ensure **Microsoft Web Developer Tools** or **Microsoft SQL Server Data Tools** is selected, otherwise the EF Tools will not be installed.
+If you perform a custom install of Visual Studio you will need to ensure that the Entity Framework 6 tools are selected.
 
 ## ![NuGet](../ef6/media/nuget.jpg) EF Runtime
 
@@ -35,7 +33,7 @@ You can install the EntityFramework package by right-clicking on the **Reference
 
 Alternatively, you can install EntityFramework by running the following command in the [Package Manager Console](http://docs.nuget.org/docs/start-here/using-the-package-manager-console).
 
-```
+``` powershell
 Install-Package EntityFramework
 ```
 
@@ -49,6 +47,6 @@ To install the latest preview of EntityFramework you can select **Include Prerel
 
 Alternatively, you can run the following command in the [Package Manager Console](http://docs.nuget.org/docs/start-here/using-the-package-manager-console).
 
-```
+``` powershell
 Install-Package EntityFramework -Pre
 ```

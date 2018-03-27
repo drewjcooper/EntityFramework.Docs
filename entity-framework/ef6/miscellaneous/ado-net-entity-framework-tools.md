@@ -1,5 +1,5 @@
 ---
-title: "Entity Framework Tools - EF6"
+title: "Entity Framework Tools & Extensions - EF6"
 author: divega
 ms.date: "2016-10-23"
 ms.prod: "entity-framework"
@@ -12,8 +12,9 @@ ms.topic: "article"
 ms.assetid: 7f166290-d9f0-4eec-b4fd-e7a83068d977
 caps.latest.revision: 3
 ---
-# Entity Framework Tools
-- [EF Power  Tools](https://marketplace.visualstudio.com/items?itemName=ErikEJ.EntityFramework6PowerToolsCommunityEdition)
+
+# Entity Framework 6 Tools & Extensions
+- [EF Power Tools](https://marketplace.visualstudio.com/items?itemName=ErikEJ.EntityFramework6PowerToolsCommunityEdition)
 - [EF Profiler](https://efprof.com)  
 - [ORM Profiler](https://www.ormprofiler.com)  
 - [LINQPad](https://www.linqpad.net)  
