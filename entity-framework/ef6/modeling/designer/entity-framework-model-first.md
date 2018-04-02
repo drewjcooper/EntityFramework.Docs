@@ -116,23 +116,23 @@ Given our model, Entity Framework can calculate a database schema that will allo
 The database server that is installed with Visual Studio is different depending on the version of Visual Studio you have installed:
 
 -   If you are using Visual Studio 2010 you'll be creating a SQL Express database.
--   If you are using Visual Studio 2012 then you'll be creating a [LocalDb](https://msdn.microsoft.com/library/hh510202(v=sql.110).aspx) database.
+-   If you are using Visual Studio 2012 then you'll be creating a [LocalDB](https://msdn.microsoft.com/library/hh510202(v=sql.110).aspx) database.
 
  
 
 Let's go ahead and generate the database.
 
 -   Right-click on the design surface and select **Generate Database from Model…**
--   Click **New Connection…** and specify either LocalDb (**(localdb)\\v11.0**) or SQL Express (**.\\SQLEXPRESS**), depending on which version of Visual Studio you are using, enter **ModelFirst.Blogging** as the database name.
+-   Click **New Connection…** and specify either LocalDB or SQL Express, depending on which version of Visual Studio you are using, enter **ModelFirst.Blogging** as the database name.
 
-    ![LocalDbConnectionMF](../ef6/media/localdbconnectionmf.png)
+    ![LocalDBConnectionMF](../ef6/media/localdbconnectionmf.png)
 
     ![SqlExpressConnectionMF](../ef6/media/sqlexpressconnectionmf.png)
 
 -   Select **OK** and you will be asked if you want to create a new database, select **Yes**
 -   Select **Next** and the Entity Framework Designer will calculate a script to create the database schema
 -   Once the script is displayed, click **Finish** and the script will be added to your project and opened
--   Right-click on the script and select **Execute**, you will be prompted to specify the database to connect to, specify **(localdb)\\v11.0** or**.\\SQLEXPRESS**, depending on which version of Visual Studio you are using
+-   Right-click on the script and select **Execute**, you will be prompted to specify the database to connect to, specify LocalDB or SQL Server Express, depending on which version of Visual Studio you are using
 
  
 
@@ -214,7 +214,7 @@ We now have an updated model and we are ready to update the database to accommod
 -   You may receive warnings about overwriting the existing DDL script and the mapping and storage parts of the model, click **Yes** for both these warnings
 -   The updated SQL script to create the database is opened for you  
     *The script that is generated will drop all existing tables and then recreate the schema from scratch. This may work for local development but is not a viable for pushing changes to a database that has already been deployed. If you need to publish changes to a database that has already been deployed, you will need to edit the script or use a schema compare tool to calculate a migration script.*
--   Right-click on the script and select **Execute**, you will be prompted to specify the database to connect to, specify **(localdb)\\v11.0** or**.\\SQLEXPRESS**, depending on which version of Visual Studio you are using
+-   Right-click on the script and select **Execute**, you will be prompted to specify the database to connect to, specify LocalDB or SQL Server Express, depending on which version of Visual Studio you are using
 
  
 

@@ -19,21 +19,20 @@ In this walkthrough we will map the **Course** (base type), **OnlineCourse** (d
 
 You can also start with the Model First and then generate the database from the model. The EF Designer uses the TPT strategy by default and so any inheritance in the model will be mapped to separate tables.
 
-#### Other Inheritance Options
+## Other Inheritance Options
 
 Table-per-Hierarchy (TPH) is another type of inheritance in which one database table is used to maintain data for all of the entity types in an inheritance hierarchy.  For information about how to map Table-per-Hierarchy inheritance with the Entity Designer, see [EF Designer TPH Inheritance](../ef6/entity-framework-designer-tph-inheritance.md). 
 
 Note that, the Table-per-Concrete Type Inheritance (TPC) and mixed inheritance models are supported by the Entity Framework runtime but are not supported by the EF Designer. If you want to use TPC or mixed inheritance, you have two options: use Code First, or manually edit the EDMX file. If you choose to work with the EDMX file, the Mapping Details Window will be put into “safe mode” and you will not be able to use the designer to change the mappings.
 
- 
+## Prerequisites
 
-## Pre-Requisites
+To complete this walkthrough, you will need:
 
-Visual Studio 2012 or Visual Studio 2010, Ultimate, Premium, Professional, or Web Express edition.
+- A recent version of Visual Studio.
+- The School sample Database
 
-To complete this walkthrough, you must install the [School database](../ef6/entity-framework-school-database.md).
-
- 
+See the section on [Walkthrough Prerequisites](../../../ef6/get-started/entity-framework-school-database.md) for more details.
 
 ## Set up the Project
 
@@ -43,8 +42,6 @@ To complete this walkthrough, you must install the [School database](../ef6/enti
 -   Enter **TPTDBFirstSample** as the name.
 -   Select **OK**.
 
- 
-
 ## Create a Model
 
 -   Right-click the project in Solution Explorer, and select **Add -&gt; New Item**.
@@ -52,14 +49,12 @@ To complete this walkthrough, you must install the [School database](../ef6/enti
 -   Enter **TPTModel.edmx** for the file name, and then click **Add**.
 -   In the Choose Model Contents dialog box, select** Generate from database**, and then click **Next**.
 -   Click **New Connection**.
-    In the Connection Properties dialog box, enter the server name (for example, **(localdb)\\v11.0**), select the authentication method, type **School** for the database name, and then click **OK**.
+    In the Connection Properties dialog box, enter the server name (for example, **(localdb)\\mssqllocaldb**), select the authentication method, type **School** for the database name, and then click **OK**.
     The Choose Your Data Connection dialog box is updated with your database connection setting.
 -   In the Choose Your Database Objects dialog box, under the Tables node, select the **Department**, **Course, OnlineCourse, and OnsiteCourse** tables.
 -   Click **Finish**.
 
 The Entity Designer, which provides a design surface for editing your model, is displayed. All the objects that you selected in the Choose Your Database Objects dialog box are added to the model.
-
- 
 
 ## Implement Table-per-Type Inheritance
 
@@ -80,13 +75,11 @@ We will now delete the **CourseID** property from **OnlineCourse** and **OnsiteC
 
 ![TPT](../ef6/media/tpt.png)
 
- 
-
 ## Use the Model
 
 Open the **Program.cs** file where the **Main** method is defined. Paste the following code into the **Main** function. The code executes three queries. The first query brings back all **Courses** related to the specified department. The second query uses the **OfType** method to return **OnlineCourses** related to the specified department. The third query returns **OnsiteCourses**.
 
-```
+``` csharp
     using (var context = new SchoolEntities())
     {
         foreach (var department in context.Departments)

@@ -5,8 +5,6 @@ ms.date: "2016-10-23"
 ms.prod: "entity-framework"
 ms.author: divega
 ms.manager: avickers
-
-
 ms.technology: entity-framework-6
 ms.topic: "article"
 ms.assetid: 2df6cb0a-7d8b-4e28-9d05-e2b9a90125af
@@ -16,15 +14,11 @@ caps.latest.revision: 3
 This video and step-by-step walkthrough provide an introduction to Code First development targeting a new database. This scenario includes targeting a database that doesn’t exist and Code First will create, or an empty database that Code First will add new tables too. Code First allows you to define your model using C\# or VB.Net classes. Additional configuration can optionally be performed using attributes on your classes and properties or by using a fluent API.
 
 [See the video that accompanies this step-by-step walkthrough.](../ef6/entity-framework-code-first-to-a-new-database-video.md)
- 
-
 ## Pre-Requisites
 
-You will need to have Visual Studio 2010 or Visual Studio 2012 installed to complete this walkthrough.
+You will need to have at least Visual Studio 2010 or Visual Studio 2012 installed to complete this walkthrough.
 
 If you are using Visual Studio 2010, you will also need to have [NuGet](http://visualstudiogallery.msdn.microsoft.com/27077b70-9dad-4c64-adcf-c7cf6bc9970c) installed.
-
- 
 
 ## 1. Create the Application
 
@@ -36,15 +30,13 @@ To keep things simple we’re going to build a basic console application that us
 -   Enter **CodeFirstNewDatabaseSample** as the name
 -   Select **OK**
 
- 
-
 ## 2. Create the Model
 
 Let’s define a very simple model using classes. We’re just defining them in the Program.cs file but in a real world application you would split your classes out into separate files and potentially a separate project.
 
 Below the Program class definition in Program.cs add the following two classes.
 
-```
+``` csharp
 public class Blog
 {
     public int BlogId { get; set; }
@@ -66,8 +58,6 @@ public class Post
 
 You’ll notice that we’re making the two navigation properties (Blog.Posts and Post.Blog) virtual. This enables the Lazy Loading feature of Entity Framework. Lazy Loading means that the contents of these properties will be automatically loaded from the database when you try to access them.
 
- 
-
 ## 3. Create a Context
 
 Now it’s time to define a derived context, which represents a session with the database, allowing us to query and save data. We define a context that derives from System.Data.Entity.DbContext and exposes a typed DbSet&lt;TEntity&gt; for each class in our model.
@@ -82,13 +72,13 @@ We’re now starting to use types from the Entity Framework so we need to add th
 
 Add a using statement for System.Data.Entity at the top of Program.cs.
 
-```
+``` csharp
 using System.Data.Entity;
 ```
 
 Below the Post class in Program.cs add the following derived context.
 
-```
+``` csharp
 public class BloggingContext : DbContext
 {
     public DbSet<Blog> Blogs { get; set; }
@@ -98,7 +88,7 @@ public class BloggingContext : DbContext
 
 Here is a complete listing of what Program.cs should now contain.
 
-```
+``` csharp
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -143,13 +133,11 @@ namespace CodeFirstNewDatabaseSample
 
 That is all the code we need to start storing and retrieving data. Obviously there is quite a bit going on behind the scenes and we’ll take a look at that in a moment but first let’s see it in action.
 
- 
-
 ## 4. Reading & Writing Data
 
 Implement the Main method in Program.cs as shown below. This code creates a new instance of our context and then uses it to insert a new Blog. Then it uses a LINQ query to retrieve all Blogs from the database ordered alphabetically by Title.
 
-```
+``` csharp
 class Program
 {
     static void Main(string[] args)
@@ -190,43 +178,30 @@ All blogs in the database:
 ADO.NET Blog
 Press any key to exit...
 ```
- 
-
 ### Where’s My Data?
 
 By convention DbContext has created a database for you.
 
 -   If a local SQL Express instance is available (installed by default with Visual Studio 2010) then Code First has created the database on that instance
--   If SQL Express isn’t available then Code First will try and use [LocalDb](https://msdn.microsoft.com/library/hh510202(v=sql.110).aspx) (installed by default with Visual Studio 2012)
+-   If SQL Express isn’t available then Code First will try and use [LocalDB](https://msdn.microsoft.com/library/hh510202(v=sql.110).aspx) (installed by default with Visual Studio 2012)
 -   The database is named after the fully qualified name of the derived context, in our case that is **CodeFirstNewDatabaseSample.BloggingContext**
 
 These are just the default conventions and there are various ways to change the database that Code First uses, more information is available in the **How DbContext Discovers the Model and Database Connection** topic.
-
- 
-
 You can connect to this database using Server Explorer in Visual Studio
 
 -   **View -&gt; Server Explorer**
 -   Right click on **Data Connections** and select **Add Connection…**
 -   If you haven’t connected to a database from Server Explorer before you’ll need to select Microsoft SQL Server as the data source
 
-    ![SelectDataSource](../ef6/media/selectdatasource.png)
+    ![SelectDataSource](../../../ef6/media/selectdatasource.png)
 
--   Connect to either LocalDb (**(localdb)\\v11.0**) or SQL Express (**.\\SQLEXPRESS**), depending on which one you have installed
-
-    ![LocalDbConnectionCFN](../ef6/media/localdbconnectioncfn.png)
-
-    ![SqlExpressConnectionCFN](../ef6/media/sqlexpressconnectioncfn.png)
-
- 
+-   Connect to either LocalDB or SQL Express, depending on which one you have installed
 
 We can now inspect the schema that Code First created.
 
-![SchemaInitial](../ef6/media/schemainitial.png)
+![SchemaInitial](../../../ef6/media/schemainitial.png)
 
 DbContext worked out what classes to include in the model by looking at the DbSet properties that we defined. It then uses the default set of Code First conventions to determine table and column names, determine data types, find primary keys, etc. Later in this walkthrough we’ll look at how you can override these conventions.
-
- 
 
 ## 5. Dealing with Model Changes
 
@@ -244,7 +219,7 @@ The first step is to enable Code First Migrations for our BloggingContext.
 
     Now let’s make a change to our model, add a Url property to the Blog class:
 
-```
+``` csharp
 public class Blog
 {
     public int BlogId { get; set; }
@@ -259,7 +234,7 @@ public class Blog
     The Add-Migration command checks for changes since your last migration and scaffolds a new migration with any changes that are found. We can give migrations a name; in this case we are calling the migration ‘AddUrl’.
     The scaffolded code is saying that we need to add a Url column, that can hold string data, to the dbo.Blogs table. If needed, we could edit the scaffolded code but that’s not required in this case.
 
-```
+``` csharp
 namespace CodeFirstNewDatabaseSample.Migrations
 {
     using System;
@@ -283,8 +258,6 @@ namespace CodeFirstNewDatabaseSample.Migrations
 -   Run the **Update-Database** command in Package Manager Console. This command will apply any pending migrations to the database. Our InitialCreate migration has already been applied so migrations will just apply our new AddUrl migration.
     Tip: You can use the **–Verbose** switch when calling Update-Database to see the SQL that is being executed against the database.
 
- 
-
 The new Url column is now added to the Blogs table in the database:
 
 ![SchemaWithUrl](../ef6/media/schemawithurl.png)
@@ -295,7 +268,7 @@ So far we’ve just let EF discover the model using its default conventions, but
 
 -   Let’s add a User class to our model
 
-```
+``` csharp
 public class User
 {
     public string Username { get; set; }
@@ -305,7 +278,7 @@ public class User
 
 -   We also need to add a set to our derived context
 
-```
+``` csharp
 public class BloggingContext : DbContext
 {
     public DbSet<Blog> Blogs { get; set; }
@@ -323,7 +296,7 @@ using System.ComponentModel.DataAnnotations;
 
 -   Now annotate the Username property to identify that it is the primary key
 
-```
+``` csharp
 public class User
 {
     [Key]
@@ -337,9 +310,7 @@ public class User
 
 The new table is now added to the database:
 
-![SchemaWithUsers](../ef6/media/schemawithusers.png)
-
- 
+![SchemaWithUsers](../../../ef6/media/schemawithusers.png)
 
 The full list of annotations supported by EF is:
 
@@ -357,8 +328,6 @@ The full list of annotations supported by EF is:
 -   [DatabaseGeneratedAttribute](https://msdn.microsoft.com/library/system.componentmodel.dataannotations.schema.databasegeneratedattribute)
 -   [NotMappedAttribute](https://msdn.microsoft.com/library/system.componentmodel.dataannotations.schema.notmappedattribute)
 
- 
-
 ## 7. Fluent API
 
 In the previous section we looked at using Data Annotations to supplement or override what was detected by convention. The other way to configure the model is via the Code First fluent API.
@@ -369,7 +338,7 @@ To access the fluent API you override the OnModelCreating method in DbContext. L
 
 -   Override the OnModelCreating method on BloggingContext with the following code
 
-```
+``` csharp
 public class BloggingContext : DbContext
 {
     public DbSet<Blog> Blogs { get; set; }
@@ -388,11 +357,9 @@ public class BloggingContext : DbContext
 -   Use the **Add-Migration ChangeDisplayName** command to scaffold a migration to apply these changes to the database.
 -   Run the **Update-Database** command to apply the new migration to the database.
 
- 
-
 The DisplayName column is now renamed to display\_name:
 
-![SchemaWithDisplayNameRenamed](../ef6/media/schemawithdisplaynamerenamed.png)
+![SchemaWithDisplayNameRenamed](../../../ef6/media/schemawithdisplaynamerenamed.png)
 
 ## Summary
 

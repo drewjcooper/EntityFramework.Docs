@@ -19,19 +19,14 @@ The following image shows the main windows that are used when working with the E
 
 ![EFDesigner](../ef6/media/efdesigner.png)
 
- 
 
-## Prerequisites
 
-Visual Studio 2012 or Visual Studio 2010, Ultimate, Premium, Professional, or Web Express edition.
-
- 
 
 ## Create the Database
 
 The database server that is installed with Visual Studio is different depending on the version of Visual Studio you have installed:
 
--   If you are using Visual Studio 2012 then you'll be creating a LocalDb database.
+-   If you are using Visual Studio 2012 then you'll be creating a LocalDB database.
 -   If you are using Visual Studio 2010 you'll be creating a SQL Express database.
 
 First we'll create a database with two tables that we are going to combine into a single entity.
@@ -40,7 +35,7 @@ First we'll create a database with two tables that we are going to combine into 
 -   **View -&gt; Server Explorer**
 -   Right click on **Data Connections -&gt; Add Connection…**
 -   If you haven’t connected to a database from Server Explorer before you’ll need to select **Microsoft SQL Server** as the data source
--   Connect to either LocalDb (**(localdb)\\v11.0**) or SQL Express (**.\\SQLEXPRESS**), depending on which one you have installed
+-   Connect to either LocalDB or SQL Express, depending on which one you have installed
 -   Enter **EntitySplitting** as the database name
 -   Select **OK** and you will be asked if you want to create a new database, select **Yes**
 -   The new database will now appear in Server Explorer

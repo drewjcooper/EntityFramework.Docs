@@ -5,14 +5,15 @@ ms.date: "2016-10-23"
 ms.prod: "entity-framework"
 ms.author: divega
 ms.manager: avickers
-
-
 ms.technology: entity-framework-6
 ms.topic: "article"
 ms.assetid: b21207c9-1d95-4aa3-ae05-bc5fe300dab0
 caps.latest.revision: 3
 ---
 # Entity Framework Self-Tracking Entities Walkthrough
+> [!IMPORTANT]
+> The self-tracking entities templates is not recommended for new applications. If your application requires working with disconnected graphs of entities, consider other alternatives such as [Trackable Entities](http://trackableentities.github.io/) or writing custom code using the low-level change tracking APIs.     
+
 This walkthrough demonstrates the scenario in which a Windows Communication Foundation (WCF) service exposes an operation that returns an entity graph. Next, a client application manipulates that graph and submits the modifications to a service operation that validates and saves the updates to a database using Entity Framework.
 
 Before completing this walkthrough make sure you read the [Self-Tracking Entities](../ef6/entity-framework-self-tracking-entities.md) page.
@@ -28,22 +29,16 @@ This walkthrough completes the following actions:
 
 We'll use Database First in this walkthrough but the same techniques apply equally to Model First.
 
- 
-
 ## Pre-Requisites
 
-Visual Studio 2012 or Visual Studio 2010.
-
- 
+To complete this walkthrough you will need a recent version of Visual Studio.
 
 ## Create a Database
 
 The database server that is installed with Visual Studio is different depending on the version of Visual Studio you have installed:
 
--   If you are using Visual Studio 2012 then you'll be creating a LocalDb database.
+-   If you are using Visual Studio 2012 then you'll be creating a LocalDB database.
 -   If you are using Visual Studio 2010 you'll be creating a SQL Express database.
-
- 
 
 Let's go ahead and generate the database.
 
@@ -51,7 +46,7 @@ Let's go ahead and generate the database.
 -   **View -&gt; Server Explorer**
 -   Right click on **Data Connections -&gt; Add Connection…**
 -   If you haven’t connected to a database from Server Explorer before you’ll need to select **Microsoft SQL Server** as the data source
--   Connect to either LocalDb (**(localdb)\\v11.0**) or SQL Express (**.\\SQLEXPRESS**), depending on which one you have installed
+-   Connect to either LocalDB or SQL Express, depending on which one you have installed
 -   Enter **STESample** as the database name
 -   Select **OK** and you will be asked if you want to create a new database, select **Yes**
 -   The new database will now appear in Server Explorer
@@ -64,7 +59,7 @@ Let's go ahead and generate the database.
     -   Select the **STESample** database from the drop down at the top of the query editor
     -   Copy the following SQL into the new query, then right-click on the query and select **Execute SQL**
 
-```
+``` SQL
     CREATE TABLE [dbo].[Blogs] (
         [BlogId] INT IDENTITY (1, 1) NOT NULL,
         [Name] NVARCHAR (200) NULL,
@@ -88,8 +83,6 @@ Let's go ahead and generate the database.
     INSERT INTO [dbo].[Posts] ([Title], [Content], [BlogId]) VALUES (N'What is New', N'More interesting stuff...', 1)
 ```
 
- 
-
 ## Create the Model
 
 First up, we need a project to put the model in.
@@ -97,8 +90,6 @@ First up, we need a project to put the model in.
 -   **File -&gt; New -&gt; Project...**
 -   Select **Visual C\#** from the left pane and then **Class Library**
 -   Enter **STESample** as the name and click **OK**
-
- 
 
 Now we'll create a simple model in the EF Designer to access our database:
 
@@ -109,8 +100,6 @@ Now we'll create a simple model in the EF Designer to access our database:
 -   Enter the connection information for the database that you created in the previous section
 -   Enter **BloggingContext** as the name for the connection string and click **Next**
 -   Check the box next to **Tables** and click **Finish**
-
- 
 
 ## Swap to STE Code Generation
 
@@ -132,8 +121,6 @@ Now we need to disable the default code generation and swap to Self-Tracking Ent
 -   Enter **STETemplate** as the name and click **Add**
 -   The **STETemplate.tt** and **STETemplate.Context.tt** files are added directly to your project
 
- 
-
 ## Move Entity Types into Separate Project
 
 To use Self-Tracking Entities our client application needs access to the entity classes generated from our model. Because we don't want to expose the whole model to the client application we're going to move the entity classes into a separate project.
@@ -143,8 +130,6 @@ The first step is to stop generating entity classes in the existing project:
 -   Right-click on **STETemplate.tt** in **Solution Explorer** and select **Properties**
 -   In the **Properties** window clear **TextTemplatingFileGenerator** from the **CustomTool** property
 -   Expand **STETemplate.tt** in **Solution Explorer** and delete all files nested under it
-
- 
 
 Next, we are going to add a new project and generate the entity classes in it
 
@@ -159,22 +144,16 @@ Next, we are going to add a new project and generate the entity classes in it
 
     ![AddLinkedTemplate](../ef6/media/addlinkedtemplate.png)
 
- 
-
 We're also going to make sure the entity classes get generated in the same namespace as the context. This just reduces the number of using statements we need to add throughout our application.
 
 -   Right-click on the linked **STETemplate.tt** in **Solution Explorer** and select **Properties**
 -   In the **Properties** window set **Custom Tool Namespace** to **STESample**
-
- 
 
 The code generated by the STE template will need a reference to **System.Runtime.Serialization** in order to compile. This library is needed for the WCF **DataContract** and **DataMember** attributes that are used on the serializable entity types.
 
 -   Right click on the **STESample.Entities** project in **Solution Explorer** and select **Add Reference...**
     -   In Visual Studio 2012 - check the box next to **System.Runtime.Serialization** and click **OK**
     -   In Visual Studio 2010 - select **System.Runtime.Serialization** and click **OK**
-
- 
 
 Finally, the project with our context in it will need a reference to the entity types.
 
@@ -183,8 +162,6 @@ Finally, the project with our context in it will need a reference to the entity 
     -   In Visual Studio 2010 - select the **Projects** tab, select **STESample.Entities** and click **OK**
 
 > **Note:** Another option for moving the entity types to a separate project is to move the template file, rather than linking it from its default location. If you do this, you will need to update the **inputFile** variable in the template to provide the relative path to the edmx file (in this example that would be **..\\BloggingModel.edmx**).
-
- 
 
 ## Create a WCF Service
 
@@ -196,20 +173,16 @@ Now it's time to add a WCF Service to expose our data, we'll start by creating t
 -   Add a reference to the **System.Data.Entity** assembly
 -   Add a reference to the **STESample** and **STESample.Entities** projects
 
- 
-
 We need to copy the EF connection string to this project so that it is found at runtime.
 
 -   Open the **App.Config** file for the **STESample **project and copy the **connectionStrings** element
 -   Paste the **connectionStrings** element as a child element of the **configuration** element of the **Web.Config** file in the **STESample.Service** project
 
- 
-
 Now it's time to implement the actual service.
 
 -   Open **IService1.cs** and replace the contents with the following code
 
-```
+``` csharp
     using System.Collections.Generic;
     using System.ServiceModel;
 
@@ -229,7 +202,7 @@ Now it's time to implement the actual service.
 
 -   Open **Service1.svc** and replace the contents with the following code
 
-```
+``` csharp
     using System;
     using System.Collections.Generic;
     using System.Data;
@@ -280,8 +253,6 @@ Now it's time to implement the actual service.
     }
 ```
 
- 
-
 ## Consume the Service from a Console Application
 
 Let's create a console application that uses our service.
@@ -291,21 +262,17 @@ Let's create a console application that uses our service.
 -   Enter **STESample.ConsoleTest** as the name and click **OK**
 -   Add a reference to the **STESample.Entities** project
 
- 
-
 We need a service reference to our WCF service
 
 -   Right-click the **STESample.ConsoleTest** project in **Solution Explorer** and select **Add Service Reference...**
 -   Click **Discover**
 -   Enter **BloggingService** as the namespace and click **OK**
 
- 
-
 Now we can write some code to consume the service.
 
 -   Open **Program.cs** and replace the contents with the following code.
 
-```
+``` csharp
     using STESample.ConsoleTest.BloggingService;
     using System;
     using System.Linq;
@@ -430,8 +397,6 @@ Now we can write some code to consume the service.
     }
 ```
 
- 
-
 You can now run the application to see it in action.
 
 -   Right-click the **STESample.ConsoleTest** project in **Solution Explorer** and select **Debug -&gt; Start new instance**
@@ -467,7 +432,6 @@ ADO.NET Blog
 
 Press any key to exit...
 ```
- 
 
 ## Consume the Service from a WPF Application
 
@@ -478,22 +442,18 @@ Let's create a WPF application that uses our service.
 -   Enter **STESample.WPFTest** as the name and click **OK**
 -   Add a reference to the **STESample.Entities** project
 
- 
-
 We need a service reference to our WCF service
 
 -   Right-click the **STESample.WPFTest** project in **Solution Explorer** and select **Add Service Reference...**
 -   Click **Discover**
 -   Enter **BloggingService** as the namespace and click **OK**
 
- 
-
 Now we can write some code to consume the service.
 
 -   Open **MainWindow.xaml** and replace the contents with the following code.
 
-```
-    \<Window
+``` xaml
+    <Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -502,31 +462,31 @@ Now we can write some code to consume the service.
         mc:Ignorable="d" x:Class="STESample.WPFTest.MainWindow"
         Title="MainWindow" Height="350" Width="525" Loaded="Window_Loaded">
 
-        \<Window.Resources>
-            \<CollectionViewSource
+        <Window.Resources>
+            <CollectionViewSource
                 x:Key="blogViewSource"
                 d:DesignSource="{d:DesignInstance {x:Type STESample:Blog}, CreateList=True}"/>
-            \<CollectionViewSource
+            <CollectionViewSource
                 x:Key="blogPostsViewSource"
                 Source="{Binding Posts, Source={StaticResource blogViewSource}}"/>
-        \</Window.Resources>
+        </Window.Resources>
 
         <Grid DataContext="{StaticResource blogViewSource}">
             <DataGrid AutoGenerateColumns="False" EnableRowVirtualization="True"
                       ItemsSource="{Binding}" Margin="10,10,10,179">
-                \<DataGrid.Columns>
+                <DataGrid.Columns>
                     <DataGridTextColumn Binding="{Binding BlogId}" Header="Id" Width="Auto" IsReadOnly="True" />
                     <DataGridTextColumn Binding="{Binding Name}" Header="Name" Width="Auto"/>
                     <DataGridTextColumn Binding="{Binding Url}" Header="Url" Width="Auto"/>
-                \</DataGrid.Columns>
+                </DataGrid.Columns>
             </DataGrid>
             <DataGrid AutoGenerateColumns="False" EnableRowVirtualization="True"
                       ItemsSource="{Binding Source={StaticResource blogPostsViewSource}}" Margin="10,145,10,38">
-                \<DataGrid.Columns>
+                <DataGrid.Columns>
                     <DataGridTextColumn Binding="{Binding PostId}" Header="Id" Width="Auto"  IsReadOnly="True"/>
                     <DataGridTextColumn Binding="{Binding Title}" Header="Title" Width="Auto"/>
                     <DataGridTextColumn Binding="{Binding Content}" Header="Content" Width="Auto"/>
-                \</DataGrid.Columns>
+                </DataGrid.Columns>
             </DataGrid>
             <Button Width="68" Height="23" HorizontalAlignment="Right" VerticalAlignment="Bottom"
                     Margin="0,0,10,10" Click="buttonSave_Click">Save</Button>
@@ -536,7 +496,7 @@ Now we can write some code to consume the service.
 
 -   Open the code behind for MainWindow (**MainWindow.xaml.cs**) and replace the contents with the following code
 
-```
+``` csharp
     using STESample.WPFTest.BloggingService;
     using System.Collections.Generic;
     using System.Linq;
@@ -585,8 +545,6 @@ Now we can write some code to consume the service.
         }
     }
 ```
-
- 
 
 You can now run the application to see it in action.
 

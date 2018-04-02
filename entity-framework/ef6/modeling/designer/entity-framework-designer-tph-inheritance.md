@@ -5,8 +5,6 @@ ms.date: "2016-10-23"
 ms.prod: "entity-framework"
 ms.author: divega
 ms.manager: avickers
-
-
 ms.technology: entity-framework-6
 ms.topic: "article"
 ms.assetid: 72d26a8e-20ab-4500-bd13-394a08e73394
@@ -19,21 +17,20 @@ In this walkthrough we will map the Person table to three entity types: Person (
 
 It is possible to map to a TPH inheritance using Model First but you would have to write your own database generation workflow which is complex. You would then assign this workflow to the **Database Generation Workflow** property in the EF Designer. An easier alternative is to use Code First.
 
-#### Other Inheritance Options
+## Other Inheritance Options
 
 Table-per-Type (TPT) is another type of inheritance in which separate tables in the database are mapped to entities that participate in the inheritance.  For information about how to map Table-per-Type inheritance with the EF Designer, see [EF Designer TPT Inheritance](../ef6/entity-framework-designer-tpt-inheritance.md).
 
 Table-per-Concrete Type Inheritance (TPC) and mixed inheritance models are supported by the Entity Framework runtime but are not supported by the EF Designer. If you want to use TPC or mixed inheritance, you have two options: use Code First, or manually edit the EDMX file. If you choose to work with the EDMX file, the Mapping Details Window will be put into “safe mode” and you will not be able to use the designer to change the mappings.
 
- 
+## Prerequisites
 
-## Pre-Requisites
+To complete this walkthrough, you will need:
 
-Visual Studio 2012 or Visual Studio 2010, Ultimate, Premium, Professional, or Web Express edition.
+- A recent version of Visual Studio.
+- The School sample Database
 
-To complete this walkthrough, you must install the [School database](../ef6/entity-framework-school-database.md).
-
- 
+See the section on [Walkthrough Prerequisites](../../../ef6/get-started/entity-framework-school-database.md) for more details.
 
 ## Set up the Project
 
@@ -43,8 +40,6 @@ To complete this walkthrough, you must install the [School database](../ef6/enti
 -   Enter **TPHDBFirstSample** as the name.
 -   Select **OK**.
 
- 
-
 ## Create a Model
 
 -   Right-click the project name in Solution Explorer, and select **Add -&gt; New Item**.
@@ -52,7 +47,7 @@ To complete this walkthrough, you must install the [School database](../ef6/enti
 -   Enter **TPHModel.edmx** for the file name, and then click **Add**.
 -   In the Choose Model Contents dialog box, select **Generate from database**, and then click **Next**.
 -   Click **New Connection**.
-    In the Connection Properties dialog box, enter the server name (for example, **(localdb)\\v11.0**), select the authentication method, type **School** for the database name, and then click **OK**.
+    In the Connection Properties dialog box, enter the server name (for example, **(localdb)\\mssqllocaldb**), select the authentication method, type **School** for the database name, and then click **OK**.
     The Choose Your Data Connection dialog box is updated with your database connection setting.
 -   In the Choose Your Database Objects dialog box, under the Tables node, select the **Person** table.
 -   Click **Finish**.
@@ -63,13 +58,11 @@ That is how the **Person** table looks in the database.
 
 ![PersonTable](../ef6/media/persontable.png) 
 
- 
-
 ## Implement Table-per-Hierarchy Inheritance
 
 The **Person** table has the **Discriminator** column, which can have one of two values: “Student” and “Instructor”. Depending on the value the **Person** table will be mapped to the **Student** entity or the **Instructor** entity. The **Person** table also has two columns, **HireDate** and **EnrollmentDate**, which must be **nullable** because a person cannot be a student and an instructor at the same time (at least not in this walkthrough).
 
-#### Add new Entities
+### Add new Entities
 
 -   Add a new entity.
     To do this, right-click on an empty space of the design surface of the Entity Framework Designer, and select **Add-&gt;Entity**.
@@ -89,7 +82,7 @@ Two new entity types were added to the design surface. An arrow points from the 
 -   Select the **Person** entity type. In the **Properties** window, set its **Abstract** property to **true**.
 -   Delete the **Discriminator** property from **Person**. The reason it should be deleted is explained in the following section.
 
-#### Map the entities
+### Map the entities
 
 -   Right-click the **Instructor** and select **Table Mapping.**
     The Instructor entity is selected in the Mapping Details window.
@@ -112,13 +105,11 @@ Table-per-hierarchy inheritance is now implemented.
 
 ![FinalTPH](../ef6/media/finaltph.png)
 
- 
-
 ## Use the Model
 
 Open the **Program.cs** file where the **Main** method is defined. Paste the following code into the **Main** function. The code executes three queries. The first query brings back all **Person** objects. The second query uses the **OfType** method to return **Instructor** objects. The third query uses the **OfType** method to return **Student** objects.
 
-```
+``` csharp
     using (var context = new SchoolEntities())
     {
         Console.WriteLine("All people:");

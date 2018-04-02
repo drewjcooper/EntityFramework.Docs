@@ -19,13 +19,11 @@ The content on this page is adapted from and article originally written by Julie
 
 Entity Framework provides a great variety of validation features that can feed through to a user interface for client-side validation or be used for server-side validation. When using code first, you can specify validations using annotation or fluent API configurations. Additional validations, and more complex, can be specified in code and will work whether your model hails from code first, model first or database first.
 
- 
-
 ## The model
 
 I’ll demonstrate the validations with a simple pair of classes: Blog and Post.
 
-```
+``` csharp
     public class Blog
       {
           public int Id { get; set; }
@@ -46,13 +44,11 @@ I’ll demonstrate the validations with a simple pair of classes: Blog and Post.
           public ICollection<Comment> Comments { get; set; }
       }
 ```
- 
-
 ## Data Annotations
 
 Code First uses annotations from the System.ComponentModel.DataAnnotations assembly as one means of configuring code first classes. Among these annotations are those which provide rules such as the Required, MaxLength and MinLength. A number of .NET client applications also recognize these annotations, for example, ASP.NET MVC. You can achieve both client side and server side validation with these annotations. For example, you can force the Blog Title property to be a required property.
 
-```
+``` csharp
     [Required]
     public string Title { get; set; }
 ```
@@ -67,7 +63,7 @@ Client side validation is not bullet-proof however. Users can impact features of
 
 A simple way to test this is to disable MVC’s client-side validation feature. You can do this in the MVC application’s web.config file. The appSettings section has a key for ClientValidationEnabled. Setting this key to false will prevent the UI from performing validations.
 
-```
+``` xml
     <appSettings>
         \<add key="ClientValidationEnabled"value="false"/>
         ...
@@ -76,15 +72,13 @@ A simple way to test this is to disable MVC’s client-side validation feature. 
 
 Even with the client-side validation disabled, you will get the same response in your application. The error message “The Title field is required” will be displayed as. Except now it will be a result of server-side validation. Entity Framework will perform the validation on the Required annotation (before it even bothers to build and INSERT command to send to the database) and return the error to MVC which will display the message.
 
- 
-
 ## Fluent API
 
 You can use code first’s fluent API instead of annotations to get the same client side & server side validation. Rather than use Required, I’ll show you this using a MaxLength validation.
 
 Fluent API configurations are applied as code first is building the model from the classes. You can inject the configurations by overriding the DbContext class’ OnModelCreating  method. Here is a configuration specifying that the BloggerName property can be no longer than 10 characters.
 
-```
+``` csharp
     public class BlogContext : DbContext
       {
           public DbSet<Blog> Blogs { get; set; }
@@ -102,7 +96,7 @@ Validation errors thrown based on the Fluent API configurations will not automat
 
 Here’s some exception handling error code in the application’s BlogController class that captures that validation error when Entity Framework attempts to save a blog with a BloggerName that exceeds the 10 character maximum.
 
-```
+``` csharp
     [HttpPost]
     public ActionResult Edit(int id, Blog blog)
     {
@@ -123,8 +117,8 @@ Here’s some exception handling error code in the application’s BlogControlle
 
 The validation doesn’t automatically get passed back into the view which is why the additional code that uses ModelState.AddModelError is being used. This ensures that the error details make it to the view which will then use the ValidationMessageFor Htmlhelper to display the error.
 
-```
-                @Html.ValidationMessageFor(model => model.BloggerName)
+``` csharp
+    @Html.ValidationMessageFor(model => model.BloggerName)
 ```
 
 ## IValidatableObject
@@ -135,7 +129,7 @@ Configurations such as Required and MaxLength perform validaton on a single fiel
 
 In the following example, the Blog class has been extended to implement IValidatableObject and then provide a rule that the Title and BloggerName cannot match.
 
-```
+``` csharp
     public class Blog : IValidatableObject
      {
          public int Id { get; set; }
@@ -170,7 +164,7 @@ Here’s an example of a ValidateEntity override that validates new Posts to ens
 
 DbEntityValidationResult houses a DbEntityEntry and an ICollection of DbValidationErrors for a single entity. At the start of this method, a  DbEntityValidationResult is instantiated and then any errors that are discovered are added into its ValidationErrors collection.
 
-```
+``` csharp
     protected override DbEntityValidationResult ValidateEntity (
         System.Data.Entity.Infrastructure.DbEntityEntry entityEntry,
         IDictionary\<object, object> items)
@@ -199,8 +193,6 @@ DbEntityValidationResult houses a DbEntityEntry and an ICollection of DbValidati
     }
 ```
 
- 
-
 ## Explicitly triggering validation
 
 A call to SaveChanges triggers all of the validations covered in this article. But you don’t need to rely on SaveChanges. You may prefer to validate elsewhere in your application.
@@ -209,7 +201,7 @@ DbContext.GetValidationErrors will trigger all of the validations, those defined
 
 The following code will call GetValidationErrors on the current instance of a DbContext. ValidationErrors are grouped by entity type into DbValidationRestuls. The code iterates first through the DbValidationResults returned by the method and then through each ValidationError inside.
 
-```
+``` csharp
     foreach (var validationResults in db.GetValidationErrors())
         {
             foreach (var error in validationResults.ValidationErrors)
@@ -221,8 +213,6 @@ The following code will call GetValidationErrors on the current instance of a Db
             }
         }
 ```
-
- 
 
 ## Other considerations when using validation
 
@@ -241,8 +231,6 @@ Here are a few other points to consider when using Entity Framework validation:
 -   If a property is complex its validation will also include:
     -   Property-level validation on the complex type properties
     -   Type level validation on the complex type, including IValidatableObject validation on the complex type
-
- 
 
 ## Summary
 

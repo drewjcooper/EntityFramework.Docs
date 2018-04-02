@@ -5,8 +5,6 @@ ms.date: "2016-10-23"
 ms.prod: "entity-framework"
 ms.author: divega
 ms.manager: avickers
-
-
 ms.technology: entity-framework-6
 ms.topic: "article"
 ms.assetid: 41d1f86b-ce66-4bf2-8963-48514406fb4c
@@ -14,43 +12,61 @@ caps.latest.revision: 3
 ---
 # Entity Framework Version History
 
-Here is a summary of the Entity Framework releases and the features they added.
+We highly recommend that you use the latest released version of Entity Framework to ensure you get the latest features and the highest stability. However, we realize that you may need to use a previous version, or that you may want to experiment with new improvements in the latest pre-release.
+
+This page documents the version history of EF. It contains links to content on features that are new on each release, most of which are still relevant to the latest release.
+
+To install specific versions of EF, see [Get Entity Framework](~/ef6/get-started/get-entity-Framework.md)
 
 ## Future Versions
 
-While most of the focus of the EF team is nowadays on adding new features and improvements to [EF Core](https://docs.microsoft.com/en-us/ef/core/index), we plan to keep fixing important bugs, implementing small improvements, and incorporating community contributions in the EF6 codebase.
+While most of the focus of the EF team is nowadays on adding new features and improvements to [EF Core](https://docs.microsoft.com/en-us/ef/core/index), we plan to  still fix important bugs, implement small improvements, and incorporate community contributions in the EF6 codebase.
 
-The roadmap of post-EF 6.2 releases is currently being developed. More information will be posted here once available on the [.NET team blog](https://blogs.msdn.microsoft.com/dotnet/tag/entity-framework/) or [Twitter](http://twitter.com/efmagicunicorns).
+### Post-EF 6.2 releases
+
+The roadmap of post-EF 6.2 releases is still undefined. More information will be posted here once available on the [.NET team blog](https://blogs.msdn.microsoft.com/dotnet/tag/entity-framework/) or [Twitter](http://twitter.com/efmagicunicorns).
 
 ### EF 6.2 Tools
 
-We plan to release an updated version of the EF6 tooling in Visual Studio 2017. It will include improvements on the top pain points:
+We plan to release an updated version of the EF6 Tools in a future updated to Visual Studio 2017. It will include improvements on some common pain areas:
 
-- Accessibility overhaul
+- An overhaul to the accessibility of the user interface
 - Workaround for SQL Server performance regression on reverse engineering [#4](https://github.com/aspnet/entityframework6/issues/4)
 - Update model from database support for larger models on SQL Server [#185](https://github.com/aspnet/EntityFramework6/issues/185)
 
+In the meanwhile, it is possible to use the EF 6.2 runtime (as well as any past version of EF) with existing versions of the EF6 Tools.
+
 ## Recent releases
 
-### EF 6.2
+### EF 6.2 Runtime
 
-To a great extent thanks to the efforts our community of open source contributors, EF 6.2 includes numerous [bugs fixes](https://github.com/aspnet/entityframework6/issues?utf8=%E2%9C%93&q=is%3Aissue%20milestone%3A6.2.0%20is%3Aclosed%20label%3Aclosed-fixed%20-label%3Aarea-tools%20label%3Atype-bug) and [product enhancements](https://github.com/aspnet/entityframework6/issues?utf8=%E2%9C%93&q=is%3Aissue%20milestone%3A6.2.0%20is%3Aclosed%20label%3Aclosed-fixed%20-label%3Aarea-tools%20label%3Atype-enhancement%20).
+The EF 6.2 runtime was released to NuGet in October of 2017. To a great extent, thanks to the efforts our community of open source contributors, EF 6.2 includes numerous [bugs fixes](https://github.com/aspnet/entityframework6/issues?utf8=%E2%9C%93&q=is%3Aissue%20milestone%3A6.2.0%20is%3Aclosed%20label%3Aclosed-fixed%20-label%3Aarea-tools%20label%3Atype-bug) and [product enhancements](https://github.com/aspnet/entityframework6/issues?utf8=%E2%9C%93&q=is%3Aissue%20milestone%3A6.2.0%20is%3Aclosed%20label%3Aclosed-fixed%20-label%3Aarea-tools%20label%3Atype-enhancement%20).
 
-Here is a brief list of the most important changes affecting the runtime:
+Here is a brief list of the most important changes affecting the EF 6.2 runtime:
 
 - Reduce start up time by loading finished code first models from a persistent cache [#275](https://github.com/aspnet/EntityFramework6/issues/275)
 - Fluent API to define indexes [#274](https://github.com/aspnet/EntityFramework6/issues/274)
 - DbFunctions.Like() to enable writing LINQ queries that translate to LIKE in SQL [#241](https://github.com/aspnet/EntityFramework6/issues/241)
-- Migrate.exe should support -script option [#240](https://github.com/aspnet/EntityFramework6/issues/240)
-- EF6 does not work with primary key from sequence [#165](https://github.com/aspnet/EntityFramework6/issues/165)
-- Update error numbers for SQL Azure Execution Strategy [#83](https://github.com/aspnet/EntityFramework6/issues/83)
+- Migrate.exe now supports -script option [#240](https://github.com/aspnet/EntityFramework6/issues/240)
+- EF6 can now work with key values generated by a sequence in SQL Server [#165](https://github.com/aspnet/EntityFramework6/issues/165)
+- Update list of transient errors for SQL Azure Execution Strategy [#83](https://github.com/aspnet/EntityFramework6/issues/83)
 - Bug: Retrying queries or SQL commands fails with "The SqlParameter is already contained by another SqlParameterCollection" [#81](https://github.com/aspnet/EntityFramework6/issues/81)
 - Bug: Evaluation of DbQuery.ToString() frequently times out in the debugger [#73](https://github.com/aspnet/EntityFramework6/issues/73)
 
 ## Past releases
 
+### EF 6.1.3
+The EF 6.1.3 runtime was released to NuGet in October of 2015. This release contains only fixes to high-priority defects and regressions reported on the 6.1.2 release. The fixes include:
+
+- Query: Regression in EF 6.1.2: OUTER APPLY introduced and more complex queries for 1:1 relationships and “let” clause
+- TPT problem with hiding base class property in inherited class
+- DbMigration.Sql fails when the word ‘go’ is contained in the text
+- Create compatibility flag for UnionAll and Intersect flattening support
+- Query with multiple Includes does not work in 6.1.2 (working in 6.1.1)
+- “You have an error in your SQL syntax” exception after upgrading from EF 6.1.1 to 6.1.2
+
 ### EF 6.1.2
-This version is mostly about bug fixes. We also accepted a couple of noteworthy changes from members of the community:
+The EF 6.1.2 runtime was released to NuGet in December of 2014. This version is mostly about bug fixes. We also accepted a couple of noteworthy changes from members of the community:
 - **Query cache parameters can be configured from the app/web.configuration file**
     ``` xml
     <entityFramework>
@@ -60,15 +76,16 @@ This version is mostly about bug fixes. We also accepted a couple of noteworthy 
 - **SqlFile and SqlResource methods on DbMigration** allow you to run a SQL script stored as a file or embedded resource.
 
 ### EF 6.1.1
-This version contains fixes for issues that a number of people have encountered
+The EF 6.1.1 runtime was released to NuGet in June of 2014. This version contains fixes for issues that a number of people have encountered. Among others:
 - Designer: Error opening EF5 edmx with decimal precision in EF6 designer
 - Default instance detection logic for LocalDB doesn't work with SQL Server 2014
 
 ### EF 6.1
-This minor release adds the following features to EF6:
+The EF 6.1.0 runtime was released to NuGet in March of 2014. This minor update includes a significant number of new features:
+
 - **Tooling consolidation** provides a consistent way to create a new EF model. This feature [extends the ADO.NET Entity Data Model wizard to support creating Code First models](../ef6/entity-framework-code-first-to-an-existing-database.md), including reverse engineering from an existing database. These features were previously available in Beta quality in the EF Power Tools.
-- **[Handling of transaction commit failures](../ef6/entity-framework-handling-of-transaction-commit-failures-ef6-1-onwards.md)** provides the [CommitFailureHandler](https://msdn.microsoft.com/library/system.data.entity.infrastructure.commitfailurehandler.aspx) which makes use of the newly introduced ability to intercept transaction operations. The CommitFailureHandler allows automatic recovery from connection failures whilst committing a transaction.
-- **[IndexAttribute](../ef6/entity-framework-code-first-data-annotations.md)** allows indexes to be specified by placing an [Index] attribute on a property (or properties) in your Code First model. Code First will then create a corresponding index in the database.
+- **[Handling of transaction commit failures](../ef6/entity-framework-handling-of-transaction-commit-failures-ef6-1-onwards.md)** provides the CommitFailureHandler which makes use of the newly introduced ability to intercept transaction operations. The CommitFailureHandler allows automatic recovery from connection failures whilst committing a transaction.
+- **[IndexAttribute](../ef6/entity-framework-code-first-data-annotations.md)** allows indexes to be specified by placing an `[Index]` attribute on a property (or properties) in your Code First model. Code First will then create a corresponding index in the database.
 - **The public mapping API** provides access to the information EF has on how properties and types are mapped to columns and tables in the database. In past releases this API was internal.
 - **[Ability to configure interceptors via the App/Web.config file](../ef6/entity-framework-config-file-settings.md)** allows interceptors to be added without recompiling the application.
 - **System.Data.Entity.Infrastructure.Interception.DatabaseLogger**is a new interceptor that makes it easy to log all database operations to a file. In combination with the previous feature, this allows you to easily [switch on logging of database operations for a deployed application](../ef6/entity-framework-config-file-settings.md), without the need to recompile.
@@ -76,15 +93,16 @@ This minor release adds the following features to EF6:
 - **Performance improvements** including reduced database operations during initialization, optimizations for null equality comparison in LINQ queries, faster view generation (model creation) in more scenarios, and more efficient materialization of tracked entities with multiple associations.
 
 ### EF 6.0.2
-This patch release is limited to fixing issues that were introduced in the EF6 release (regressions in performance/behavior since EF5).
+The EF 6.0.2 runtime was released to NuGet in December of 2013. This patch release is limited to fixing issues that were introduced in the EF6 release (regressions in performance/behavior since EF5).
 
 ### EF 6.0.1
-This patch release is limited to fixing issues that were introduced in the EF6 release (regressions in performance/behavior since EF5). The most notable changes were to fix some performance issues during warm-up for EF models. This was important as warm-up performance was an area of focus in EF6 and these issues were negating some of the performance gains made in EF6.
+The EF 6.0.1 runtime was released to NuGet in October of 2013 simultaneously with EF 6.0.0, because the latter was embedded in a version of Visual Studio that had locked down a few months before. This patch release is limited to fixing issues that were introduced in the EF6 release (regressions in performance/behavior since EF5). The most notable changes were to fix some performance issues during warm-up for EF models. This was important as warm-up performance was an area of focus in EF6 and these issues were negating some of the other performance gains made in EF6.
 
 ### EF 6.0
-The EF6 runtime can be installed from NuGet. See the [Get Entity Framework](../ef6/get-entity-framework.md) page for more information.
+The EF 6.0.0 runtime was released to NuGet in October of 2013. This is the first version in which a complete EF runtime is included in the [EntityFramework NuGet Package](https://www.nuget.org/packages/EntityFramework/) which does not depend on  
+the EF bits that are part of the .NET Framework. Moving the remaining parts of the runtime to the NuGet package required a number of breaking change for existing code. See the section on [Upgrading to Entity Framework 6](upgrading-to-entity-framework-6.md) for more details on the manual steps required to upgrade.
 
-The following features work for models created with Code First or the EF Designer:
+This release includes numerous new features. The following features work for models created with Code First or the EF Designer:
 
 - **[Async Query and Save](../ef6/entity-framework-async-query-and-save-ef6-onwards.md)** adds support for the task-based asynchronous patterns that were introduced in .NET 4.5.
 - **[Connection Resiliency](../ef6/entity-framework-connection-resiliency-and-retry-logic-ef6-onwards.md)** enables automatic recovery from transient connection failures.
@@ -117,34 +135,142 @@ The following features apply to Code First only:
 - **Entity and complex types can now be nestedinside classes**. |
 
 ### EF 5.0
-This release introduces some new features including enum support, table-valued functions, spatial data types and various performance improvements.
+The EF 5.0.0 runtime was released to NuGet in August of 2012. This release introduces some new features including enum support, table-valued functions, spatial data types and various performance improvements.
 
 The Entity Framework Designer in Visual Studio 2012 also introduces support for multiple-diagrams per model, coloring of shapes on the design surface and batch import of stored procedures.
 
+Here is a list of content we put together specifically for the EF 5 release.
+
+-   [EF 5 Release Post](http://blogs.msdn.com/b/adonet/archive/2012/08/15/ef5-released.aspx)
+-   Getting Started
+    -   [Which workflow should I use?](../ef6/entity-framework-development-workflows-video.md)
+    -   [Code First to a new database (walkthrough and video)](../ef6/entity-framework-code-first-to-a-new-database.md)
+    -   [Code First to an existing database (walkthrough and video)](../ef6/entity-framework-code-first-to-an-existing-database.md)
+    -   [Model First (walkthrough and video)](../ef6/entity-framework-model-first.md)
+    -   [Database First (walkthrough and video)](../ef6/entity-framework-database-first.md)
+-   New Features in EF5
+    -   [Enum Support in Code First](../ef6/entity-framework-enum-support-code-first-ef5-onwards.md)
+    -   [Enum Support in EF Designer](../ef6/entity-framework-enum-support-ef-designer-ef5-onwards.md)
+    -   [Spatial Data Types in Code First](../ef6/entity-framework-spatial-code-first-ef5-onwards.md)
+    -   [Spatial Data Types in EF Designer](../ef6/entity-framework-spatial-ef-designer-ef5-onwards.md)
+    -   [Provider Support for Spatial Types](../ef6/entity-framework-provider-support-for-spatial-types.md)
+    -   [Table-Valued Functions](../ef6/entity-framework-table-valued-functions-tvfs-ef5-onwards.md)
+    -   [Multiple Diagrams per Model](../ef6/entity-framework-multiple-diagrams-per-model-ef5-onwards.md)
+-   Setting up your model
+    -   [Which Workflow Should I Use](../ef6/entity-framework-development-workflows-video.md)
+    -   [Connections and Models](../ef6/entity-framework-connections-and-models.md)
+    -   [Performance Considerations](../ef6/performance-considerations-for-ef-4-5-and-6.md)
+    -   [Working with Microsoft SQL Azure](../ef6/entity-framework-windows-sql-azure.md)
+    -   [Entity Framework Power Tools](../ef6/entity-framework-power-tools.md)
+    -   [Configuration File Settings](../ef6/entity-framework-config-file-settings.md)
+    -   [Glossary](../ef6/entity-framework-glossary.md)
+    -   Code First
+        -   [Code First to a new database (walkthrough and video)](../ef6/entity-framework-code-first-to-a-new-database.md)
+        -   [Code First to an existing database (walkthrough and video)](../ef6/entity-framework-code-first-to-an-existing-database.md)
+        -   [Conventions](../ef6/entity-framework-code-first-conventions.md)
+        -   [Data Annotations](../ef6/entity-framework-code-first-data-annotations.md)
+        -   [Fluent API - Configuring/Mapping Properties & Types](../ef6/entity-framework-fluent-api-configuring-and-mapping-properties-and-types.md)
+        -   [Fluent API - Configuring Relationships](../ef6/entity-framework-fluent-api-relationships.md)
+        -   [Fluent API with VB.NET](../ef6/entity-framework-fluent-api-with-vb-net.md)
+        -   [Code First Migrations](../ef6/entity-framework-code-first-migrations.md)
+        -   [Automatic Code First Migrations](../ef6/entity-framework-automatic-code-first-migrations.md)
+        -   [Migrate.exe](../ef6/entity-framework-migrate-exe.md)
+        -   [Defining DbSets](../ef6/entity-framework-defining-dbsets.md)
+    -   EF Designer
+        -   [Model First (walkthrough and video)](../ef6/entity-framework-model-first.md)
+        -   [Database First (walkthrough and video)](../ef6/entity-framework-database-first.md)
+        -   [Complex Types](../ef6/entity-framework-complex-types-ef-designer.md)
+        -   [Associations/Relationships](../ef6/entity-framework-relationships-ef-designer.md)
+        -   [TPT Inheritance Pattern](../ef6/entity-framework-designer-tpt-inheritance.md)
+        -   [TPH Inheritance Pattern](../ef6/entity-framework-designer-tph-inheritance.md)
+        -   [Query with Stored Procedures](../ef6/entity-framework-designer-query-sprocs.md)
+        -   [Stored Procedures with Multiple Result Sets](../ef6/entity-framework-sprocs-with-multiple-result-sets.md)
+        -   [Insert, Update & Delete with Stored Procedures](../ef6/entity-framework-designer-cud-sprocs.md)
+        -   [Map an Entity to Multiple Tables (Entity Splitting)](../ef6/entity-framework-designer-entity-splitting.md)
+        -   [Map Multiple Entities to One Table (Table Splitting)](../ef6/entity-framework-designer-table-splitting.md)
+        -   [Defining Queries](../ef6/entity-framework-defining-query-ef-designer.md)
+        -   [Code Generation Templates](../ef6/entity-framework-designer-code-generation-templates.md)
+        -   [Reverting to ObjectContext](../ef6/reverting-to-objectcontext-in-entity-framework-designer.md)
+-   Using Your Model
+    -   [Working with DbContext](../ef6/entity-framework-working-with-dbcontext.md)
+    -   [Querying/Finding Entities](../ef6/entity-framework-querying-and-finding-entities.md)
+    -   [Working with Relationships](../ef6/entity-framework-relationships-and-navigation-properties.md)
+    -   [Loading Related Entities](../ef6/entity-framework-loading-related-entities.md)
+    -   [Working with Local Data](../ef6/entity-framework-local-data.md)
+    -   [N-Tier Applications](../ef6/entity-framework-n-tier.md)
+    -   [Raw SQL Queries](../ef6/entity-framework-raw-sql-queries.md)
+    -   [Optimistic Concurrency Patterns](../ef6/entity-framework-optimistic-concurrency-patterns.md)
+    -   [Working with Proxies](../ef6/entity-framework-working-with-proxies.md)
+    -   [Automatic Detect Changes](../ef6/entity-framework-automatic-detect-changes.md)
+    -   [No-Tracking Queries](../ef6/entity-framework-no-tracking-queries.md)
+    -   [The Load Method](../ef6/entity-framework-the-load-method.md)
+    -   [Add/Attach and Entity States](../ef6/entity-framework-add-and-attach-and-entity-states.md)
+    -   [Working with Property Values](../ef6/entity-framework-working-with-property-values.md)
+    -   [API Documentation](https://msdn.microsoft.com/library/hh289362)
+    -   [Data Binding with WPF (Windows Presentation Foundation)](../ef6/entity-framework-databinding-with-wpf.md)
+    -   [Data Binding with WinForms (Windows Forms)](../ef6/entity-framework-databinding-with-winforms.md)
+
 ### EF 4.3.1
-This patch release included some bug fixes to the EF 4.3 release and introduced better LocalDb support for folks using EF 4.3 with Visual Studio 2012.
+The EF 4.3.1 runtime was released to NuGet in February 2012 shortly after EF 4.3.0. This patch release included some bug fixes to the EF 4.3 release and introduced better LocalDB support for customers using EF 4.3 with Visual Studio 2012.
+
+Here is a list of content we put together specifically for the EF 4.3.1 release, most of the content provided for EF 4.1 still applies to EF 4.3 as well.
+
+-   [EF 4.3.1 Release Blog  Post](http://blogs.msdn.com/b/adonet/archive/2012/02/29/ef4-3-1-and-ef5-beta-1-available-on-nuget.aspx)
 
 ### EF 4.3
-The EF 4.3 release included the new Code First Migrations feature that allows a database created by Code First to be incrementally changed as your Code First model evolves.
+The EF 4.3.0 runtime was released to NuGet in February of 2012. This release included the new Code First Migrations feature that allows a database created by Code First to be incrementally changed as your Code First model evolves.
+
+Here is a list of content we put together specifically for the EF 4.3 release, most of the content provided for EF 4.1 still applies to EF 4.3 as well:
+-   [EF 4.3 Release Post](http://blogs.msdn.com/b/adonet/archive/2012/02/09/ef-4-3-released.aspx)
+-   [EF 4.3 Code-Based Migrations Walkthrough](http://blogs.msdn.com/b/adonet/archive/2012/02/09/ef-4-3-code-based-migrations-walkthrough.aspx)
+-   [EF 4.3 Automatic Migrations Walkthrough](http://blogs.msdn.com/b/adonet/archive/2012/02/09/ef-4-3-automatic-migrations-walkthrough.aspx)
 
 ### EF 4.2
+The EF 4.2.0 runtime was released to NuGet in November of 2011. This release includes bug fixes to the EF 4.1.1 release. Because this release only included bug fixes it could have been the EF 4.1.2 patch release but we opted to move to 4.2 to allow us to move away from the date based patch version numbers we used in the 4.1.x releases and adopt the [Semantic Versionsing](https://semver.org) standard for semantic versioning.
 
-This release includes bug fixes to the EF 4.1.1 release. Because this release only included bug fixes it could have been the EF 4.1.2 patch release but we opted to move to 4.2 to allow us to move away from the date based patch version numbers we used in the 4.1.x releases and adopt the [http://semver.org](http://semver.org) standard for semantic versioning.
+Here is a list of content we put together specifically for the EF 4.2 release, the content provided for EF 4.1 still applies to EF 4.2 as well.
+
+-   [EF 4.2 Release Post](http://blogs.msdn.com/b/adonet/archive/2011/11/01/ef-4-2-released.aspx)
+-   [Code First Walkthrough](http://blogs.msdn.com/b/adonet/archive/2011/09/28/ef-4-2-code-first-walkthrough.aspx)
+-   [Model & Database First Walkthrough](http://blogs.msdn.com/b/adonet/archive/2011/09/28/ef-4-2-model-amp-database-first-walkthrough.aspx)
 
 ### EF 4.1.1
-In addition to bug fixes this patch release introduced some components to make it easier for design time tooling to work with a Code First model. These components are used by Code First Migrations (included in EF 4.3) and the EF Power Tools.
+The EF 4.1.10715 runtime was released to NuGet in July of 2011. In addition to bug fixes this patch release introduced some components to make it easier for design time tooling to work with a Code First model. These components are used by Code First Migrations (included in EF 4.3) and the EF Power Tools.
 
-Note the NuGet package for this release has the version number 4.1.10715. We used to use date based patch versions before we decided to adopt the [http://semver.org](http://semver.org) standard for semantic versioning.
+You’ll notice that the strange version number 4.1.10715 of the package. We used to use date based patch versions before we decided to adopt [Semantic Versioning](https://semver.org). Think of this version as EF 4.1 patch 1 (i.e. 4.1.1).
+
+Here is a list of content we put together for the 4.1.1 release:
+
+-   [EF 4.1.1 Release Post](http://blogs.msdn.com/b/adonet/archive/2011/07/25/ef-4-1-update-1-released.aspx)
 
 ### EF 4.1
-The EF 4.1 release was the first to be published on NuGet. This release included the simplified DbContext API and the Code First workflow.
+The EF 4.1.10331 runtime was the first to be published on NuGet, in April of 2011. This release included the simplified DbContext API and the Code First workflow.
 
-Note the NuGet package for this release has the version number 4.1.10331. We used to use date based patch versions before we decided to adopt the [http://semver.org](http://semver.org) standard for semantic versioning.
+You will notice the strange version number, 4.1.10331, which should really have been 4.1. In addition there is a 4.1.10311 version which should have been 4.1.0-rc (the ‘rc’ stands for ‘release candidate’). We used to use date based patch versions before we decided to adopt [Semantic Versioning](https://semver.org).
+
+Here is a list of content we put together for the 4.1 release. Much of it still applies to later releases of Entity Framework:
+
+-   [EF 4.1 Release Post](http://blogs.msdn.com/b/adonet/archive/2011/04/11/ef-4-1-released.aspx)
+-   [Code First Walkthrough](http://blogs.msdn.com/b/adonet/archive/2011/03/15/ef-4-1-code-first-walkthrough.aspx)
+-   [Model & Database First Walkthrough](http://blogs.msdn.com/b/adonet/archive/2011/03/15/ef-4-1-model-amp-database-first-walkthrough.aspx)
+-   [SQL Azure Federations and the Entity Framework](http://blogs.msdn.com/b/adonet/archive/2012/01/10/sql-azure-federations-and-the-entity-framework.aspx)
 
 ### EF 4.0
-This release was included in .NET Framework 4 and Visual Studio 2010. New features in this release included POCO support, lazy loading, testability improvements, customizable code generation and the Model First workflow.
+This release was included in .NET Framework 4 and Visual Studio 2010, in April of 2010. Important new features in this release included POCO support, lazy loading, testability improvements, customizable code generation and the Model First workflow.
 
-Although it was the second release of Entity Framework it was named EF 4 to align with the .NET Framework version that it shipped with. After this release we started making Entity Framework available on NuGet and adopted semantic versioning since we were no longer tied to the .NET Framework Version.
+Although it was the second release of Entity Framework, it was named EF 4 to align with the .NET Framework version that it shipped with. After this release, we started making Entity Framework available on NuGet and adopted semantic versioning since we were no longer tied to the .NET Framework Version.
+
+Note that some subsequent versions of .NET Framework have shipped with significant updates to the included EF bits. In fact, many of the new features of EF 5.0 were implemented as improvements on these bits. However, in order to rationalize the versioning story for EF, we continue to refer to the EF bits that are part of the .NET Framework as the EF 4.0 runtime, while all newer versions consist of the [EntityFramework NuGet Package](https://www.nuget.org/packages/EntityFramework/).         
+
+Here are some links to content we created for this release:
+
+-   [Entity Framework 4.0 MSDN Content](https://msdn.microsoft.com/library/bb399572(v=vs.100).aspx)
+-   [Entity Framework 4.0 Sample Applications](https://msdn.microsoft.com/library/bb738547.aspx)
 
 ### EF 3.5
-The initial release of Entity Framework was included in .NET 3.5 SP1 and Visual Studio 2008 SP1. This release provided basic O/RM support using the Database First workflow.
+The initial version of Entity Framework was included in .NET 3.5 SP1 and Visual Studio 2008 SP1, released in August of 2008. This release provided basic O/RM support using the Database First workflow.
+
+Here are some links to get you started:
+
+-   [Entity Framework 3.5 MSDN Content](https://msdn.microsoft.com/library/bb399572(v=vs.90).aspx)
+-   [Introducing Entity Framework](https://msdn.microsoft.com/data/bb399567)

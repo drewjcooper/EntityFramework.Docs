@@ -186,7 +186,7 @@ Typically when you are targeting an existing database it will already be created
 The database server that is installed with Visual Studio is different depending on the version of Visual Studio you have installed:
 
 -   If you are using Visual Studio 2010 you'll be creating a SQL Express database.
--   If you are using Visual Studio 2012 then you'll be creating a [LocalDb](https://msdn.microsoft.com/library/hh510202.aspx) database.
+-   If you are using Visual Studio 2012 then you'll be creating a [LocalDB](https://msdn.microsoft.com/library/hh510202.aspx) database.
 
  
 
@@ -198,9 +198,9 @@ Let's go ahead and generate the database.
 
     ![ChangeDataSource](../ef6/media/changedatasource.png)
 
--   Connect to either LocalDb (**(localdb)\\v11.0**) or SQL Express (**.\\SQLEXPRESS**), depending on which one you have installed, and enter **Products** as the database name
+-   Connect to either LocalDB or SQL Express, depending on which one you have installed, and enter **Products** as the database name
 
-    ![AddConnectionLocalDb](../ef6/media/addconnectionlocaldb.png)
+    ![AddConnectionLocalDB](../ef6/media/addconnectionlocaldb.png)
 
     ![AddConnectionExpress](../ef6/media/addconnectionexpress.png)
 

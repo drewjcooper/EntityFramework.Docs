@@ -13,9 +13,5 @@ caps.latest.revision: 3
 # 🔧 Database Initializers
 
 > [!NOTE]
-> This topic hasn't been written yet! You can track the status of this [issue][1] through our public GitHub issue
-> tracker. Learn how you can [contribute][2] on GitHub.
-
-
-  [1]: https://github.com/aspnet/EntityFramework.Docs/issues/622
-  [2]: https://github.com/aspnet/EntityFramework.Docs/blob/master/CONTRIBUTING.md
+> This topic hasn't been written yet! You can track the status of this [issue](https://github.com/aspnet/EntityFramework.Docs/issues/622) through our public GitHub issue
+> tracker. Learn how you can [contribute](https://github.com/aspnet/EntityFramework.Docs/blob/master/CONTRIBUTING.md) on GitHub.

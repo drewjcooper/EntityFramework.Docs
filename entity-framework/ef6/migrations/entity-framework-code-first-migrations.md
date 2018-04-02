@@ -5,8 +5,6 @@ ms.date: "2016-10-23"
 ms.prod: "entity-framework"
 ms.author: divega
 ms.manager: avickers
-
-
 ms.technology: entity-framework-6
 ms.topic: "article"
 ms.assetid: 36591d8f-36e1-4835-8a51-90f34f633d1e
@@ -25,72 +23,62 @@ Before we start using migrations we need a project and a Code First model to wor
     -   Run the **Install-Package EntityFramework** command
 -   Add a **Model.cs** file with the code shown below. This code defines a single **Blog** class that makes up our domain model and a **BlogContext** class that is our EF Code First context
 
-```
-    using System.Data.Entity;
-    using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-    using System.Data.Entity.Infrastructure;
+  ``` csharp
+      using System.Data.Entity;
+      using System.Collections.Generic;
+      using System.ComponentModel.DataAnnotations;
+      using System.Data.Entity.Infrastructure;
 
-    namespace MigrationsDemo
-    {
-        public class BlogContext : DbContext
-        {
-            public DbSet<Blog> Blogs { get; set; }
-        }
+      namespace MigrationsDemo
+      {
+          public class BlogContext : DbContext
+          {
+              public DbSet<Blog> Blogs { get; set; }
+          }
 
-        public class Blog
-        {
-            public int BlogId { get; set; }
-            public string Name { get; set; }
-        }
-    }
-```
+          public class Blog
+          {
+              public int BlogId { get; set; }
+              public string Name { get; set; }
+          }
+      }
+  ```
 
 -   Now that we have a model it’s time to use it to perform data access. Update the **Program.cs** file with the code shown below.
 
-```
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
+  ``` csharp
+      using System;
+      using System.Collections.Generic;
+      using System.Linq;
+      using System.Text;
 
-    namespace MigrationsDemo
-    {
-        class Program
-        {
-            static void Main(string[] args)
-            {
-                using (var db = new BlogContext())
-                {
-                    db.Blogs.Add(new Blog { Name = "Another Blog " });
-                    db.SaveChanges();
+      namespace MigrationsDemo
+      {
+          class Program
+          {
+              static void Main(string[] args)
+              {
+                  using (var db = new BlogContext())
+                  {
+                      db.Blogs.Add(new Blog { Name = "Another Blog " });
+                      db.SaveChanges();
 
-                    foreach (var blog in db.Blogs)
-                    {
-                        Console.WriteLine(blog.Name);
-                    }
-                }
+                      foreach (var blog in db.Blogs)
+                      {
+                          Console.WriteLine(blog.Name);
+                      }
+                  }
 
-                Console.WriteLine("Press any key to exit...");
-                Console.ReadKey();
-            }
-        }
-    }
-```
+                  Console.WriteLine("Press any key to exit...");
+                  Console.ReadKey();
+              }
+          }
+      }
+  ```
 
 -   Run your application and you will see that a **MigrationsCodeDemo.BlogContext** database is created for you.
-    *If SQL Express is installed (included in Visual Studio 2010) then the database is created on your local SQL Express instance (**.\\SQLEXPRESS**). If SQL Express is not installed then Code First will try and use LocalDb (**(localdb)\\v11.0**) - LocalDb is included with Visual Studio 2012.
-    **Note:** SQL Express will always get precedence if it is installed, even if you are using Visual Studio 2012*
 
-    ![DatabaseLocalDb](../ef6/media/databaselocaldb.png)
-
-    (LocaDb Database)
-
-    ![DatabaseExpress](../ef6/media/databaseexpress.png)
-
-    (SQL Express Database)
-
- 
+    ![DatabaseLocalDB](../../ef6/media/databaselocaldb.png)
 
 ## Enabling Migrations
 
@@ -98,17 +86,17 @@ It’s time to make some more changes to our model.
 
 -   Let’s introduce a Url property to the Blog class.
 
-```
+``` csharp
     public string Url { get; set; }
 ```
 
-If you were to run the application again you would get an InvalidOperationException stating *The model backing the 'BlogContext' context has changed since the database was created. Consider using Code First Migrations to update the database.*
+If you were to run the application again you would get an InvalidOperationException stating *The model backing the 'BlogContext' context has changed since the database was created. Consider using Code First Migrations to update the database (* [*http://go.microsoft.com/fwlink/?LinkId=238269*](http://go.microsoft.com/fwlink/?LinkId=238269)*).*
 
 As the exception suggests, it’s time to start using Code First Migrations. The first step is to enable migrations for our context.
 
 -   Run the **Enable-Migrations** command in Package Manager Console
 
-This command has added a **Migrations** folder to our project, this new folder contains two files:
+    This command has added a **Migrations** folder to our project. This new folder contains two files:
 
 -   **The Configuration class.** This class allows you to configure how Migrations behaves for your context. For this walkthrough we will just use the default configuration.
     *Because there is just a single Code First context in your project, Enable-Migrations has automatically filled in the context type this configuration applies to.*
@@ -120,8 +108,6 @@ This command has added a **Migrations** folder to our project, this new folder c
 When using versions prior to EF6, only one Code First model could be used to generate/manage the schema of a database. This is the result of a single **\_\_MigrationsHistory** table per database with no way to identify which entries belong to which model.
 
 Starting with EF6, the **Configuration** class includes a **ContextKey** property. This acts as a unique identifier for each Code First model. A corresponding column in the **\_\_MigrationsHistory** table allows entries from multiple models to share the table. By default, this property is set to the fully qualified name of your context.
-
- 
 
 ## Generating & Running Migrations
 
@@ -135,7 +121,7 @@ We need to scaffold a migration to take care of the new Url property we have add
 -   Run the **Add-Migration AddBlogUrl** command in Package Manager Console
 -   In the **Migrations** folder we now have a new **AddBlogUrl** migration. The migration filename is pre-fixed with a timestamp to help with ordering
 
-```
+``` csharp
     namespace MigrationsDemo.Migrations
     {
         using System;
@@ -163,21 +149,19 @@ We could now edit or add to this migration but everything looks pretty good. Let
 
 The **MigrationsDemo.BlogContext** database is now updated to include the **Url** column in the **Blogs** table.
 
- 
-
 ## Customizing Migrations
 
 So far we’ve generated and run a migration without making any changes. Now let’s look at editing the code that gets generated by default.
 
 -   It’s time to make some more changes to our model, let’s add a new **Rating** property to the **Blog** class
 
-```
+``` csharp
     public int Rating { get; set; }
 ```
 
 -   Let's also add a new **Post** class
 
-```
+``` csharp
     public class Post
     {
         public int PostId { get; set; }
@@ -207,7 +191,7 @@ Code First Migrations did a pretty good job of scaffolding these changes, but th
 2.  We’re also adding a non-nullable **Blogs.Rating** column. If there is any existing data in the table it will get assigned the CLR default of the data type for new column (Rating is integer, so that would be **0**). But we want to specify a default value of **3** so that existing rows in the **Blogs** table will start with a decent rating.
     (You can see the default value specified on line 24 of the code below)
 
-```
+``` csharp
     namespace MigrationsDemo.Migrations
     {
         using System;
@@ -250,15 +234,13 @@ Our edited migration is ready to go, so let’s use **Update-Database** to bring
 
 -   Run the **Update-Database –Verbose** command in Package Manager Console.
 
- 
-
 ## Data Motion / Custom SQL
 
 So far we have looked at migration operations that don’t change or move any data, now let’s look at something that needs to move some data around. There is no native support for data motion yet, but we can run some arbitrary SQL commands at any point in our script.
 
 -   Let’s add a **Post.Abstract** property to our model. Later, we’re going to pre-populate the **Abstract** for existing posts using some text from the start of the **Content** column.
 
-```
+``` csharp
     public string Abstract { get; set; }
 ```
 
@@ -268,7 +250,7 @@ We'll use the **Add-Migration** command to let Code First Migrations scaffold it
 -   The generated migration takes care of the schema changes but we also want to pre-populate the **Abstract** column using the first 100 characters of content for each post. We can do this by dropping down to SQL and running an **UPDATE** statement after the column is added.
     (Adding in line 12 in the code below)
 
-```
+``` csharp
     namespace MigrationsDemo.Migrations
     {
         using System;
@@ -291,11 +273,9 @@ We'll use the **Add-Migration** command to let Code First Migrations scaffold it
     }
 ```
 
-Our edited migration looks good, so let’s use **Update-Database** to bring the database up-to-date. We’ll specify the **–Verbose** flag so that we can see the SQL being run against the database.
+Our edited migration is looking good, so let’s use **Update-Database** to bring the database up-to-date. We’ll specify the **–Verbose** flag so that we can see the SQL being run against the database.
 
 -   Run the **Update-Database –Verbose** command in Package Manager Console.
-
- 
 
 ## Migrate to a Specific Version (Including Downgrade)
 
@@ -308,8 +288,6 @@ Let’s say we want to migrate our database to the state it was in after running
 This command will run the Down script for our **AddBlogAbstract** and **AddPostClass** migrations.
 
 If you want to roll all the way back to an empty database then you can use the **Update-Database –TargetMigration: $InitialDatabase** command.
-
- 
 
 ## Getting a SQL Script
 
@@ -325,8 +303,6 @@ Code First Migrations will run the migration pipeline but instead of actually ap
 
 Starting with EF6, if you specify **–SourceMigration $InitialDatabase** then the generated script will be ‘idempotent’. Idempotent scripts can upgrade a database currently at any version to the latest version (or the specified version if you use **–TargetMigration**). The generated script includes logic to check the **\_\_MigrationsHistory** table and only apply changes that haven't been previously applied.
 
- 
-
 ## Automatically Upgrading on Application Startup (MigrateDatabaseToLatestVersion Initializer)
 
 If you are deploying your application you may want it to automatically upgrade the database (by applying any pending migrations) when the application launches. You can do this by registering the **MigrateDatabaseToLatestVersion** database initializer. A database initializer simply contains some logic that is used to make sure the database is setup correctly. This logic is run the first time the context is used within the application process (**AppDomain**).
@@ -335,7 +311,7 @@ We can update the **Program.cs** file, as shown below, to set the **MigrateDatab
 
 *When we create an instance of this initializer we need to specify the context type (**BlogContext**) and the migrations configuration (**Configuration**) - the migrations configuration is the class that got added to our **Migrations** folder when we enabled Migrations.*
 
-```
+``` csharp
     using System;
     using System.Collections.Generic;
     using System.Linq;

@@ -5,8 +5,6 @@ ms.date: "2016-10-23"
 ms.prod: "entity-framework"
 ms.author: divega
 ms.manager: avickers
-
-
 ms.technology: entity-framework-6
 ms.topic: "article"
 ms.assetid: f019c97b-87b0-4e93-98f4-2c539f77b2dc
@@ -23,20 +21,23 @@ TVF support was introduced in Entity Framework version 5. Note that to use the n
 
 TVFs are very similar to stored procedures with one key difference: the result of a TVF is composable. That means the results from a TVF can be used in a LINQ query while the results of a stored procedure cannot.
 
-[See the video that accompanies this step-by-step walkthrough.](../ef6/entity-framework-table-valued-functions-tvfs-ef5-onwards-video.md)
- 
+## Watch the video
+
+**Presented By**: Julia Kornich
+
+[WMV](http://download.microsoft.com/download/6/0/A/60A6E474-5EF3-4E1E-B9EA-F51D2DDB446A/HDI-ITPro-MSDN-winvideo-tvf.wmv) | [MP4](http://download.microsoft.com/download/6/0/A/60A6E474-5EF3-4E1E-B9EA-F51D2DDB446A/HDI-ITPro-MSDN-mp4video-tvf.m4v) | [WMV (ZIP)](http://download.microsoft.com/download/6/0/A/60A6E474-5EF3-4E1E-B9EA-F51D2DDB446A/HDI-ITPro-MSDN-winvideo-tvf.zip)
 
 ## Pre-Requisites
 
-To complete this walkthrough, you must install the [School database](../ef6/entity-framework-school-database.md).
+To complete this walkthrough, you need to:
 
-You will need to have Visual Studio 2012, Ultimate, Premium, Professional, or Web Express edition installed to complete this walkthrough.
+- Install the [School database](../../ef6/get-started/entity-framework-school-database.md#school-sample-database).
 
- 
+- Have a recent version of Visual Studio
 
 ## Set up the Project
 
-1.  Open Visual Studio 2012
+1.  Open Visual Studio
 2.  On the **File** menu, point to **New**, and then click **Project**
 3.  In the left pane, click **Visual C\#**, and then select the **Console** template
 4.  Enter **TVF** as the name of the project and click **OK**
@@ -44,14 +45,14 @@ You will need to have Visual Studio 2012, Ultimate, Premium, Professional, or We
 ## Add a TVF to the Database
 
 -   Select **View -&gt; SQL Server Object Explorer**
--   If **(localdb)\\v11.0** is not in the list of servers:
+-   If LocalDB is not in the list of servers:
     Right-click on **SQL Server** and select **Add SQL Server**
-    Use the default **Windows Authentication** to connect to the **(localdb)\\v11.0** server
--   Expand **(localdb)\\v11.0**
+    Use the default **Windows Authentication** to connect to the LocalDB server
+-   Expand the LocalDB node
 -   Under the Databases node, right-click the School database node and select **New Query…**
 -   In T-SQL Editor, paste the following TVF definition
 
-```
+``` SQL
 CREATE FUNCTION [dbo].[GetStudentGradesForCourse]
 
 (@CourseID INT)
@@ -79,7 +80,7 @@ RETURN
 3.  Enter **TVFModel.edmx** for the file name, and then click **Add**
 4.  In the Choose Model Contents dialog box, select **Generate from database**, and then click **Next**
 5.  Click **New Connection**
-    Enter **(localdb)\\v11.0** in the Server name text box
+    Enter **(localdb)\\mssqllocaldb** in the Server name text box
     Enter **School** for the database name
     Click **OK**
 6.  In the Choose Your Database Objects dialog box, under the **Tables** node, select the **Person**, **StudentGrade**, and **Course** tables
@@ -98,7 +99,7 @@ Open the file where the Main method is defined. Add the following code into the 
 
 The following code demonstrates how to build a query that uses a Table-valued Function. The query projects the results into an anonymous type that contains the related Course title and related students with a grade greater or equal to 3.5.
 
-```
+``` csharp
 using (var context = new SchoolEntities())
 {
     var CourseID = 4022;

@@ -20,7 +20,7 @@ This video and step-by-step walkthrough provide an introduction to Database Firs
 
 ## Pre-Requisites
 
-You will need to have Visual Studio 2010 or Visual Studio 2012 installed to complete this walkthrough.
+You will need to have at least Visual Studio 2010 or Visual Studio 2012 installed to complete this walkthrough.
 
 If you are using Visual Studio 2010, you will also need to have [NuGet](http://visualstudiogallery.msdn.microsoft.com/27077b70-9dad-4c64-adcf-c7cf6bc9970c) installed.
 
@@ -33,7 +33,7 @@ Typically when you are targeting an existing database it will already be created
 The database server that is installed with Visual Studio is different depending on the version of Visual Studio you have installed:
 
 -   If you are using Visual Studio 2010 you'll be creating a SQL Express database.
--   If you are using Visual Studio 2012 then you'll be creating a [LocalDb](https://msdn.microsoft.com/library/hh510202(v=sql.110).aspx) database.
+-   If you are using Visual Studio 2012 then you'll be creating a [LocalDB](https://msdn.microsoft.com/library/hh510202(v=sql.110).aspx) database.
 
  
 
@@ -46,11 +46,11 @@ Let's go ahead and generate the database.
 
     ![SelectDataSource](../ef6/media/selectdatasource.png)
 
--   Connect to either LocalDb (**(localdb)\\v11.0**) or SQL Express (**.\\SQLEXPRESS**), depending on which one you have installed, and enter **DatabaseFirst.Blogging** as the database name
+-   Connect to either LocalDB or SQL Express, depending on which one you have installed, and enter **DatabaseFirst.Blogging** as the database name
 
     ![SqlExpressConnectionDF](../ef6/media/sqlexpressconnectiondf.png)
 
-    ![LocalDbConnectionDF](../ef6/media/localdbconnectiondf.png)
+    ![LocalDBConnectionDF](../ef6/media/localdbconnectiondf.png)
 
 -   Select **OK** and you will be asked if you want to create a new database, select **Yes**
 

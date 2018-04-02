@@ -21,15 +21,14 @@ The following image shows the main windows that are used when working with the E
 
 ![EFDesigner](../ef6/media/efdesigner.png)
 
- 
-
 ## Prerequisites
 
-Visual Studio 2012 or Visual Studio 2010, Ultimate, Premium, Professional, or Web Express edition.
+To complete this walkthrough, you will need:
 
-To complete this walkthrough, you must install the [School database](../ef6/entity-framework-school-database.md).
+- A recent version of Visual Studio.
+- The School sample Database
 
- 
+See the section on [Walkthrough Prerequisites](../../../ef6/get-started/entity-framework-school-database.md) for more details.
 
 ## Set up the Project
 
@@ -48,7 +47,7 @@ This walkthrough is using Visual Studio 2012.
 -   Select **Data** from the left menu and then select **ADO.NET Entity Data Model** in the Templates pane.
 -   Enter **TableSplittingModel.edmx** for the file name, and then click **Add**.
 -   In the Choose Model Contents dialog box, select **Generate from database**, and then click **Next.**
--   Click New Connection. In the Connection Properties dialog box, enter the server name (in this case **(localdb)\\v11.0**), select the authentication method, type **School** for the database name, and then click **OK**.
+-   Click New Connection. In the Connection Properties dialog box, enter the server name (for example, **(localdb)\\mssqllocaldb**), select the authentication method, type **School** for the database name, and then click **OK**.
     The Choose Your Data Connection dialog box is updated with your database connection setting.
 -   In the Choose Your Database Objects dialog box, unfold the **Tables** node and check the **Person** table. This will add the specified table to the **School** model.
 -   Click **Finish**.
@@ -95,7 +94,7 @@ The next step requires the **Mapping Details** window. If you cannot see this 
 
 -   Paste the following code in the Main method.
 
-```
+``` csharp
     using (var context = new SchoolEntities())
     {
         Person person = new Person()
@@ -128,9 +127,6 @@ The next step requires the **Mapping Details** window. If you cannot see this 
             existingPerson.LastName, hireInfo.HireDate);
     }
 ```
-
- 
-
 -   Compile and run the application.
 
 The following T-SQL statements were executed against the **School** database as a result of running this application. 

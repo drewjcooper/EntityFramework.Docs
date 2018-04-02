@@ -132,9 +132,9 @@ Note, that if you make any changes to your model after the database has been cre
 To view the database and data, do the following:
 
 1.  In the Visual Studio 2012 main menu, select **View** -&gt; **SQL Server Object Explorer**.
-2.  If **(localdb)\\v11.0** is not in the list of servers, click the right mouse button on **SQL Server** and select **Add SQL Server**
-    Use the default **Windows Authentication** to connect to the **(localdb)\\v11.0** server
-3.  Expand **(localdb)\\v11.0**
+2.  If LocalDB is not in the list of servers, click the right mouse button on **SQL Server** and select **Add SQL Server**
+    Use the default **Windows Authentication** to connect to the LocalDB instance
+3.  Expand the LocalDB node
 4.  Unfold the **Databases** folder to see the new database and browse to the **Department** table
     Note, that Code First does not create a table that maps to the enumeration type
 5.  To view data, right-click on the table and select **View Data**

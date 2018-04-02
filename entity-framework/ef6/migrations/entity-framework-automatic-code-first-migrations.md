@@ -21,8 +21,6 @@ Automatic Migrations allows you to use Code First Migrations without having a co
 
 You can intersperse automatic and code-based migrations but this is not recommended in team development scenarios. If you are part of a team of developers that use source control you should either use purely automatic migrations or purely code-based migrations. Given the limitations of automatic migrations we recommend using code-based migrations in team environments.
 
- 
-
 ## Building an Initial Model & Database
 
 Before we start using migrations we need a project and a Code First model to work with. For this walkthrough we are going to use the canonical **Blog** and **Post** model.
@@ -33,75 +31,70 @@ Before we start using migrations we need a project and a Code First model to wor
     -   Run the **Install-Package EntityFramework** command
 -   Add a **Model.cs** file with the code shown below. This code defines a single **Blog** class that makes up our domain model and a **BlogContext** class that is our EF Code First context
 
-```
-    using System.Data.Entity;
-    using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-    using System.Data.Entity.Infrastructure;
+  ``` csharp
+      using System.Data.Entity;
+      using System.Collections.Generic;
+      using System.ComponentModel.DataAnnotations;
+      using System.Data.Entity.Infrastructure;
 
-    namespace MigrationsAutomaticDemo
-    {
-        public class BlogContext : DbContext
-        {
-            public DbSet<Blog> Blogs { get; set; }
-        }
+      namespace MigrationsAutomaticDemo
+      {
+          public class BlogContext : DbContext
+          {
+              public DbSet<Blog> Blogs { get; set; }
+          }
 
-        public class Blog
-        {
-            public int BlogId { get; set; }
-            public string Name { get; set; }
-        }
-    }
-```
+          public class Blog
+          {
+              public int BlogId { get; set; }
+              public string Name { get; set; }
+          }
+      }
+  ```
 
 -   Now that we have a model it’s time to use it to perform data access. Update the **Program.cs** file with the code shown below.
 
-```
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
+  ``` csharp
+      using System;
+      using System.Collections.Generic;
+      using System.Linq;
+      using System.Text;
 
-    namespace MigrationsAutomaticDemo
-    {
-        class Program
-        {
-            static void Main(string[] args)
-            {
-                using (var db = new BlogContext())
-                {
-                    db.Blogs.Add(new Blog { Name = "Another Blog " });
-                    db.SaveChanges();
+      namespace MigrationsAutomaticDemo
+      {
+          class Program
+          {
+              static void Main(string[] args)
+              {
+                  using (var db = new BlogContext())
+                  {
+                      db.Blogs.Add(new Blog { Name = "Another Blog " });
+                      db.SaveChanges();
 
-                    foreach (var blog in db.Blogs)
-                    {
-                        Console.WriteLine(blog.Name);
-                    }
-                }
-            }
-        }
-    }
-```
+                      foreach (var blog in db.Blogs)
+                      {
+                          Console.WriteLine(blog.Name);
+                      }
+                  }
+
+                  Console.WriteLine("Press any key to exit...");
+                  Console.ReadKey();
+              }
+          }
+      }
+  ```
 
 -   Run your application and you will see that a **MigrationsAutomaticCodeDemo.BlogContext** database is created for you.
-    *If SQL Express is installed (included in Visual Studio 2010) then the database is created on your local SQL Express instance (**.\\SQLEXPRESS**). If SQL Express is not installed then Code First will try and use LocalDb (**(localdb)\\v11.0**) - LocalDb is included with Visual Studio 2012.
-    **Note:** SQL Express will always get precedence if it is installed, even if you are using Visual Studio 2012*
 
-    ![DatabaseLocalDb](../ef6/media/databaselocaldb.png)
-
-    (LocalDb Database)
-
-    ![DatabaseExpress](../ef6/media/databaseexpress.png)
-
-    (SQL Express Database)
-
- 
+    ![DatabaseLocalDB](../../ef6/media/databaselocaldb.png)
 
 ## Enabling Migrations
 
-It’s time to make some more changes to our model, let’s introduce a Url property to the Blog class.
+It’s time to make some more changes to our model.
 
-```
+-   Let’s introduce a Url property to the Blog class.
+
+``` csharp
     public string Url { get; set; }
 ```
 
@@ -110,23 +103,25 @@ If you were to run the application again you would get an InvalidOperationExcept
 As the exception suggests, it’s time to start using Code First Migrations. Because we want to use automatic migrations we’re going to specify the **–EnableAutomaticMigrations** switch.
 
 -   Run the **Enable-Migrations –EnableAutomaticMigrations** command in Package Manager Console
-    This command has added a **Migrations** folder to our project. This new folder contains a **Configuration** class. This class allows you to configure how Migrations behaves for your context. For this walkthrough we will just use the default configuration.
+    This command has added a **Migrations** folder to our project. This new folder contains one file:
+
+-   **The Configuration class.** This class allows you to configure how Migrations behaves for your context. For this walkthrough we will just use the default configuration.
     *Because there is just a single Code First context in your project, Enable-Migrations has automatically filled in the context type this configuration applies to.*
 
  
 
 ## Your First Automatic Migration
 
-Code First Migrations has two commands that you are going to become familiar with.
+Code First Migrations has two primary commands that you are going to become familiar with.
 
--   **Add-Migration** will scaffold the next migration based on changes you have made to your model.
--   **Update-Database** will apply any pending changes to the database.
+-   **Add-Migration** will scaffold the next migration based on changes you have made to your model since the last migration was created
+-   **Update-Database** will apply any pending migrations to the database
 
 We are going to avoid using Add-Migration (unless we really need to) and focus on letting Code First Migrations automatically calculate and apply the changes. Let’s use **Update-Database** to get Code First Migrations to push the changes to our model (the new **Blog.Ur**l property) to the database.
 
 -   Run the **Update-Database** command in Package Manager Console.
 
-Code First Migrations has now updated the **MigrationsAutomaticDemo.BlogContext** database to include the **Url** column in the **Blogs** table.
+The **MigrationsAutomaticDemo.BlogContext** database is now updated to include the **Url** column in the **Blogs** table.
 
  
 
@@ -134,9 +129,9 @@ Code First Migrations has now updated the **MigrationsAutomaticDemo.BlogContext*
 
 Let’s make another change and let Code First Migrations automatically push the changes to the database for us.
 
--   Let’s introduce a new **Post** class.
+-   Let's also add a new **Post** class
 
-```
+``` csharp
     public class Post
     {
         public int PostId { get; set; }
@@ -151,7 +146,7 @@ Let’s make another change and let Code First Migrations automatically push the
 
 -   We'll also add a **Posts** collection to the **Blog** class to form the other end of the relationship between **Blog** and **Post**
 
-```
+``` csharp
     public virtual List<Post> Posts { get; set; }
 ```
 
@@ -159,15 +154,13 @@ Now use **Update-Database** to bring the database up-to-date. This time let’s 
 
 -   Run the **Update-Database –Verbose** command in Package Manager Console.
 
- 
-
 ## Adding a Code Based Migration
 
 Now let’s look at something we might want to use a code-based migration for.
 
 -   Let’s add a **Rating** property to the **Blog** class
 
-```
+``` csharp
     public int Rating { get; set; }
 ```
 
@@ -179,7 +172,7 @@ Let’s use the Add-Migration command to write this change out to a code-based m
 
 *The migration also has a code-behind file that captures some metadata. This metadata will allow Code First Migrations to replicate the automatic migrations we performed before this code-based migration. This is important if another developer wants to run our migrations or when it’s time to deploy our application.*
 
-```
+``` csharp
     namespace MigrationsAutomaticDemo.Migrations
     {
         using System;
@@ -200,7 +193,7 @@ Let’s use the Add-Migration command to write this change out to a code-based m
     }
 ```
 
-Our edited migration is looking pretty good, so let’s use Update-Database to bring the database up-to-date.
+Our edited migration is looking good, so let’s use **Update-Database** to bring the database up-to-date.
 
 -   Run the **Update-Database** command in Package Manager Console.
 
@@ -210,15 +203,13 @@ We are now free to switch back to automatic migrations for our simpler changes. 
 
 -   Let’s add a Post.Abstract property to our model
 
-```
+``` csharp
     public string Abstract { get; set; }
 ```
 
 Now we can use **Update-Database** to get Code First Migrations to push this change to the database using an automatic migration.
 
 -   Run the **Update-Database** command in Package Manager Console.
-
- 
 
 ## Summary
 

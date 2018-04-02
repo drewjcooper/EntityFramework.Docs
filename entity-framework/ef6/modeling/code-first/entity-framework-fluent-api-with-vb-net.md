@@ -24,7 +24,7 @@ This page assumes you have a basic understanding of Code First. Check out the fo
 
 ## Pre-Requisites
 
-You will need to have Visual Studio 2010 or Visual Studio 2012 installed to complete this walkthrough.
+You will need to have at least Visual Studio 2010 or Visual Studio 2012 installed to complete this walkthrough.
 
 If you are using Visual Studio 2010, you will also need to have [NuGet](http://visualstudiogallery.msdn.microsoft.com/27077b70-9dad-4c64-adcf-c7cf6bc9970c) installed
 

@@ -25,21 +25,20 @@ This topic shows how to perform the following tasks.
 -   Add an Entity Type to the Model
 -   Map the Defining Query to the Entity Type
 
- 
-
 ## Prerequisites
 
-Visual Studio 2012 or Visual Studio 2010, Ultimate, Premium, Professional, or Web Express edition.
+To complete this walkthrough, you will need:
 
-To complete this walkthrough, you must install the [School database](../ef6/entity-framework-school-database.md).
+- A recent version of Visual Studio.
+- The School sample Database
 
- 
+See the section on [Walkthrough Prerequisites](../../../ef6/get-started/entity-framework-school-database.md) for more details.
 
 ## Set up the Project
 
-This walkthrough is using Visual Studio 2012.
+This walkthrough is using Visual Studio 2012 or newer.
 
--   Open Visual Studio 2012.
+-   Open Visual Studio.
 -   On the **File** menu, point to **New**, and then click **Project**.
 -   In the left pane, click **Visual C\#**, and then select the **Console Application** template.
 -   Enter **DefiningQuerySample** as the name of the project and click **OK**.
@@ -52,7 +51,7 @@ This walkthrough is using Visual Studio 2012.
 -   Select **Data** from the left menu and then select **ADO.NET Entity Data Model** in the Templates pane.
 -   Enter **DefiningQueryModel.edmx** for the file name, and then click **Add**.
 -   In the Choose Model Contents dialog box, select **Generate from database**, and then click **Next**.
--   Click New Connection. In the Connection Properties dialog box, enter the server name (in this case (localdb)\\v11.0), select the authentication method, type **School** for the database name, and then click **OK**.
+-   Click New Connection. In the Connection Properties dialog box, enter the server name (for example, **(localdb)\\mssqllocaldb**), select the authentication method, type **School** for the database name, and then click **OK**.
     The Choose Your Data Connection dialog box is updated with your database connection setting.
 -   In the Choose Your Database Objects dialog box, check the **Tables** node. This will add all the tables to the **School** model.
 -   Click **Finish**.

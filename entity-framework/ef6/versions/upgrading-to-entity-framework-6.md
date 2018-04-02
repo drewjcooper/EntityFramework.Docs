@@ -13,7 +13,7 @@ caps.latest.revision: 3
 
 # Upgrading to Entity Framework 6
 
-In previous versions of EF the code was split between core libraries (primarily System.Data.Entity.dll) shipped as part of the .NET Framework and out-of-band (OOB) libraries (primarily EntityFramework.dll) shipped in a NuGet package. EF6 takes the code from the core libraries and incorporates it into the OOB libraries. This was necessary in order to allow EF to be made open source. The consequence of this is that applications will need to be rebuilt against the moved types.
+In previous versions of EF the code was split between core libraries (primarily System.Data.Entity.dll) shipped as part of the .NET Framework and out-of-band (OOB) libraries (primarily EntityFramework.dll) shipped in a NuGet package. EF6 takes the code from the core libraries and incorporates it into the OOB libraries. This was necessary in order to allow EF to be made open source and for it to be able to evolve at a different pace from .NET Framework. The consequence of this is that applications will need to be rebuilt against the moved types.
 
 This should be straightforward for applications that make use of DbContext as shipped in EF 4.1 and later. A little more work is required for applications that make use of ObjectContext but it still isn’t hard to do.
 
@@ -65,7 +65,6 @@ The general rule for namespace changes is that any type in System.Data.* is move
 - System.Data.EntityException => System.Data.**Entity.Core.**EntityException  
 - System.Data.Objects.ObjectContext => System.Data.**Entity.Core.**Objects.ObjectContext  
 - System.Data.Objects.DataClasses.RelationshipManager => System.Data.**Entity.Core.**Objects.DataClasses.RelationshipManager  
-
 
 These types are in the *Core* namespaces because they are not used directly for most DbContext-based applications. Some types that were part of System.Data.Entity.dll are still used commonly and directly for DbContext-based applications and so have not been moved into the *Core* namespaces. These are:
 

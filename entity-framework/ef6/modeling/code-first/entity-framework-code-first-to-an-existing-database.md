@@ -37,9 +37,9 @@ Let's go ahead and generate the database.
 
     ![SelectDataSource](../ef6/media/selectdatasource.png)
 
--   Connect to your LocalDb instance (**(localdb)\\v11.0**), and enter **Blogging** as the database name
+-   Connect to your LocalDB instance, and enter **Blogging** as the database name
 
-    ![LocalDbConnection](../ef6/media/localdbconnection.png)
+    ![LocalDBConnection](../ef6/media/localdbconnection.png)
 
 -   Select **OK** and you will be asked if you want to create a new database, select **Yes**
 
@@ -110,11 +110,11 @@ Once the reverse engineer process completes a number of items will have been add
 
 An App.config file has been added to the project, this file contains the connection string to the existing database.
 
-```
+``` xml
 <connectionStrings>
   <add  
     name="BloggingContext"  
-    connectionString="data source=(localdb)\v11.0;initial catalog=Blogging;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework"  
+    connectionString="data source=(localdb)\mssqllocaldb;initial catalog=Blogging;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework"  
     providerName="System.Data.SqlClient" />
 </connectionStrings>
 ```

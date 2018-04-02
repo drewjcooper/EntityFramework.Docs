@@ -103,7 +103,7 @@ Now we can generate a database that is based on the model.
 1.  Right-click an empty space on the Entity Designer surface and select **Generate Database from Model**
 2.  The Choose Your Data Connection Dialog Box of the Generate Database Wizard is displayed
     Click the **New Connection** button
-    Specify **(localdb)\\v11.0** for the server name and **EnumTest** for the database and click **OK**
+    Specify **(localdb)\\mssqllocaldb** for the server name and **EnumTest** for the database and click **OK**
 3.  A dialog asking if you want to create a new database will pop up, click **Yes**.
 4.  Click **Next** and the Create Database Wizard generates data definition language (DDL) for creating a database
     The generated DDL is displayed in the Summary and Settings Dialog Box

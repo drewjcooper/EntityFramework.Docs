@@ -34,7 +34,7 @@ Following these guidelines allows EF to discover and use your configuration auto
 
 A class derived from DbConfiguration might look like this:  
 
-```
+``` csharp
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.SqlServer;
@@ -46,7 +46,7 @@ namespace MyNamespace
         public MyConfiguration()
         {
             SetExecutionStrategy("System.Data.SqlClient", () => new SqlAzureExecutionStrategy());
-            SetDefaultConnectionFactory(new LocalDbConnectionFactory("v11.0"));
+            SetDefaultConnectionFactory(new LocalDBConnectionFactory("mssqllocaldb"));
         }
     }
 }
@@ -60,7 +60,7 @@ There are cases where it is not possible to place your DbConfiguration class in 
 
 The first option is to use the config file to specify the DbConfiguration instance to use. To do this, set the codeConfigurationType attribute of the entityFramework section. For example:  
 
-```  
+``` xml
 <entityFramework codeConfigurationType="MyNamespace.MyDbConfiguration, MyAssembly">
     ...Your EF config...
 </entityFramework>
@@ -70,7 +70,7 @@ The value of codeConfigurationType must be the assembly and namespace qualified 
 
 The second option is to place DbConfigurationTypeAttribute on your context class. For example:  
 
-```  
+``` csharp  
 [DbConfigurationType(typeof(MyDbConfiguration))]
 public class MyContextContext : DbContext
 {
@@ -79,7 +79,7 @@ public class MyContextContext : DbContext
 
 The value passed to the attribute can either be your DbConfiguration type - as shown above - or the assembly and namespace qualified type name string. For example:  
 
-```  
+``` csharp
 [DbConfigurationType("MyNamespace.MyDbConfiguration, MyAssembly")]
 public class MyContextContext : DbContext
 {
@@ -109,7 +109,7 @@ For this, EntityFramework allows an event handler to be registered that can modi
 
 For example, to repalce IDbConnectionFactory and DbProviderService you would register a handler something like this:  
 
-```  
+``` csharp
 DbConfiguration.Loaded += (_, a) =>
    {
        a.ReplaceService<DbProviderServices>((s, k) => new MyProviderServices(s));
