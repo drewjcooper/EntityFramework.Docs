@@ -35,7 +35,7 @@ Microsoft designed the ADO.NET Entity Framework 4.0 (EF4) with testability in mi
 
 Code that is easy to test will always exhibit at least two traits. First, testable code is easy to **observe**. Given some set of inputs, it should be easy to observe the output of the code. For example, testing the following method is easy because the method directly returns the result of a calculation.
 
-```
+``` csharp
     public int Add(int x, int y) {
         return x + y;
     }
@@ -43,7 +43,7 @@ Code that is easy to test will always exhibit at least two traits. First, testab
 
 Testing a method is difficult if the method writes the computed value into a network socket, a database table, or a file like the following code. The test has to perform additional work to retrieve the value.
 
-```
+``` csharp
     public void AddAndSaveToFile(int x, int y) {
          var results = string.Format("The answer is {0}", x + y);
          File.WriteAllText("results.txt", results);
@@ -52,7 +52,7 @@ Testing a method is difficult if the method writes the computed value into a net
 
 Secondly, testable code is easy to **isolate**. Let’s use the following pseudo-code as a bad example of testable code.
 
-```
+``` csharp
     public int ComputePolicyValue(InsurancePolicy policy) {
         using (var connection = new SqlConnection("dbConnection"))
         using (var command = new SqlCommand(query, connection)) {
@@ -96,7 +96,7 @@ The key to the isolation is how the repository exposes objects using a collectio
 
 In existing .NET applications a concrete repository often inherits from a generic interface like the following:
 
-```
+``` csharp
     public interface IRepository<T> {       
         IEnumerable<T> FindAll();
         IEnumerable<T> FindBy(Expression<Func\<T, bool>> predicate);
@@ -110,7 +110,7 @@ We’ll make a few changes to the interface definition when we provide an implem
 
 Given an IRepository of Employee objects, code can perform the following operations.
 
-```
+``` csharp
     var employeesNamedScott =
         repository
             .FindBy(e => e.Name == "Scott")
@@ -132,7 +132,7 @@ If you’ve ever done any work with ADO.NET DataSets then you’ll already be fa
 
 An abstraction to model the unit of work in .NET code might look like the following:
 
-```
+``` csharp
     public interface IUnitOfWork {
         IRepository<Employee> Employees { get; }
         IRepository<Order> Orders { get; }
@@ -145,7 +145,7 @@ By exposing repository references from the unit of work we can ensure a single u
 
 Given an IUnitOfWork reference, code can make changes to business objects retrieved from one or more repositories and save all the changes using the atomic Commit operation.
 
-```
+``` csharp
     var firstEmployee = unitofWork.Employees.FindById(1);
     var firstCustomer = unitofWork.Customers.FindById(1);
     firstEmployee.Name = "Alex";
@@ -157,7 +157,7 @@ Given an IUnitOfWork reference, code can make changes to business objects retrie
 
 Fowler uses the name lazy load to describe “an object that doesn’t contain all of the data you need but knows how to get it”. Transparent lazy loading is an important feature to have when writing testable business code and working with a relational database. As an example, consider the following code.
 
-```
+``` csharp
     var employee = repository.FindById(id);
     // ... and later ...
     foreach(var timeCard in employee.TimeCards) {
@@ -177,7 +177,7 @@ Fortunately, we’ll see how EF4 supports both implicit lazy loads and efficient
 
 The good news is that all of the design patterns we described in the last section are straightforward to implement with EF4. To demonstrate we are going to use a simple ASP.NET MVC application to edit and display Employees and their associated time card information. We’ll start by using the following “plain old CLR objects” (POCOs). 
 
-```
+``` csharp
     public class Employee {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -212,7 +212,7 @@ From this POCO starting point we will explore two different approaches to testab
 
 Consider the following controller action from an ASP.NET MVC project. The action retrieves an Employee object and returns a result to display a detailed view of the employee.
 
-```
+``` csharp
     public ViewResult Details(int id) {
         var employee = _unitOfWork.Employees
                                   .Single(e => e.Id == id);
@@ -224,7 +224,7 @@ Is the code testable? There are at least two tests we’d need to verify the act
 
 To achieve isolation we’ll need some abstractions like the interfaces we presented earlier for repositories and units of work. Remember the repository pattern is designed to mediate between domain objects and the data mapping layer. In this scenario EF4 *is* the data mapping layer, and already provides a repository-like abstraction named IObjectSet&lt;T&gt; (from the System.Data.Objects namespace). The interface definition looks like the following.
 
-```
+``` csharp
     public interface IObjectSet<TEntity> :
                      IQueryable<TEntity>,
                      IEnumerable<TEntity>,
@@ -241,7 +241,7 @@ To achieve isolation we’ll need some abstractions like the interfaces we prese
 
 IObjectSet&lt;T&gt; meets the requirements for a repository because it resembles a collection of objects (via IEnumerable&lt;T&gt;) and provides methods to add and remove objects from the simulated collection. The Attach and Detach methods expose additional capabilities of the EF4 API. To use IObjectSet&lt;T&gt; as the interface for repositories we need a unit of work abstraction to bind repositories together.
 
-```
+``` csharp
     public interface IUnitOfWork {
         IObjectSet<Employee> Employees { get; }
         IObjectSet<TimeCard> TimeCards { get; }
@@ -251,7 +251,7 @@ IObjectSet&lt;T&gt; meets the requirements for a repository because it resembles
 
 One concrete implementation of this interface will talk to SQL Server and is easy to create using the ObjectContext class from EF4. The ObjectContext class is the real unit of work in the EF4 API.
 
-```
+``` csharp
     public class SqlUnitOfWork : IUnitOfWork {
         public SqlUnitOfWork() {
             var connectionString =
@@ -286,7 +286,7 @@ This concrete implementation is useful in production, but we need to focus on ho
 
 To isolate the controller action we’ll need the ability to switch between the real unit of work (backed by an ObjectContext) and a test double or “fake” unit of work (performing in-memory operations). The common approach to perform this type of switching is to not let the MVC controller instantiate a unit of work, but instead pass the unit of work into the controller as a constructor parameter.
 
-```
+``` csharp
     class EmployeeController : Controller {
       publicEmployeeController(IUnitOfWork unitOfWork)  {
           _unitOfWork = unitOfWork;
@@ -299,7 +299,7 @@ The above code is an example of dependency injection. We don’t allow the contr
 
 A fake unit of work implementation that we can use for testing might look like the following.
 
-```
+``` csharp
     public class InMemoryUnitOfWork : IUnitOfWork {
         public InMemoryUnitOfWork() {
             Committed = false;
@@ -325,7 +325,7 @@ Notice the fake unit of work exposes a Commited property. It’s sometimes usefu
 
 We’ll also need a fake IObjectSet&lt;T&gt; to hold Employee and TimeCard objects in memory. We can provide a single implementation using generics.
 
-```
+``` csharp
     public class InMemoryObjectSet<T> : IObjectSet<T> where T : class
         public InMemoryObjectSet()
             : this(Enumerable.Empty<T>()) {
@@ -378,7 +378,7 @@ Traditional unit tests will use a single test class to hold all of the tests for
 
 There is some common setup code we need for all these fine grained test classes. For example, we always need to create our in-memory repositories and fake unit of work. We also need an instance of the employee controller with the fake unit of work injected. We’ll share this common setup code across test classes by using a base class.
 
-```
+``` csharp
     public class EmployeeControllerTestBase {
         public EmployeeControllerTestBase() {
             _employeeData = EmployeeObjectMother.CreateEmployees()
@@ -398,7 +398,7 @@ There is some common setup code we need for all these fine grained test classes.
 
 The “object mother” we use in the base class is one common pattern for creating test data. An object mother contains factory methods to instantiate test entities for use across multiple test fixtures.
 
-```
+``` csharp
     public static class EmployeeObjectMother {
         public static IEnumerable<Employee> CreateEmployees() {
             yield return new Employee() {
@@ -429,7 +429,7 @@ The naming convention and test style presented here isn’t required for testabl
 
 With a base class to handle the shared setup code, the unit tests for each controller action are small and easy to write. The tests will execute quickly (since we are performing in-memory operations), and shouldn’t fail because of unrelated infrastructure or environmental concerns (because we’ve isolated the unit under test).
 
-```
+``` csharp
     [TestClass]
     public class EmployeeControllerCreateActionPostTests
                : EmployeeControllerTestBase {
@@ -460,7 +460,7 @@ In these tests, the base class does most of the setup work. Remember the base cl
 
 What we’ve built allows us to test any of the EmployeeController actions. For example, when we write tests for the Index action of the Employee controller we can inherit from the test base class to establish the same base setup for our tests. Again the base class will create the in-memory repository, the fake unit of work, and an instance of the EmployeeController. The tests for the Index action only need to focus on invoking the Index action and testing the qualities of the model the action returns.
 
-```
+``` csharp
     [TestClass]
     public class EmployeeControllerIndexActionTests
                : EmployeeControllerTestBase {
@@ -485,7 +485,7 @@ What we’ve built allows us to test any of the EmployeeController actions. For 
 
 The tests we are creating with in-memory fakes are oriented towards testing the *state* of the software. For example, when testing the Create action we want to inspect the state of the repository after the create action executes – does the repository hold the new employee?
 
-```
+``` csharp
     [TestMethod]
     public void ShouldAddNewEmployeeToRepository() {
         _controller.Create(_newEmployee);
@@ -503,7 +503,7 @@ At some point in the ASP.NET  MVC web application we might wish to display an e
 
 One easy approach to create the summary is to construct a model dedicated to the information we want to display in the view. In this scenario the model might look like the following.
 
-```
+``` csharp
     public class EmployeeSummaryViewModel {
         public string Name { get; set; }
         public int TotalTimeCards { get; set; }
@@ -512,7 +512,7 @@ One easy approach to create the summary is to construct a model dedicated to the
 
 Note that the EmployeeSummaryViewModel is not an entity – in other words it is not something we want to persist in the database. We are only going to use this class to shuffle data into the view in a strongly typed manner. The view model is like a data transfer object (DTO) because it contains no behavior (no methods) – only properties. The properties will hold the data we need to move. It is easy to instantiate this view model using LINQ’s standard projection operator – the Select operator.
 
-```
+``` csharp
     public ViewResult Summary(int id) {
         var model = _unitOfWork.Employees
                                .Where(e => e.Id == id)
@@ -528,7 +528,7 @@ Note that the EmployeeSummaryViewModel is not an entity – in other words it is
 
 There are two notable features to the above code. First – the code is easy to test because it is still easy to observe and isolate. The Select operator works just as well against our in-memory fakes as it does against the real unit of work.
 
-```
+``` csharp
     [TestClass]
     public class EmployeeControllerSummaryActionTests
                : EmployeeControllerTestBase {
@@ -545,7 +545,7 @@ There are two notable features to the above code. First – the code is easy to 
 
 The second notable feature is how the code allows EF4 to generate a single, efficient query to assemble employee and time card information together. We’ve loaded employee information and time card information into the same object without using any special APIs. The code merely expressed the information it requires using standard LINQ operators that work against in-memory data sources as well as remote data sources. EF4 was able to translate the expression trees generated by the LINQ query and C\# compiler into a single and efficient T-SQL query.
 
-```
+``` SQL
     SELECT
     [Limit1].[Id] AS [Id],
     [Limit1].[Name] AS [Name],
@@ -573,14 +573,14 @@ There are other times when we don’t want to work with a view model or DTO obje
 
 When we want to eagerly load related entity information we need some mechanism for business logic (or in this scenario, controller action logic) to express its desire to the repository. The EF4 ObjectQuery&lt;T&gt; class defines an Include method to specify the related objects to retrieve during a query. Remember the EF4 ObjectContext exposes entities via the concrete ObjectSet&lt;T&gt; class which inherits from ObjectQuery&lt;T&gt;.  If we were using ObjectSet&lt;T&gt; references in our controller action we could write the following code to specify an eager load of time card information for each employee.
 
-```
+``` csharp
     _employees.Include("TimeCards")
               .Where(e => e.HireDate.Year > 2009);
 ```
 
 However, since we are trying to keep our code testable we are not exposing ObjectSet&lt;T&gt; from outside the real unit of work class. Instead, we rely on the IObjectSet&lt;T&gt; interface which is easier to fake, but IObjectSet&lt;T&gt; does not define an Include method. The beauty of LINQ is that we can create our own Include operator.
 
-```
+``` csharp
     public static class QueryableExtensions {
         public static IQueryable<T> Include<T>
                 (this IQueryable<T> sequence, string path) {
@@ -598,7 +598,7 @@ Notice this Include operator is defined as an extension method for IQueryable&lt
 
 With this new operator in place we can explicitly request an eager load of time card information from the repository.
 
-```
+``` csharp
     public ViewResult Index() {
         var model = _unitOfWork.Employees
                                .Include("TimeCards")
@@ -609,7 +609,7 @@ With this new operator in place we can explicitly request an eager load of time 
 
 When run against a real ObjectContext, the code produces the following single query. The query gathers enough information from the database in one trip to materialize the employee objects and fully populate their TimeCards property.
 
-```
+``` SQL
     SELECT
     [Project1].[Id] AS [Id],
     [Project1].[Name] AS [Name],
@@ -653,7 +653,7 @@ When using POCO objects, EF4 can dynamically generate runtime proxies for entiti
 
 For these proxies to work, however, they need a way to hook into property get and set operations on an entity, and the proxies achieve this goal by overriding virtual members. Thus, if we want to have implicit lazy loading and efficient change tracking we need to go back to our POCO class definitions and mark properties as virtual.
 
-```
+``` csharp
     public class Employee {
         public virtual int Id { get; set; }
         public virtual string Name { get; set; }
@@ -666,7 +666,7 @@ We can still say the Employee entity is mostly persistence ignorant. The only re
 
 There is also one minor change we need to make inside our unit of work. Lazy loading is *off* by default when working directly with an ObjectContext object. There is a property we can set on the ContextOptions property to enable deferred loading, and we can set this property inside our real unit of work if we want to enable lazy loading everywhere.
 
-```
+``` csharp
     public class SqlUnitOfWork : IUnitOfWork {
          public SqlUnitOfWork() {
              // ...
@@ -679,7 +679,7 @@ There is also one minor change we need to make inside our unit of work. Lazy loa
 
 With implicit lazy loading enabled, application code can use an employee and the employee’s associated time cards while remaining blissfully unaware of the work required for EF to load the extra data.
 
-```
+``` csharp
     var employee = _unitOfWork.Employees
                               .Single(e => e.Id == id);
     foreach (var card in employee.TimeCards) {
@@ -695,7 +695,7 @@ At this point we’ll turn our attention from building repositories using IObjec
 
 When we first presented the unit of work design pattern in this article we provided some sample code for what the unit of work might look like. Let’s re-present this original idea using the employee and employee time card scenario we’ve been working with.
 
-```
+``` csharp
     public interface IUnitOfWork {
         IRepository<Employee> Employees { get; }
         IRepository<TimeCard> TimeCards { get;  }
@@ -707,7 +707,7 @@ The primary difference between this unit of work and the unit of work we created
 
 Many developers who follow test-driven design, behavior-driven design, and domain driven methodologies design prefer the IRepository&lt;T&gt; approach for several reasons. First, the IRepository&lt;T&gt; interface represents an “anti-corruption” layer. As described by Eric Evans in his Domain Driven Design book an anti-corruption layer keeps your domain code away from infrastructure APIs, like a persistence API. Secondly, developers can build methods into the repository that meet the exact needs of an application (as discovered while writing tests). For example, we might frequently need to locate a single entity using an ID value, so we can add a FindById method to the repository interface.  Our IRepository&lt;T&gt; definition will look like the following.
 
-```
+``` csharp
     public interface IRepository<T>
                     where T : class, IEntity {
         IQueryable<T> FindAll();
@@ -722,7 +722,7 @@ Notice we’ll drop back to using an IQueryable&lt;T&gt; interface to expose ent
 
 It’s straightforward to provide a single implementation of the IRepository&lt;T&gt; interface using generics and the EF4 ObjectContext API.
 
-```
+``` csharp
     public class SqlRepository<T> : IRepository<T>
                                     where T : class, IEntity {
         public SqlRepository(ObjectContext context) {
@@ -750,7 +750,7 @@ It’s straightforward to provide a single implementation of the IRepository&lt;
 
 The IRepository&lt;T&gt; approach gives us some additional control over our queries because a client has to invoke a method to get to an entity. Inside the method we could provide additional checks and LINQ operators to enforce application constraints. Notice the interface has two constraints on the generic type parameter. The first constraint is the class cons taint required by ObjectSet&lt;T&gt;, and the second constraint forces our entities to implement IEntity – an abstraction created for the application. The IEntity interface forces entities to have a readable Id property, and we can then use this property in the FindById method. IEntity is defined with the following code.
 
-```
+``` csharp
     public interface IEntity {
         int Id { get; }
     }
@@ -760,7 +760,7 @@ IEntity could be considered a small violation of persistence ignorance since our
 
 Instantiating a live IRepository&lt;T&gt; requires an EF4 ObjectContext, so a concrete unit of work implementation should manage the instantiation.
 
-```
+``` csharp
     public class SqlUnitOfWork : IUnitOfWork {
         public SqlUnitOfWork() {
             var connectionString =
@@ -805,7 +805,7 @@ Instantiating a live IRepository&lt;T&gt; requires an EF4 ObjectContext, so a co
 
 Using our custom repository is not significantly different from using the repository based on IObjectSet&lt;T&gt;. Instead of applying LINQ operators directly to a property, we’ll first need to invoke one the repository’s methods to grab an IQueryable&lt;T&gt; reference.
 
-```
+``` csharp
     public ViewResult Index() {
         var model = _repository.FindAll()
                                .Include("TimeCards")
@@ -816,7 +816,7 @@ Using our custom repository is not significantly different from using the reposi
 
 Notice the custom Include operator we implemented previously will work without change. The repository’s FindById method removes duplicated logic from actions trying to retrieve a single entity.
 
-```
+``` csharp
     public ViewResult Details(int id) {
         var model = _repository.FindById(id);
         return View(model);
@@ -835,7 +835,7 @@ The test doubles we’ve built have real, working implementations. Behind the sc
 
 There is another type of test double known as a *mock*. While fakes have working implementations, mocks come with no implementation. With the help of a mock object framework we construct these mock objects at run time and use them as test doubles. In this section we’ll be using the open source mocking framework Moq. Here is a simple example of using Moq to dynamically create a test double for an employee repository.
 
-```
+``` csharp
     Mock<IRepository<Employee>> mock =
         new Mock<IRepository<Employee>>();
     IRepository<Employee> repository = mock.Object;
@@ -851,7 +851,7 @@ Mocks might sound worthless; however, there are two more features of mocks we ha
 
 The second great feature is how we can use Moq to program a mock object with *expectations*. An expectation tells the mock object how to respond to any given interaction. For example, we can program an expectation into our mock and tell it to return an employee object when someone invokes FindById. The Moq framework uses a Setup API and lambda expressions to program these expectations.
 
-```
+``` csharp
     [TestMethod]
     public void MockSample() {
         Mock<IRepository<Employee>> mock =
@@ -868,7 +868,7 @@ In this sample we ask Moq to dynamically build a repository, and then we program
 
 Let’s revisit the tests we wrote earlier and rework them to use mocks instead of fakes. Just like before, we’ll use a base class to setup the common pieces of infrastructure we need for all of the controller’s tests.
 
-```
+``` csharp
     public class EmployeeControllerTestBase {
         public EmployeeControllerTestBase() {
             _employeeData = EmployeeObjectMother.CreateEmployees()
@@ -889,7 +889,7 @@ Let’s revisit the tests we wrote earlier and rework them to use mocks instead 
 
 The setup code remains mostly the same. Instead of using fakes, we’ll use Moq to construct mock objects. The base class arranges for the mock unit of work to return a mock repository when code invokes the Employees property. The rest of the mock setup will take place inside the test fixtures dedicated to each specific scenario. For example, the test fixture for the Index action will setup the mock repository to return a list of employees when the action invokes the FindAll method of the mock repository.
 
-```
+``` csharp
     [TestClass]
     public class EmployeeControllerIndexActionTests
                : EmployeeControllerTestBase {
@@ -927,7 +927,7 @@ Another approach you’ll see with mock objects is to verify *interactions*. Whi
 
 Interaction testing often requires less test data, because we aren’t poking inside of collections and verifying counts. For example, if we know the Details action invokes a repository’s FindById method with the correct value - then the action is probably behaving correctly. We can verify this behavior without setting up any test data to return from FindById.
 
-```
+``` csharp
     [TestClass]
     public class EmployeeControllerDetailsActionTests
                : EmployeeControllerTestBase {
@@ -945,7 +945,7 @@ The only setup required in the above test fixture is the setup provided by the b
 
 Here is another example to verify the Create action invokes Commit on the current unit of work.
 
-```
+``` csharp
     [TestMethod]
     public void ShouldCommitUnitOfWork() {
         _controller.Create(_newEmployee);

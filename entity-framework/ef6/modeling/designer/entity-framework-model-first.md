@@ -148,7 +148,7 @@ Now that we have a model it’s time to use it to access some data. The classes 
 
 Implement the Main method in Program.cs as shown below. This code creates a new instance of our context and then uses it to insert a new Blog. Then it uses a LINQ query to retrieve all Blogs from the database ordered alphabetically by Title.
 
-```
+``` csharp
 class Program
 {
     static void Main(string[] args)

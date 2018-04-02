@@ -77,7 +77,7 @@ When using Code First development you usually begin by writing .NET Framework cl
     -   Select **Class** and enter **Product** for the class name
 -   Replace the **Product** class definition with the following code:
 
-```
+``` csharp
     namespace WPFwithEFSample
     {
         public class Product
@@ -119,7 +119,7 @@ An instance of the DbContext derived type manages the entity objects during run 
 
 -   Add a new **ProductContext** class to the project with the following definition:
 
-```
+``` csharp
     using System.Data.Entity;
 
     namespace WPFwithEFSample
@@ -170,7 +170,7 @@ Let's go ahead and generate the database.
 -   The new database will now appear in Server Explorer, right-click on it and select **New Query**
 -   Copy the following SQL into the new query, then right-click on the query and select **Execute**
 
-```
+``` SQL
     CREATE TABLE [dbo].[Categories] (
         [CategoryId] [int] NOT NULL IDENTITY,
         [Name] [nvarchar](max),
@@ -281,7 +281,7 @@ The following happened when we dragged this source:
 -   The **categoryViewSource** resource and the** categoryDataGrid** control were added to XAML. For more information about DataViewSources, see http://bea.stollnitz.com/blog/?p=387.
 -   The DataContext property on the parent Grid element was set to "{StaticResource **categoryViewSource** }".  The **categoryViewSource** resource serves as a binding source for the outer\\parent Grid element. The inner Grid elements then inherit the DataContext value from the parent Grid (the categoryDataGrid’s ItemsSource property is set to "{Binding}"). 
 
-```
+``` xml
     \<Window.Resources>
         \<CollectionViewSource x:Key="categoryViewSource"
                                 d:DesignSource="{d:DesignInstance {x:Type local:Category}, CreateList=True}"/>
@@ -333,7 +333,7 @@ This brings you to the code behind for the form, we'll now edit the code to use 
 
 The code declares a long-running instance of **ProductContext**. The **ProductContext** object is used to query and save data to the database. The **Dispose**() on the **ProductContext** instance is then called from the overridden **OnClosing** method. The code comments provide details about what the code does.
 
-```
+``` csharp
     using System.Data.Entity;
     using System.Linq;
     using System.Windows;

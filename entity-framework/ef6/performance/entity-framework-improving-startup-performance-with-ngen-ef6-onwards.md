@@ -58,13 +58,14 @@ During development the .NET JIT compiler will offer the best overall tradeoff fo
 
 A good place to find the EF runtime assemblies is the NuGet package location for the solution, e.g. for an application using EF 6.0.2 with SQL Server and targeting .NET 4.5 or greater you can type the following in a Command Prompt window (remember to open it as an administrator):  
 
-```  
+``` console
 cd <Solution directory>\packages\EntityFramework.6.0.2\lib\net45
 %WINDIR%\Microsoft.NET\Framework\v4.0.30319\ngen install EntityFramework.SqlServer.dll
 %WINDIR%\Microsoft.NET\Framework64\v4.0.30319\ngen install EntityFramework.SqlServer.dll
 ```  
 
-> **Note**: This takes advantage of the fact that installing the native images for EF provider for SQL Server will also by default install the native images for the main EF runtime assembly. This works because NGen.exe can detect that EntityFramework.dll is a direct dependency of the EntityFramework.SqlServer.dll assembly located in the same directory.  
+> [!NOTE]
+> This takes advantage of the fact that installing the native images for EF provider for SQL Server will also by default install the native images for the main EF runtime assembly. This works because NGen.exe can detect that EntityFramework.dll is a direct dependency of the EntityFramework.SqlServer.dll assembly located in the same directory.  
 
 ## Creating native images during setup  
 

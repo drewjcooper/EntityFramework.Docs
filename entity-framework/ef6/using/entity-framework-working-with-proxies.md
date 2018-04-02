@@ -19,7 +19,7 @@ When creating instances of POCO entity types, Entity Frameworkoften creates inst
 
 Sometimes it is useful to prevent Entity Frameworkfrom creating proxy instances. For example, serializing non-proxy instances is considerably easier than serializing proxy instances. Proxy creation can be turned off by clearing the ProxyCreationEnabled flag. One place you could do this is in the constructor of your context. For example:  
 
-```  
+``` csharp
 public class BloggingContext : DbContext
 {
     public BloggingContext()
@@ -38,7 +38,7 @@ Note that the EF will not create proxies for types where there is nothing for th
 
 A proxy instance will not be created if you create an instance of an entity using the new operator. This may not be a problem, but if you need to create a proxy instance (for example, so that lazy loading or proxy change tracking will work) then you can do so using the Create method of DbSet. For example:  
 
-```  
+``` csharp
 using (var context = new BloggingContext())
 {
     var blog = context.Blogs.Create();
@@ -47,7 +47,7 @@ using (var context = new BloggingContext())
 
 The generic version of Create can be used if you want to create an instance of a derived entity type. For example:  
 
-```  
+``` csharp
 using (var context = new BloggingContext())
 {
     var admin = context.Users.Create<Administrator>();
@@ -66,7 +66,7 @@ System.Data.Entity.DynamicProxies.Blog_5E43C6C196972BF0754973E48C9C941092D86818C
 
 You can find the entity type for this proxy type using the GetObjectType method from ObjectContext. For example:  
 
-```  
+``` csharp
 using (var context = new BloggingContext())
 {
     var blog = context.Blogs.Find(1);

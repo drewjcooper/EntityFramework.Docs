@@ -25,7 +25,8 @@ You need to upgrade to the new Entity Framework 6 runtime.
 
 1. Right-click on your project and select **Manage NuGet Packages...**  
 2. Under the **Online** tab select **EntityFramework** and click **Install**  
-    > **Note**: If a previous version of the EntityFramework NuGet package was installed this will upgrade it to EF6.
+    > [!NOTE]
+> If a previous version of the EntityFramework NuGet package was installed this will upgrade it to EF6.
 
 Alternatively, you can run the following command from Package Manager Console:
 
@@ -41,15 +42,19 @@ Installing the EF6 NuGet package should automatically remove any references to S
 
 If you have any models created with the EF Designer, you will need to update the code generation templates to generate EF6 compatible code.
 
-> **Note**: There are currently only EF 6.x DbContext Generator templates available for Visual Studio 2012 and 2013.
+> [!NOTE]
+> There are currently only EF 6.x DbContext Generator templates available for Visual Studio 2012 and 2013.
 
 1. Delete existing code-generation templates. These files will typically be named **\<edmx_file_name\>.tt** and **\<edmx_file_name\>.Context.tt** and be nested under your edmx file in Solution Explorer. You can select the templates in Solution Explorer and press the **Del** key to delete them.  
-    > **Note**: In Web Site projects the templates will not be nested under your edmx file, but listed alongside it in Solution Explorer.  
+    > [!NOTE]
+> In Web Site projects the templates will not be nested under your edmx file, but listed alongside it in Solution Explorer.  
 
-    > **Note**: In VB.NET projects you will need to enable 'Show All Files' to be able to see the nested template files.
+    > [!NOTE]
+> In VB.NET projects you will need to enable 'Show All Files' to be able to see the nested template files.
 2. Add the appropriate EF 6.x code generation template. Open your model in the EF Designer, right-click on the design surface and select **Add Code Generation Item...**
     - If you are using the DbContext API (recommended) then **EF 6.x DbContext Generator** will be available under the **Data** tab.  
-        > **Note**: If you are using Visual Studio 2012, you will need to install the EF 6 Tools to have this template. See [Get Entity Framework](../ef6/get-entity-framework.md) for details.  
+        > [!NOTE]
+> If you are using Visual Studio 2012, you will need to install the EF 6 Tools to have this template. See [Get Entity Framework](../ef6/get-entity-framework.md) for details.  
 
     - If you are using the ObjectContext API then you will need to select the **Online** tab and search for **EF 6.x EntityObject Generator**.  
 3. If you applied any customizations to the code generation templates you will need to re-apply them to the updated templates.
@@ -70,9 +75,12 @@ These types are in the *Core* namespaces because they are not used directly for 
 
 - System.Data.EntityState => System.Data.**Entity.**EntityState  
 - System.Data.Objects.DataClasses.EdmFunctionAttribute => System.Data.**Entity.DbFunctionAttribute**  
-    > **Note**: This class has been renamed; a class with the old name still exists and works, but it now marked as obsolete.  
+    > [!NOTE]
+> This class has been renamed; a class with the old name still exists and works, but it now marked as obsolete.  
 - System.Data.Objects.EntityFunctions => System.Data.**Entity.DbFunctions**  
-    > **Note**: This class has been renamed; a class with the old name still exists and works, but it now marked as obsolete.)  
+    > [!NOTE]
+> This class has been renamed; a class with the old name still exists and works, but it now marked as obsolete.)  
 - Spatial classes (e.g. DbGeography, DbGeometry) have moved from System.Data.Spatial => System.Data.**Entity.**Spatial
 
-> **Note**: Some types in the System.Data namespace are in System.Data.dll which is not an EF assembly. These types have not moved and so their namespaces remain unchanged.
+> [!NOTE]
+> Some types in the System.Data namespace are in System.Data.dll which is not an EF assembly. These types have not moved and so their namespaces remain unchanged.

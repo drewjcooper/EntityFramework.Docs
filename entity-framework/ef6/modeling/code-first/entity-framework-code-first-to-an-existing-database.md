@@ -48,7 +48,7 @@ Let's go ahead and generate the database.
 -   The new database will now appear in Server Explorer, right-click on it and select **New Query**
 -   Copy the following SQL into the new query, then right-click on the query and select **Execute**
 
-```
+``` SQL
 CREATE TABLE [dbo].[Blogs] (
     [BlogId] INT IDENTITY (1, 1) NOT NULL,
     [Name] NVARCHAR (200) NULL,
@@ -126,7 +126,7 @@ An App.config file has been added to the project, this file contains the connect
 A **BloggingContext** class has been added to the project. The context represents a session with the database, allowing us to query and save data.
 The context exposes a **DbSet&lt;TEntity&gt;** for each type in our model. You’ll also notice that the default constructor calls a base constructor using the **name=** syntax. This tells Code First that the connection string to use for this context should be loaded from the configuration file.
 
-```
+``` csharp
 public partial class BloggingContext : DbContext
     {
         public BloggingContext()
@@ -149,7 +149,7 @@ public partial class BloggingContext : DbContext
 
 Finally, a **Blog** and **Post** class have also been added to the project. These are the domain classes that make up our model. You'll see Data Annotations applied to the classes to specify configuration where the Code First conventions would not align with the structure of the existing database. For example, you'll see the **StringLength** annotation on **Blog.Name** and **Blog.Url** since they have a maximum length of **200** in the database (the Code First default is to use the maximun length supported by the database provider - **nvarchar(max)** in SQL Server).
 
-```
+``` csharp
 public partial class Blog
 {
     public Blog()
@@ -173,7 +173,7 @@ public partial class Blog
 
 Now that we have a model it’s time to use it to access some data. Implement the **Main** method in **Program.cs** as shown below. This code creates a new instance of our context and then uses it to insert a new **Blog**. Then it uses a LINQ query to retrieve all **Blogs** from the database ordered alphabetically by **Title**.
 
-```
+``` csharp
 class Program
 {
     static void Main(string[] args)

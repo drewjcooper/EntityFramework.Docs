@@ -19,7 +19,8 @@ Entity Framework 6 introduced a set of extension methods that can be used to asy
 
 Because Entity Framework queries make use of LINQ, the extension methods are defined on IQueryable and IEnumerable. However, because they are only designed to be used with Entity Framework you may receive the following error if you try to use them on a LINQ query that isn’t an Entity Framework query.  
 
-> **Note**: The source IQueryable doesn't implement IDbAsyncEnumerable{0}. Only sources that implement IDbAsyncEnumerable can be used for Entity Framework asynchronous operations. For more details see [http://go.microsoft.com/fwlink/?LinkId=287068](http://go.microsoft.com/fwlink/?LinkId=287068).  
+> [!NOTE]
+> The source IQueryable doesn't implement IDbAsyncEnumerable{0}. Only sources that implement IDbAsyncEnumerable can be used for Entity Framework asynchronous operations. For more details see [http://go.microsoft.com/fwlink/?LinkId=287068](http://go.microsoft.com/fwlink/?LinkId=287068).  
 
 ## Async Methods when Unit Testing  
 

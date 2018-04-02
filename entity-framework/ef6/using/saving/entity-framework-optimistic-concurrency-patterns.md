@@ -27,7 +27,7 @@ A DbUpdateConcurrencyException is thrown by SaveChanges when an optimistic concu
 
 The Reload method can be used to overwrite the current values of the entity with the values now in the database. The entity is then typically given back to the user in some form and they must try to make their changes again and re-save. For example:  
 
-```  
+``` csharp
 using (var context = new BloggingContext())
 {
     var blog = context.Blogs.Find(1);
@@ -56,7 +56,7 @@ using (var context = new BloggingContext())
 
 A good way to simulate a concurrency exception is to set a breakpoint on the SaveChanges call and then modify an entity that is being saved in the database using another tool such as SQL Management Studio. You could also insert a line before SaveChanges to update the database directly using SqlCommand. For example:  
 
-```  
+``` csharp
 context.Database.SqlCommand(
     "UPDATE dbo.Blogs SET Name = 'Another Name' WHERE BlogId = 1");
 ```  
@@ -67,7 +67,7 @@ The Entries method on DbUpdateConcurrencyException returns the DbEntityEntry ins
 
 The example above that uses Reload is sometimes called database wins or store wins because the values in the entity are overwritten by values from the database. Sometimes you may wish to do the opposite and overwrite the values in the database with the values currently in the entity. This is sometimes called client wins and can be done by getting the current database values and setting them as the original values for the entity. (See [Working with Property Values](../ef6/entity-framework-working-with-property-values.md) for information on current and original values.) For example:  
 
-```  
+``` csharp
 using (var context = new BloggingContext())
 {
     var blog = context.Blogs.Find(1);
@@ -98,7 +98,7 @@ using (var context = new BloggingContext())
 
 Sometimes you may want to combine the values currently in the database with the values currently in the entity. This usually requires some custom logic or user interaction. For example, you might present a form to the user containing the current values, the values in the database, and a default set of resolved values. The user would then edit the resolved values as necessary and it would be these resolved values that get saved to the database. This can be done using the DbPropertyValues objects returned from CurrentValues and GetDatabaseValues on the entity’s entry. For example:  
 
-```  
+``` csharp
 using (var context = new BloggingContext())
 {
     var blog = context.Blogs.Find(1);
@@ -149,7 +149,7 @@ public void HaveUserResolveConcurrency(DbPropertyValues currentValues,
 
 The code above uses DbPropertyValues instances for passing around current, database, and resolved values. Sometimes it may be easier to use instances of your entity type for this. This can be done using the ToObject and SetValues methods of DbPropertyValues. For example:  
 
-```  
+``` csharp
 using (var context = new BloggingContext())
 {
     var blog = context.Blogs.Find(1);

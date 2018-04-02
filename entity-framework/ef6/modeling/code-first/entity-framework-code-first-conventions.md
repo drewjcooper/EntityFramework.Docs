@@ -27,7 +27,7 @@ If your types participate in an inheritance hierarchy, it is enough to define a 
 
 In the following example, there is only one **DbSet** property defined on the **SchoolEntities** class (**Departments**). Code First uses this property to discover and pull in any referenced types.  
 
-```  
+``` csharp
 public class SchoolEntities : DbContext
 {
     public DbSet<Department> Departments { get; set; }
@@ -73,7 +73,7 @@ public partial class OnsiteCourse : Course
 
 If you want to exclude a type from the model, use the **NotMapped** attribute or the **DbModelBuilder.Ignore** fluent API.  
 
-```  
+```  csharp
 modelBuilder.Ignore<Department>();
 ```  
 
@@ -81,7 +81,7 @@ modelBuilder.Ignore<Department>();
 
 Code First infers that a property is a primary key if a property on a class is named “ID” (not case sensitive), or the class name followed by "ID". If the type of the primary key property is numeric or GUID it will be configured as an identity column.  
 
-```  
+``` csharp
 public class Department
 {
     // Primary key
@@ -102,7 +102,7 @@ If a foreign key on the dependent entity is not nullable, then Code First sets c
 
 In the following example the navigation properties and a foreign key are used to define the relationship between the Department and Course classes.  
 
-```  
+``` csharp
 public class Department
 {
     // Primary key
@@ -129,13 +129,14 @@ public class Course
 }
 ```  
 
-> **Note**: If you have multiple relationships between the same types (for example, suppose you define the **Person** and **Book** classes, where the **Person** class contains the **ReviewedBooks** and **AuthoredBooks** navigation properties and the **Book** class contains the **Author** and **Reviewer** navigation properties) you need to manually configure the relationships by using Data Annotations or the fluent API. For more information, see [Data Annotations - Relationships](../ef6/entity-framework-code-first-data-annotations.md) and [Fluent API - Relationships](../ef6/entity-framework-fluent-api-relationships.md).  
+> [!NOTE]
+> If you have multiple relationships between the same types (for example, suppose you define the **Person** and **Book** classes, where the **Person** class contains the **ReviewedBooks** and **AuthoredBooks** navigation properties and the **Book** class contains the **Author** and **Reviewer** navigation properties) you need to manually configure the relationships by using Data Annotations or the fluent API. For more information, see [Data Annotations - Relationships](../ef6/entity-framework-code-first-data-annotations.md) and [Fluent API - Relationships](../ef6/entity-framework-fluent-api-relationships.md).  
 
 ## Complex Types Convention  
 
 When Code First discovers a class definition where a primary key cannot be inferred, and no primary key is registered through data annotations or the fluent API, then the type is automatically registered as a complex type. Complex type detection also requires that the type does not have properties that reference entity types and is not referenced from a collection property on another type. Given the following class definitions Code First would infer that **Details** is a complex type because it has no primary key.  
 
-```  
+``` csharp
 public partial class OnsiteCourse : Course
 {
     public OnsiteCourse()
@@ -162,7 +163,7 @@ To learn about the conventions that DbContext uses to discover the connection to
 
 You can remove any of the conventions defined in the System.Data.Entity.ModelConfiguration.Conventions namespace. The following example removes **PluralizingTableNameConvention**.  
 
-```  
+``` csharp
 public class SchoolEntities : DbContext
 {
      . . .

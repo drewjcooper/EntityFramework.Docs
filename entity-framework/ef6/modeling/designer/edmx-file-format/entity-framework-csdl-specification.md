@@ -23,11 +23,11 @@ The EF Designer stores conceptual model information in an .edmx file at design t
 
 Versions of CSDL are differentiated by XML namespaces.
 
-| CSDL Version | XML Namespace |
-|--------------|---------------|
-| CSDL v1 | http://schemas.microsoft.com/ado/2006/04/edm |
-| CSDL v2 | http://schemas.microsoft.com/ado/2008/09/edm |
-| CSDL v3 | http://schemas.microsoft.com/ado/2009/11/edm |
+| CSDL Version | XML Namespace                                |
+|:-------------|:---------------------------------------------|
+| CSDL v1      | http://schemas.microsoft.com/ado/2006/04/edm |
+| CSDL v2      | http://schemas.microsoft.com/ado/2008/09/edm |
+| CSDL v3      | http://schemas.microsoft.com/ado/2009/11/edm |
 
  
 ## Association Element (CSDL)
@@ -49,13 +49,14 @@ An **Association** element can have the following child elements (in the order l
 
 The table below describes the attributes that can be applied to the **Association** element.
 
-| Attribute Name | Is Required | Value |
-|----------------|-------------|-------|
-| **Name** | Yes | The name of the association. |
+| Attribute Name | Is Required | Value                        |
+|:---------------|:------------|:-----------------------------|
+| **Name**       | Yes         | The name of the association. |
 
  
 
-> **Note**: Any number of annotation attributes (custom XML attributes) may be applied to the **Association** element. However, custom attributes may not belong to any XML namespace that is reserved for CSDL. The fully-qualified names for any two custom attributes cannot be the same.
+> [!NOTE]
+> Any number of annotation attributes (custom XML attributes) may be applied to the **Association** element. However, custom attributes may not belong to any XML namespace that is reserved for CSDL. The fully-qualified names for any two custom attributes cannot be the same.
 
  
 
@@ -63,7 +64,7 @@ The table below describes the attributes that can be applied to the **Associatio
 
 The following example shows an **Association** element that defines the **CustomerOrders** association when foreign keys have not been exposed on the **Customer** and **Order** entity types. The **Multiplicity** values for each **End** of the association indicate that many **Orders** can be associated with a **Customer**, but only one **Customer** can be associated with an **Order**. Additionally, the **OnDelete** element indicates that all **Orders** that are related to a particular **Customer** and have been loaded into the ObjectContext will be deleted if the **Customer** is deleted.
 
-```
+``` xml
  <Association Name="CustomerOrders">
    <End Type="ExampleModel.Customer" Role="Customer" Multiplicity="1" >
          <OnDelete Action="Cascade" />
@@ -75,7 +76,7 @@ The following example shows an **Association** element that defines the **Custom
 
 The following example shows an **Association** element that defines the **CustomerOrders** association when foreign keys have been exposed on the **Customer** and **Order** entity types. With foreign keys exposed, the relationship between the entities is managed with a **ReferentialConstraint** element. A corresponding AssociationSetMapping element is not necessary to map this association to the data source.
 
-```
+``` xml
  <Association Name="CustomerOrders">
    <End Type="ExampleModel.Customer" Role="Customer" Multiplicity="1" >
          <OnDelete Action="Cascade" />
@@ -111,14 +112,15 @@ The **Association** attribute specifies the type of association that an associat
 
 The table below describes the attributes that can be applied to the **AssociationSet** element.
 
-| Attribute Name | Is Required | Value |
-|----------------|-------------|-------|
-| **Name** | Yes | The name of the entity set. The value of the **Name** attribute cannot be the same as the value of the **Association** attribute. |
-| **Association** | Yes | The fully-qualified name of the association that the association set contains instances of. The association must be in the same namespace as the association set. |
+| Attribute Name  | Is Required | Value                                                                                                                                                             |
+|:----------------|:------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Name**        | Yes         | The name of the entity set. The value of the **Name** attribute cannot be the same as the value of the **Association** attribute.                                 |
+| **Association** | Yes         | The fully-qualified name of the association that the association set contains instances of. The association must be in the same namespace as the association set. |
 
  
 
-> **Note**: Any number of annotation attributes (custom XML attributes) may be applied to the **AssociationSet** element. However, custom attributes may not belong to any XML namespace that is reserved for CSDL. The fully-qualified names for any two custom attributes cannot be the same.
+> [!NOTE]
+> Any number of annotation attributes (custom XML attributes) may be applied to the **AssociationSet** element. However, custom attributes may not belong to any XML namespace that is reserved for CSDL. The fully-qualified names for any two custom attributes cannot be the same.
 
  
 
@@ -126,7 +128,7 @@ The table below describes the attributes that can be applied to the **Associatio
 
 The following example shows an **EntityContainer** element with two **AssociationSet** elements:
 
-```
+``` xml
  <EntityContainer Name="BooksContainer" >
    <EntitySet Name="Books" EntityType="BooksModel.Book" />
    <EntitySet Name="Publishers" EntityType="BooksModel.Publisher" />
@@ -154,7 +156,8 @@ The **CollectionType** element in conceptual schema definition language (CSDL) s
 -   RowType
 -   TypeRef
 
-> **Note**: A model will not validate if the type of a collection is specified with both the **Type** attribute and a child element.
+> [!NOTE]
+> A model will not validate if the type of a collection is specified with both the **Type** attribute and a child element.
 
  
 
@@ -162,22 +165,24 @@ The **CollectionType** element in conceptual schema definition language (CSDL) s
 
 The following table describes the attributes that can be applied to the **CollectionType** element. Note that the **DefaultValue**, **MaxLength**, **FixedLength**, **Precision**, **Scale**, **Unicode**, and **Collation** attributes are only applicable to collections of **EDMSimpleTypes**.
 
-| Attribute Name | Is Required | Value |
-|----------------|-------------|-------|
-| **Type** | No | The type of the collection. |
-| **Nullable** | No | **True** (the default value) or **False** depending on whether the property can have a null value. <br/> **Note**: In the CSDL v1, a complex type property must have `Nullable="False"`. |
-| **DefaultValue** | No | The default value of the property. |
-| **MaxLength** | No | The maximum length of the property value. |
-| **FixedLength** | No | **True** or **False** depending on whether the property value will be stored as a fixed length string. |
-| **Precision** | No | The precision of the property value. |
-| **Scale** | No | The scale of the property value. |
-| **SRID** | No | Spatial System Reference Identifier. Valid only for properties of spatial types.   For more information, see [SRID](http://en.wikipedia.org/wiki/SRID) and [SRID (SQL Server)](https://msdn.microsoft.com/library/bb964707.aspx) |
-| **Unicode** | No | **True** or **False** depending on whether the property value will be stored as a Unicode string. |
-| **Collation** | No | A string that specifies the collating sequence to be used in the data source. |
+| Attribute Name                                                          | Is Required | Value                                                                                                                                                                                                                            |
+|:------------------------------------------------------------------------|:------------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Type**                                                                | No          | The type of the collection.                                                                                                                                                                                                      |
+| **Nullable**                                                            | No          | **True** (the default value) or **False** depending on whether the property can have a null value. <br/> [!NOTE]                                                                                                                 |
+| > In the CSDL v1, a complex type property must have `Nullable="False"`. |             |                                                                                                                                                                                                                                  |
+| **DefaultValue**                                                        | No          | The default value of the property.                                                                                                                                                                                               |
+| **MaxLength**                                                           | No          | The maximum length of the property value.                                                                                                                                                                                        |
+| **FixedLength**                                                         | No          | **True** or **False** depending on whether the property value will be stored as a fixed length string.                                                                                                                           |
+| **Precision**                                                           | No          | The precision of the property value.                                                                                                                                                                                             |
+| **Scale**                                                               | No          | The scale of the property value.                                                                                                                                                                                                 |
+| **SRID**                                                                | No          | Spatial System Reference Identifier. Valid only for properties of spatial types.   For more information, see [SRID](http://en.wikipedia.org/wiki/SRID) and [SRID (SQL Server)](https://msdn.microsoft.com/library/bb964707.aspx) |
+| **Unicode**                                                             | No          | **True** or **False** depending on whether the property value will be stored as a Unicode string.                                                                                                                                |
+| **Collation**                                                           | No          | A string that specifies the collating sequence to be used in the data source.                                                                                                                                                    |
 
  
 
-> **Note**: Any number of annotation attributes (custom XML attributes) may be applied to the **CollectionType** element. However, custom attributes may not belong to any XML namespace that is reserved for CSDL. The fully-qualified names for any two custom attributes cannot be the same.
+> [!NOTE]
+> Any number of annotation attributes (custom XML attributes) may be applied to the **CollectionType** element. However, custom attributes may not belong to any XML namespace that is reserved for CSDL. The fully-qualified names for any two custom attributes cannot be the same.
 
  
 
@@ -185,7 +190,7 @@ The following table describes the attributes that can be applied to the **Collec
 
 The following example shows a model-defined function that that uses a **CollectionType** element to specify that the function returns a collection of **Person** entity types (as specified with the **ElementType** attribute).
 
-```
+``` xml
  <Function Name="LastNamesAfter">
         <Parameter Name="someString" Type="Edm.String"/>
         <ReturnType>
@@ -202,7 +207,7 @@ The following example shows a model-defined function that that uses a **Collecti
 
 The following example shows a model-defined function that uses a **CollectionType** element to specify that the function returns a collection of rows (as specified in the **RowType** element).
 
-```
+``` xml
  <Function Name="LastNamesAfter">
    <Parameter Name="someString" Type="Edm.String" />
    <ReturnType>
@@ -224,7 +229,7 @@ The following example shows a model-defined function that uses a **CollectionTyp
 
 The following example shows a model-defined function that uses the **CollectionType** element to specify that the function accepts as a parameter a collection of **Department** entity types.
 
-```
+``` xml
  <Function Name="GetAvgBudget">
       <Parameter Name="Departments">
           <CollectionType>
@@ -257,15 +262,18 @@ A **ComplexType** element can have the following child elements (in the order li
 
 The table below describes the attributes that can be applied to the **ComplexType** element.
 
-| Attribute Name | Is Required | Value |
-|----------------|-------------|-------|
-| Name | Yes | The name of the complex type. The name of a complex type cannot be the same as the name of another complex type, entity type, or association that is within the scope of the model. |
-| BaseType | No | The name of another complex type that is the base type of the complex type that is being defined. <br/> **Note**: This attribute is not applicable in CSDL v1. Inheritance for complex types is not supported in that version. |
-| Abstract | No | **True** or **False** (the default value) depending on whether the complex type is an abstract type. <br/> **Note**: This attribute is not applicable in CSDL v1. Complex types in that version cannot be abstract types. |
+| Attribute Name                                                                                                 | Is Required | Value                                                                                                                                                                               |
+|:---------------------------------------------------------------------------------------------------------------|:------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Name                                                                                                           | Yes         | The name of the complex type. The name of a complex type cannot be the same as the name of another complex type, entity type, or association that is within the scope of the model. |
+| BaseType                                                                                                       | No          | The name of another complex type that is the base type of the complex type that is being defined. <br/> [!NOTE]                                                                     |
+| > This attribute is not applicable in CSDL v1. Inheritance for complex types is not supported in that version. |             |                                                                                                                                                                                     |
+| Abstract                                                                                                       | No          | **True** or **False** (the default value) depending on whether the complex type is an abstract type. <br/> [!NOTE]                                                                  |
+| > This attribute is not applicable in CSDL v1. Complex types in that version cannot be abstract types.         |             |                                                                                                                                                                                     |
 
  
 
-> **Note**: Any number of annotation attributes (custom XML attributes) may be applied to the **ComplexType** element. However, custom attributes may not belong to any XML namespace that is reserved for CSDL. The fully-qualified names for any two custom attributes cannot be the same.
+> [!NOTE]
+> Any number of annotation attributes (custom XML attributes) may be applied to the **ComplexType** element. However, custom attributes may not belong to any XML namespace that is reserved for CSDL. The fully-qualified names for any two custom attributes cannot be the same.
 
  
 
@@ -273,7 +281,7 @@ The table below describes the attributes that can be applied to the **ComplexTyp
 
 The following example shows a complex type, **Address**, with the **EdmSimpleType** properties **StreetAddress**, **City**, **StateOrProvince**, **Country**, and **PostalCode**.
 
-```
+``` xml
  <ComplexType Name="Address" >
    <Property Type="String" Name="StreetAddress" Nullable="false" />
    <Property Type="String" Name="City" Nullable="false" />
@@ -286,7 +294,7 @@ The following example shows a complex type, **Address**, with the **EdmSimpleTyp
 
 To define the complex type **Address** (above) as a property of an entity type, you must declare the property type in the entity type definition. The following example shows the **Address** property as a complex type on an entity type (**Publisher**):
 
-```
+``` xml
  <EntityType Name="Publisher">
        <Key>
          <PropertyRef Name="Id" />
@@ -306,7 +314,8 @@ To define the complex type **Address** (above) as a property of an entity type, 
 
 The **DefiningExpression** element in conceptual schema definition language (CSDL) contains an Entity SQL expression that defines a function in the conceptual model.  
 
-> **Note**: For validation purposes, a **DefiningExpression** element can contain arbitrary content. However, Entity Framework will throw an exception at runtime if a **DefiningExpression** element does not contain valid Entity SQL.
+> [!NOTE]
+> For validation purposes, a **DefiningExpression** element can contain arbitrary content. However, Entity Framework will throw an exception at runtime if a **DefiningExpression** element does not contain valid Entity SQL.
 
  
 
@@ -318,7 +327,7 @@ Any number of annotation attributes (custom XML attributes) may be applied to th
 
 The following example uses a **DefiningExpression** element to define a function that returns the number of years since a book was published. The content of the **DefiningExpression** element is written in Entity SQL.
 
-```
+``` xml
  <Function Name="GetYearsInPrint" ReturnType="Edm.Int32" >
        <Parameter Name="book" Type="BooksModel.Book" />
        <DefiningExpression>
@@ -343,13 +352,14 @@ The **Dependent** element can have the following child elements (in the order li
 
 The table below describes the attributes that can be applied to the **Dependent** element.
 
-| Attribute Name | Is Required | Value |
-|----------------|-------------|-------|
-| **Role** | Yes | The name of the entity type on the dependent end of the association. |
+| Attribute Name | Is Required | Value                                                                |
+|:---------------|:------------|:---------------------------------------------------------------------|
+| **Role**       | Yes         | The name of the entity type on the dependent end of the association. |
 
  
 
-> **Note**: Any number of annotation attributes (custom XML attributes) may be applied to the **Dependent** element. However, custom attributes may not belong to any XML namespace that is reserved for CSDL. The fully-qualified names for any two custom attributes cannot be the same.
+> [!NOTE]
+> Any number of annotation attributes (custom XML attributes) may be applied to the **Dependent** element. However, custom attributes may not belong to any XML namespace that is reserved for CSDL. The fully-qualified names for any two custom attributes cannot be the same.
 
  
 
@@ -357,7 +367,7 @@ The table below describes the attributes that can be applied to the **Dependent*
 
 The following example shows a **ReferentialConstraint** element being used as part of the definition of the **PublishedBy** association. The **PublisherId** property of the **Book** entity type makes up the dependent end of the referential constraint.
 
-```
+``` xml
  <Association Name="PublishedBy">
    <End Type="BooksModel.Book" Role="Book" Multiplicity="*" >
    </End>
@@ -394,7 +404,7 @@ Any number of annotation attributes (custom XML attributes) may be applied to th
 
 The following example shows the **Documentation** element as a child element of an EntityType element. If the snippet below were in the CSDL content of an .edmx file, the contents of the **Summary** and **LongDescription** elements would appear in the Visual Studio **Properties** window when you click on the `Customer` entity type.
 
-```
+``` xml
  <EntityType Name="Customer">
     <Documentation>
       <Summary>Summary here.</Summary>
@@ -429,15 +439,16 @@ An **End** element can have the following child elements (in the order listed):
 
 The following table describes the attributes that can be applied to the **End** element when it is the child of an **Association** element.
 
-| Attribute Name | Is Required | Value |
-|----------------|-------------|-------|
-| **Type** | Yes | The name of the entity type at one end of the association. |
-| **Role** | No | A name for the association end. If no name is provided, the name of the entity type on the association end will be used. |
-| **Multiplicity** | Yes | **1**, **0..1**, or **\*** depending on the number of entity type instances that can be at the end of the association. <br/> **1** indicates that exactly one entity type instance exists at the association end. <br/> **0..1** indicates that zero or one entity type instances exist at the association end. <br/> **\*** indicates that zero, one, or more entity type instances exist at the association end.
+| Attribute Name   | Is Required | Value                                                                                                                                                                                                                                                                                                                                                                                                              |
+|:-----------------|:------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Type**         | Yes         | The name of the entity type at one end of the association.                                                                                                                                                                                                                                                                                                                                                         |
+| **Role**         | No          | A name for the association end. If no name is provided, the name of the entity type on the association end will be used.                                                                                                                                                                                                                                                                                           |
+| **Multiplicity** | Yes         | **1**, **0..1**, or **\*** depending on the number of entity type instances that can be at the end of the association. <br/> **1** indicates that exactly one entity type instance exists at the association end. <br/> **0..1** indicates that zero or one entity type instances exist at the association end. <br/> **\*** indicates that zero, one, or more entity type instances exist at the association end. |
 
  
 
-> **Note**: Any number of annotation attributes (custom XML attributes) may be applied to the **End** element. However, custom attributes may not belong to any XML namespace that is reserved for CSDL. The fully-qualified names for any two custom attributes cannot be the same.
+> [!NOTE]
+> Any number of annotation attributes (custom XML attributes) may be applied to the **End** element. However, custom attributes may not belong to any XML namespace that is reserved for CSDL. The fully-qualified names for any two custom attributes cannot be the same.
 
  
 
@@ -445,7 +456,7 @@ The following table describes the attributes that can be applied to the **End** 
 
 The following example shows an **Association** element that defines the **CustomerOrders** association. The **Multiplicity** values for each **End** of the association indicate that many **Orders** can be associated with a **Customer**, but only one **Customer** can be associated with an **Order**. Additionally, the **OnDelete** element indicates that all **Orders** that are related to a particular **Customer** and that have been loaded into the ObjectContext will be deleted if the **Customer** is deleted.
 
-```
+``` xml
  <Association Name="CustomerOrders">
    <End Type="ExampleModel.Customer" Role="Customer" Multiplicity="1" />
    <End Type="ExampleModel.Order" Role="Order" Multiplicity="*">
@@ -464,7 +475,8 @@ An **End** element can have the following child elements (in the order listed):
 -   Documentation (zero or one element)
 -   Annotation elements (zero or more elements)
 
-> **Note**: Annotation elements must appear after all other child elements. Annotation elements are only allowed in CSDL v2 and later.
+> [!NOTE]
+> Annotation elements must appear after all other child elements. Annotation elements are only allowed in CSDL v2 and later.
 
  
 
@@ -472,14 +484,15 @@ An **End** element can have the following child elements (in the order listed):
 
 The following table describes the attributes that can be applied to the **End** element when it is the child of an **AssociationSet** element.
 
-| Attribute Name | Is Required | Value |
-|----------------|-------------|-------|
-| **EntitySet** | Yes | The name of the **EntitySet** element that defines one end of the parent **AssociationSet** element. The **EntitySet** element must be defined in the same entity container as the parent **AssociationSet** element. |
-| **Role** | No | The name of the association set end. If the **Role** attribute is not used, the name of the association set end will be the name of the entity set. |
+| Attribute Name | Is Required | Value                                                                                                                                                                                                                 |
+|:---------------|:------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **EntitySet**  | Yes         | The name of the **EntitySet** element that defines one end of the parent **AssociationSet** element. The **EntitySet** element must be defined in the same entity container as the parent **AssociationSet** element. |
+| **Role**       | No          | The name of the association set end. If the **Role** attribute is not used, the name of the association set end will be the name of the entity set.                                                                   |
 
  
 
-> **Note**: Any number of annotation attributes (custom XML attributes) may be applied to the **End** element. However, custom attributes may not belong to any XML namespace that is reserved for CSDL. The fully-qualified names for any two custom attributes cannot be the same.
+> [!NOTE]
+> Any number of annotation attributes (custom XML attributes) may be applied to the **End** element. However, custom attributes may not belong to any XML namespace that is reserved for CSDL. The fully-qualified names for any two custom attributes cannot be the same.
 
  
 
@@ -487,7 +500,7 @@ The following table describes the attributes that can be applied to the **End** 
 
 The following example shows an **EntityContainer** element with two **AssociationSet** elements, each with two **End** elements:
 
-```
+``` xml
  <EntityContainer Name="BooksContainer" >
    <EntitySet Name="Books" EntityType="BooksModel.Book" />
    <EntitySet Name="Publishers" EntityType="BooksModel.Publisher" />
@@ -525,14 +538,15 @@ You can extend an **EntityContainer** element to include the contents of another
 
 The table below describes the attributes that can be applied to the **Using** element.
 
-| Attribute Name | Is Required | Value |
-|----------------|-------------|-------|
-| **Name** | Yes | The name of the entity container. |
-| **Extends** | No | The name of another entity container within the same namespace. |
+| Attribute Name | Is Required | Value                                                           |
+|:---------------|:------------|:----------------------------------------------------------------|
+| **Name**       | Yes         | The name of the entity container.                               |
+| **Extends**    | No          | The name of another entity container within the same namespace. |
 
  
 
-> **Note**: Any number of annotation attributes (custom XML attributes) may be applied to the **EntityContainer** element. However, custom attributes may not belong to any XML namespace that is reserved for CSDL. The fully-qualified names for any two custom attributes cannot be the same.
+> [!NOTE]
+> Any number of annotation attributes (custom XML attributes) may be applied to the **EntityContainer** element. However, custom attributes may not belong to any XML namespace that is reserved for CSDL. The fully-qualified names for any two custom attributes cannot be the same.
 
  
 
@@ -540,7 +554,7 @@ The table below describes the attributes that can be applied to the **Using** el
 
 The following example shows an **EntityContainer** element that defines three entity sets and two association sets.
 
-```
+``` xml
  <EntityContainer Name="BooksContainer" >
    <EntitySet Name="Books" EntityType="BooksModel.Book" />
    <EntitySet Name="Publishers" EntityType="BooksModel.Publisher" />
@@ -565,7 +579,8 @@ The **EntitySet** element in conceptual schema definition language is a logical 
 
 More than one entity set for a particular entity type may be defined.
 
-> **Note**: The EF Designer does not support conceptual models that contain multiple entity sets per type.
+> [!NOTE]
+> The EF Designer does not support conceptual models that contain multiple entity sets per type.
 
  
 
@@ -578,14 +593,15 @@ The **EntitySet** element can have the following child elements (in the order li
 
 The table below describes the attributes that can be applied to the **EntitySet** element.
 
-| Attribute Name | Is Required | Value |
-|----------------|-------------|-------|
-| **Name** | Yes | The name of the entity set. |
-| **EntityType** | Yes | The fully-qualified name of the entity type for which the entity set contains instances. |
+| Attribute Name | Is Required | Value                                                                                    |
+|:---------------|:------------|:-----------------------------------------------------------------------------------------|
+| **Name**       | Yes         | The name of the entity set.                                                              |
+| **EntityType** | Yes         | The fully-qualified name of the entity type for which the entity set contains instances. |
 
  
 
-> **Note**: Any number of annotation attributes (custom XML attributes) may be applied to the **EntitySet** element. However, custom attributes may not belong to any XML namespace that is reserved for CSDL. The fully-qualified names for any two custom attributes cannot be the same.
+> [!NOTE]
+> Any number of annotation attributes (custom XML attributes) may be applied to the **EntitySet** element. However, custom attributes may not belong to any XML namespace that is reserved for CSDL. The fully-qualified names for any two custom attributes cannot be the same.
 
  
 
@@ -593,7 +609,7 @@ The table below describes the attributes that can be applied to the **EntitySet*
 
 The following example shows an **EntityContainer** element with three **EntitySet** elements:
 
-```
+``` xml
  <EntityContainer Name="BooksContainer" >
    <EntitySet Name="Books" EntityType="BooksModel.Book" />
    <EntitySet Name="Publishers" EntityType="BooksModel.Publisher" />
@@ -612,7 +628,7 @@ The following example shows an **EntityContainer** element with three **EntitySe
 
 It is possible to define multiple entity sets per type (MEST). The following example defines an entity container with two entity sets for the **Book** entity type:
 
-```
+``` xml
  <EntityContainer Name="BooksContainer" >
    <EntitySet Name="Books" EntityType="BooksModel.Book" />
    <EntitySet Name="FictionBooks" EntityType="BooksModel.Book" />
@@ -657,16 +673,18 @@ An **EntityType** element can have the following child elements (in the order li
 
 The table below describes the attributes that can be applied to the **EntityType** element.
 
-| Attribute Name | Is Required | Value |
-|----------------|-------------|-------|
-| **Name** | Yes | The name of the entity type. |
-| **BaseType** | No | The name of another entity type that is the base type of the entity type that is being defined. |
-| **Abstract** | No | **True** or **False**, depending on whether the entity type is an abstract type. |
-| **OpenType** | No | **True** or **False** depending on whether the entity type is an open entity type. <br/> **Note**: The **OpenType** attribute is only applicable to entity types that are defined in conceptual models that are used with ADO.NET Data Services. |
+| Attribute Name                                                                                                                                  | Is Required | Value                                                                                            |
+|:------------------------------------------------------------------------------------------------------------------------------------------------|:------------|:-------------------------------------------------------------------------------------------------|
+| **Name**                                                                                                                                        | Yes         | The name of the entity type.                                                                     |
+| **BaseType**                                                                                                                                    | No          | The name of another entity type that is the base type of the entity type that is being defined.  |
+| **Abstract**                                                                                                                                    | No          | **True** or **False**, depending on whether the entity type is an abstract type.                 |
+| **OpenType**                                                                                                                                    | No          | **True** or **False** depending on whether the entity type is an open entity type. <br/> [!NOTE] |
+| > The **OpenType** attribute is only applicable to entity types that are defined in conceptual models that are used with ADO.NET Data Services. |             |                                                                                                  |
 
  
 
-> **Note**: Any number of annotation attributes (custom XML attributes) may be applied to the **EntityType** element. However, custom attributes may not belong to any XML namespace that is reserved for CSDL. The fully-qualified names for any two custom attributes cannot be the same.
+> [!NOTE]
+> Any number of annotation attributes (custom XML attributes) may be applied to the **EntityType** element. However, custom attributes may not belong to any XML namespace that is reserved for CSDL. The fully-qualified names for any two custom attributes cannot be the same.
 
  
 
@@ -674,7 +692,7 @@ The table below describes the attributes that can be applied to the **EntityType
 
 The following example shows an **EntityType** element with three **Property** elements and two **NavigationProperty** elements:
 
-```
+``` xml
  <EntityType Name="Book">
    <Key>
      <PropertyRef Name="ISBN" />
@@ -706,15 +724,16 @@ An **EnumType** element can have the following child elements (in the order list
 
 The table below describes the attributes that can be applied to the **EnumType** element.
 
-| Attribute Name | Is Required | Value |
-|----------------|-------------|-------|
-| **Name** | Yes | The name of the entity type. |
-| **IsFlags** | No | **True** or **False**, depending on whether the enum type can be used as a set of flags. The default value is **False.**. |
-| **UnderlyingType** | No | **Edm.Byte**, **Edm.Int16**, **Edm.Int32**, **Edm.Int64** or **Edm.SByte** defining the range of values of the type.   The default underlying type of enumeration elements is **Edm.Int32.**. |
+| Attribute Name     | Is Required | Value                                                                                                                                                                                         |
+|:-------------------|:------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Name**           | Yes         | The name of the entity type.                                                                                                                                                                  |
+| **IsFlags**        | No          | **True** or **False**, depending on whether the enum type can be used as a set of flags. The default value is **False.**.                                                                     |
+| **UnderlyingType** | No          | **Edm.Byte**, **Edm.Int16**, **Edm.Int32**, **Edm.Int64** or **Edm.SByte** defining the range of values of the type.   The default underlying type of enumeration elements is **Edm.Int32.**. |
 
  
 
-> **Note**: Any number of annotation attributes (custom XML attributes) may be applied to the **EnumType** element. However, custom attributes may not belong to any XML namespace that is reserved for CSDL. The fully-qualified names for any two custom attributes cannot be the same.
+> [!NOTE]
+> Any number of annotation attributes (custom XML attributes) may be applied to the **EnumType** element. However, custom attributes may not belong to any XML namespace that is reserved for CSDL. The fully-qualified names for any two custom attributes cannot be the same.
 
  
 
@@ -722,8 +741,8 @@ The table below describes the attributes that can be applied to the **EnumType**
 
 The following example shows an **EnumType** element with three **Member** elements:
 
-```
- \<EnumType Name="Color" IsFlags=”false” UnderlyingTyp=”Edm.Byte”>
+``` xml
+ <EnumType Name="Color" IsFlags=”false” UnderlyingTyp=”Edm.Byte”>
    <Member Name="Red" />
    <Member Name="Green" />
    <Member Name="Blue" />
@@ -751,14 +770,15 @@ A return type for a function must be specified with either the **ReturnType** (F
 
 The table below describes the attributes that can be applied to the **Function** element.
 
-| Attribute Name | Is Required | Value |
-|----------------|-------------|-------|
-| **Name** | Yes | The name of the function. |
-| **ReturnType** | No | The type returned by the function. |
+| Attribute Name | Is Required | Value                              |
+|:---------------|:------------|:-----------------------------------|
+| **Name**       | Yes         | The name of the function.          |
+| **ReturnType** | No          | The type returned by the function. |
 
  
 
-> **Note**: Any number of annotation attributes (custom XML attributes) may be applied to the **Function** element. However, custom attributes may not belong to any XML namespace that is reserved for CSDL. The fully-qualified names for any two custom attributes cannot be the same.
+> [!NOTE]
+> Any number of annotation attributes (custom XML attributes) may be applied to the **Function** element. However, custom attributes may not belong to any XML namespace that is reserved for CSDL. The fully-qualified names for any two custom attributes cannot be the same.
 
  
 
@@ -766,7 +786,7 @@ The table below describes the attributes that can be applied to the **Function**
 
 The following example uses a **Function** element to define a function that returns the number of years since an instructor was hired.
 
-```
+``` xml
  <Function Name="YearsSince" ReturnType="Edm.Int32">
    <Parameter Name="date" Type="Edm.DateTime" />
    <DefiningExpression>
@@ -797,16 +817,17 @@ A return type for a function must be specified with either the **ReturnType** (F
 
 The table below describes the attributes that can be applied to the **FunctionImport** element.
 
-| Attribute Name | Is Required | Value |
-|----------------|-------------|-------|
-| **Name** | Yes | The name of the imported function. |
-| **ReturnType** | No | The type that the function returns. Do not use this attribute if the function does not return a value. Otherwise, the value must be a collection of ComplexType, EntityType, or EDMSimpleType. |
-| **EntitySet** | No | If the function returns a collection of entity types, the value of the **EntitySet** must be the entity set to which the collection belongs. Otherwise, the **EntitySet** attribute must not be used. |
-| **IsComposable** | No | If the value is set to true, the function is composable (Table-valued Function) and can be used in a LINQ query.  The default is **false**. |
+| Attribute Name   | Is Required | Value                                                                                                                                                                                                 |
+|:-----------------|:------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Name**         | Yes         | The name of the imported function.                                                                                                                                                                    |
+| **ReturnType**   | No          | The type that the function returns. Do not use this attribute if the function does not return a value. Otherwise, the value must be a collection of ComplexType, EntityType, or EDMSimpleType.        |
+| **EntitySet**    | No          | If the function returns a collection of entity types, the value of the **EntitySet** must be the entity set to which the collection belongs. Otherwise, the **EntitySet** attribute must not be used. |
+| **IsComposable** | No          | If the value is set to true, the function is composable (Table-valued Function) and can be used in a LINQ query.  The default is **false**.                                                           |
 
  
 
-> **Note**: Any number of annotation attributes (custom XML attributes) may be applied to the **FunctionImport** element. However, custom attributes may not belong to any XML namespace that is reserved for CSDL. The fully-qualified names for any two custom attributes cannot be the same.
+> [!NOTE]
+> Any number of annotation attributes (custom XML attributes) may be applied to the **FunctionImport** element. However, custom attributes may not belong to any XML namespace that is reserved for CSDL. The fully-qualified names for any two custom attributes cannot be the same.
 
  
 
@@ -814,7 +835,7 @@ The table below describes the attributes that can be applied to the **FunctionIm
 
 The following example shows a **FunctionImport** element that accepts one parameter and returns a collection of entity types:
 
-```
+``` xml
  <FunctionImport Name="GetStudentGrades"
                  EntitySet="StudentGrade"
                  ReturnType="Collection(SchoolModel.StudentGrade)">
@@ -842,7 +863,7 @@ Any number of annotation attributes (custom XML attributes) may be applied to th
 
 The example below defines an entity type named **Book**. The entity key is defined by referencing the **ISBN** property of the entity type.
 
-```
+``` xml
  <EntityType Name="Book">
    <Key>
      <PropertyRef Name="ISBN" />
@@ -862,7 +883,7 @@ The **ISBN** property is a good choice for the entity key because an Internation
 
 The following example shows an entity type (**Author**) that has an entity key that consists of two properties, **Name** and **Address**.
 
-```
+``` xml
  <EntityType Name="Author">
    <Key>
      <PropertyRef Name="Name" />
@@ -888,14 +909,15 @@ The **Member** element is a child element of the EnumType element and defines a 
 
 The table below describes the attributes that can be applied to the **FunctionImport** element.
 
-| Attribute Name | Is Required | Value |
-|----------------|-------------|-------|
-| **Name** | Yes | The name of the member. |
-| **Value** | No | The value of the member. By default, the first member has the value 0, and the value of each successive enumerator is incremented by 1. Multiple members with the same values may exist. |
+| Attribute Name | Is Required | Value                                                                                                                                                                                    |
+|:---------------|:------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Name**       | Yes         | The name of the member.                                                                                                                                                                  |
+| **Value**      | No          | The value of the member. By default, the first member has the value 0, and the value of each successive enumerator is incremented by 1. Multiple members with the same values may exist. |
 
  
 
-> **Note**: Any number of annotation attributes (custom XML attributes) may be applied to the **FunctionImport** element. However, custom attributes may not belong to any XML namespace that is reserved for CSDL. The fully-qualified names for any two custom attributes cannot be the same.
+> [!NOTE]
+> Any number of annotation attributes (custom XML attributes) may be applied to the **FunctionImport** element. However, custom attributes may not belong to any XML namespace that is reserved for CSDL. The fully-qualified names for any two custom attributes cannot be the same.
 
  
 
@@ -903,11 +925,11 @@ The table below describes the attributes that can be applied to the **FunctionIm
 
 The following example shows an **EnumType** element with three **Member** elements:
 
-```
+``` xml
  <EnumType Name="Color">
-   \<Member Name="Red" Value=”1”/>
-   \<Member Name="Green" Value=”3” />
-   \<Member Name="Blue" Value=”5”/>
+   <Member Name="Red" Value=”1”/>
+   <Member Name="Green" Value=”3” />
+   <Member Name="Blue" Value=”5”/>
  </EntityType>
 ```
  
@@ -931,16 +953,17 @@ A **NavigationProperty** element can have the following child elements (in the o
 
 The table below describes the attributes that can be applied to the **NavigationProperty** element.
 
-| Attribute Name | Is Required | Value |
-|----------------|-------------|-------|
-| **Name** | Yes | The name of the navigation property. |
-| **Relationship** | Yes | The name of an association that is within the scope of the model. |
-| **ToRole** | Yes | The end of the association at which navigation ends. The value of the **ToRole** attribute must be the same as the value of one of the **Role** attributes defined on one of the association ends (defined in the AssociationEnd element). |
-| **FromRole** | Yes | The end of the association from which navigation begins. The value of the **FromRole** attribute must be the same as the value of one of the **Role** attributes defined on one of the association ends (defined in the AssociationEnd element). |
+| Attribute Name   | Is Required | Value                                                                                                                                                                                                                                            |
+|:-----------------|:------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Name**         | Yes         | The name of the navigation property.                                                                                                                                                                                                             |
+| **Relationship** | Yes         | The name of an association that is within the scope of the model.                                                                                                                                                                                |
+| **ToRole**       | Yes         | The end of the association at which navigation ends. The value of the **ToRole** attribute must be the same as the value of one of the **Role** attributes defined on one of the association ends (defined in the AssociationEnd element).       |
+| **FromRole**     | Yes         | The end of the association from which navigation begins. The value of the **FromRole** attribute must be the same as the value of one of the **Role** attributes defined on one of the association ends (defined in the AssociationEnd element). |
 
  
 
-> **Note**: Any number of annotation attributes (custom XML attributes) may be applied to the **NavigationProperty** element. However, custom attributes may not belong to any XML namespace that is reserved for CSDL. The fully-qualified names for any two custom attributes cannot be the same.
+> [!NOTE]
+> Any number of annotation attributes (custom XML attributes) may be applied to the **NavigationProperty** element. However, custom attributes may not belong to any XML namespace that is reserved for CSDL. The fully-qualified names for any two custom attributes cannot be the same.
 
  
 
@@ -948,7 +971,7 @@ The table below describes the attributes that can be applied to the **Navigation
 
 The following example defines an entity type (**Book**) with two navigation properties (**PublishedBy** and **WrittenBy**):
 
-```
+``` xml
  <EntityType Name="Book">
    <Key>
      <PropertyRef Name="ISBN" />
@@ -970,7 +993,8 @@ The following example defines an entity type (**Book**) with two navigation prop
 
 The **OnDelete** element in conceptual schema definition language (CSDL) defines behavior that is connected with an association. If the **Action** attribute is set to **Cascade** on one end of an association, related entity types on the other end of the association are deleted when the entity type on the first end is deleted. If the association between two entity types is a primary key-to-primary key relationship, then a loaded dependent object is deleted when the principal object on the other end of the association is deleted regardless of the **OnDelete** specification.  
 
-> **Note**: The **OnDelete** element only affects the runtime behavior of an application; it does not affect behavior in the data source. The behavior defined in the data source should be the same as the behavior defined in the application.
+> [!NOTE]
+> The **OnDelete** element only affects the runtime behavior of an application; it does not affect behavior in the data source. The behavior defined in the data source should be the same as the behavior defined in the application.
 
  
 
@@ -983,13 +1007,14 @@ An **OnDelete** element can have the following child elements (in the order list
 
 The table below describes the attributes that can be applied to the **OnDelete** element.
 
-| Attribute Name | Is Required | Value |
-|----------------|-------------|-------|
-| **Action** | Yes | **Cascade** or **None**. If **Cascade**, dependent entity types will be deleted when the principal entity type is deleted. If **None**, dependent entity types will not be deleted when the principal entity type is deleted. |
+| Attribute Name | Is Required | Value                                                                                                                                                                                                                         |
+|:---------------|:------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Action**     | Yes         | **Cascade** or **None**. If **Cascade**, dependent entity types will be deleted when the principal entity type is deleted. If **None**, dependent entity types will not be deleted when the principal entity type is deleted. |
 
  
 
-> **Note**: Any number of annotation attributes (custom XML attributes) may be applied to the **Association** element. However, custom attributes may not belong to any XML namespace that is reserved for CSDL. The fully-qualified names for any two custom attributes cannot be the same.
+> [!NOTE]
+> Any number of annotation attributes (custom XML attributes) may be applied to the **Association** element. However, custom attributes may not belong to any XML namespace that is reserved for CSDL. The fully-qualified names for any two custom attributes cannot be the same.
 
  
 
@@ -997,7 +1022,7 @@ The table below describes the attributes that can be applied to the **OnDelete**
 
 The following example shows an **Association** element that defines the **CustomerOrders** association. The **OnDelete** element indicates that all **Orders** that are related to a particular **Customer** and have been loaded into the ObjectContext will be deleted when the **Customer** is deleted.
 
-```
+``` xml
  <Association Name="CustomerOrders">
    <End Type="ExampleModel.Customer" Role="Customer" Multiplicity="1">
          <OnDelete Action="Cascade" />
@@ -1026,19 +1051,20 @@ The **Parameter** element can have the following child elements (in the order li
 
 The following table describes the attributes that can be applied to the **Parameter** element.
 
-| Attribute Name | Is Required | Value |
-|----------------|-------------|-------|
-| **Name** | Yes | The name of the parameter. |
-| **Type** | Yes | The parameter type. The value must be an **EDMSimpleType** or a complex type that is within the scope of the model. |
-| **Mode** | No | **In**, **Out**, or **InOut** depending on whether the parameter is an input, output, or input/output parameter. |
-| **MaxLength** | No | The maximum allowed length of the parameter. |
-| **Precision** | No | The precision of the parameter. |
-| **Scale** | No | The scale of the parameter. |
-| **SRID** | No | Spatial System Reference Identifier. Valid only for parameters of spatial types. For more information, see [SRID](http://en.wikipedia.org/wiki/SRID) and [SRID (SQL Server)](https://msdn.microsoft.com/library/bb964707.aspx). |
+| Attribute Name | Is Required | Value                                                                                                                                                                                                                           |
+|:---------------|:------------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Name**       | Yes         | The name of the parameter.                                                                                                                                                                                                      |
+| **Type**       | Yes         | The parameter type. The value must be an **EDMSimpleType** or a complex type that is within the scope of the model.                                                                                                             |
+| **Mode**       | No          | **In**, **Out**, or **InOut** depending on whether the parameter is an input, output, or input/output parameter.                                                                                                                |
+| **MaxLength**  | No          | The maximum allowed length of the parameter.                                                                                                                                                                                    |
+| **Precision**  | No          | The precision of the parameter.                                                                                                                                                                                                 |
+| **Scale**      | No          | The scale of the parameter.                                                                                                                                                                                                     |
+| **SRID**       | No          | Spatial System Reference Identifier. Valid only for parameters of spatial types. For more information, see [SRID](http://en.wikipedia.org/wiki/SRID) and [SRID (SQL Server)](https://msdn.microsoft.com/library/bb964707.aspx). |
 
  
 
-> **Note**: Any number of annotation attributes (custom XML attributes) may be applied to the **Parameter** element. However, custom attributes may not belong to any XML namespace that is reserved for CSDL. The fully-qualified names for any two custom attributes cannot be the same.
+> [!NOTE]
+> Any number of annotation attributes (custom XML attributes) may be applied to the **Parameter** element. However, custom attributes may not belong to any XML namespace that is reserved for CSDL. The fully-qualified names for any two custom attributes cannot be the same.
 
  
 
@@ -1046,7 +1072,7 @@ The following table describes the attributes that can be applied to the **Parame
 
 The following example shows a **FunctionImport** element with one **Parameter** child element. The function accepts one input parameter and returns a collection of entity types.
 
-```
+``` xml
  <FunctionImport Name="GetStudentGrades"
                  EntitySet="StudentGrade"
                  ReturnType="Collection(SchoolModel.StudentGrade)">
@@ -1066,13 +1092,15 @@ The **Parameter** element can have the following child elements (in the order li
 -   ReferenceType (zero or one elements)
 -   RowType (zero or one elements)
 
-> **Note**: Only one of the **CollectionType**, **ReferenceType**, or **RowType** elements can be a child element of a **Property** element.
+> [!NOTE]
+> Only one of the **CollectionType**, **ReferenceType**, or **RowType** elements can be a child element of a **Property** element.
 
  
 
 -   Annotation elements (zero or more elements allowed)
 
-> **Note**: Annotation elements must appear after all other child elements. Annotation elements are only allowed in CSDL v2 and later.
+> [!NOTE]
+> Annotation elements must appear after all other child elements. Annotation elements are only allowed in CSDL v2 and later.
 
  
 
@@ -1080,23 +1108,24 @@ The **Parameter** element can have the following child elements (in the order li
 
 The following table describes the attributes that can be applied to the **Parameter** element.
 
-| Attribute Name | Is Required | Value |
-|----------------|-------------|-------|
-| **Name** | Yes | The name of the parameter. |
-| **Type** | No | The parameter type. A parameter can be any of the following types (or collections of these types): <br/> **EdmSimpleType** <br/> entity type <br/> complex type <br/> row type <br/> reference type |
-| **Nullable** | No | **True** (the default value) or **False** depending on whether the property can have a **null** value. |
-| **DefaultValue** | No | The default value of the property. |
-| **MaxLength** | No | The maximum length of the property value. |
-| **FixedLength** | No | **True** or **False** depending on whether the property value will be stored as a fixed length string. |
-| **Precision** | No | The precision of the property value. |
-| **Scale** | No | The scale of the property value. |
-| **SRID** | No | Spatial System Reference Identifier. Valid only for properties of spatial types. For more information, see [SRID](http://en.wikipedia.org/wiki/SRID) and [SRID (SQL Server)](https://msdn.microsoft.com/library/bb964707.aspx). |
-| **Unicode** | No | **True** or **False** depending on whether the property value will be stored as a Unicode string. |
-| **Collation** | No | A string that specifies the collating sequence to be used in the data source. |
+| Attribute Name   | Is Required | Value                                                                                                                                                                                                                           |
+|:-----------------|:------------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Name**         | Yes         | The name of the parameter.                                                                                                                                                                                                      |
+| **Type**         | No          | The parameter type. A parameter can be any of the following types (or collections of these types): <br/> **EdmSimpleType** <br/> entity type <br/> complex type <br/> row type <br/> reference type                             |
+| **Nullable**     | No          | **True** (the default value) or **False** depending on whether the property can have a **null** value.                                                                                                                          |
+| **DefaultValue** | No          | The default value of the property.                                                                                                                                                                                              |
+| **MaxLength**    | No          | The maximum length of the property value.                                                                                                                                                                                       |
+| **FixedLength**  | No          | **True** or **False** depending on whether the property value will be stored as a fixed length string.                                                                                                                          |
+| **Precision**    | No          | The precision of the property value.                                                                                                                                                                                            |
+| **Scale**        | No          | The scale of the property value.                                                                                                                                                                                                |
+| **SRID**         | No          | Spatial System Reference Identifier. Valid only for properties of spatial types. For more information, see [SRID](http://en.wikipedia.org/wiki/SRID) and [SRID (SQL Server)](https://msdn.microsoft.com/library/bb964707.aspx). |
+| **Unicode**      | No          | **True** or **False** depending on whether the property value will be stored as a Unicode string.                                                                                                                               |
+| **Collation**    | No          | A string that specifies the collating sequence to be used in the data source.                                                                                                                                                   |
 
  
 
-> **Note**: Any number of annotation attributes (custom XML attributes) may be applied to the **Parameter** element. However, custom attributes may not belong to any XML namespace that is reserved for CSDL. The fully-qualified names for any two custom attributes cannot be the same.
+> [!NOTE]
+> Any number of annotation attributes (custom XML attributes) may be applied to the **Parameter** element. However, custom attributes may not belong to any XML namespace that is reserved for CSDL. The fully-qualified names for any two custom attributes cannot be the same.
 
  
 
@@ -1104,7 +1133,7 @@ The following table describes the attributes that can be applied to the **Parame
 
 The following example shows a **Function** element that uses one **Parameter** child element to define a function parameter.
 
-```
+``` xml
  <Function Name="GetYearsEmployed" ReturnType="Edm.Int32">
  <Parameter Name="Instructor" Type="SchoolModel.Person" />
    <DefiningExpression>
@@ -1128,13 +1157,14 @@ The **Principal** element can have the following child elements (in the order li
 
 The table below describes the attributes that can be applied to the **Principal** element.
 
-| Attribute Name | Is Required | Value |
-|----------------|-------------|-------|
-| **Role** | Yes | The name of the entity type on the principal end of the association. |
+| Attribute Name | Is Required | Value                                                                |
+|:---------------|:------------|:---------------------------------------------------------------------|
+| **Role**       | Yes         | The name of the entity type on the principal end of the association. |
 
  
 
-> **Note**: Any number of annotation attributes (custom XML attributes) may be applied to the **Principal** element. However, custom attributes may not belong to any XML namespace that is reserved for CSDL. The fully-qualified names for any two custom attributes cannot be the same.
+> [!NOTE]
+> Any number of annotation attributes (custom XML attributes) may be applied to the **Principal** element. However, custom attributes may not belong to any XML namespace that is reserved for CSDL. The fully-qualified names for any two custom attributes cannot be the same.
 
  
 
@@ -1142,7 +1172,7 @@ The table below describes the attributes that can be applied to the **Principal*
 
 The following example shows a **ReferentialConstraint** element that is part of the definition of the **PublishedBy** association. The **Id** property of the **Publisher** entity type makes up the principal end of the referential constraint.
 
-```
+``` xml
  <Association Name="PublishedBy">
    <End Type="BooksModel.Book" Role="Book" Multiplicity="*" >
    </End>
@@ -1176,7 +1206,8 @@ The **Property** element can have the following child elements (in the order lis
 
 The following facets can be applied to a **Property** element: **Nullable**, **DefaultValue**, **MaxLength**, **FixedLength**, **Precision**, **Scale**, **Unicode**, **Collation**, **ConcurrencyMode**. Facets are XML attributes that provide information about how property values are stored in the data store.
 
-> **Note**: Facets can only be applied to properties of type **EDMSimpleType**.
+> [!NOTE]
+> Facets can only be applied to properties of type **EDMSimpleType**.
 
  
 
@@ -1184,24 +1215,26 @@ The following facets can be applied to a **Property** element: **Nullable**, **D
 
 The following table describes the attributes that can be applied to the **Property** element.
 
-| Attribute Name | Is Required | Value |
-|----------------|-------------|-------|
-| **Name** | Yes | The name of the property. |
-| **Type** | Yes | The type of the property value. The property value type must be an **EDMSimpleType** or a complex type (indicated by a fully-qualified name) that is within scope of the model. |
-| **Nullable** | No | **True** (the default value) or <strong>False</strong> depending on whether the property can have a null value. <br/> **Note**: In the CSDL v1 a complex type property must have `Nullable="False"`. |
-| **DefaultValue** | No | The default value of the property. |
-| **MaxLength** | No | The maximum length of the property value. |
-| **FixedLength** | No | **True** or **False** depending on whether the property value will be stored as a fixed length string. |
-| **Precision** | No | The precision of the property value. |
-| **Scale** | No | The scale of the property value. |
-| **SRID** | No | Spatial System Reference Identifier. Valid only for properties of spatial types. For more information, see [SRID](http://en.wikipedia.org/wiki/SRID) and [SRID (SQL Server)](https://msdn.microsoft.com/library/bb964707.aspx). |
-| **Unicode** | No | **True** or **False** depending on whether the property value will be stored as a Unicode string. |
-| **Collation** | No | A string that specifies the collating sequence to be used in the data source. |
-| **ConcurrencyMode** | No | **None** (the default value) or **Fixed**. If the value is set to **Fixed**, the property value will be used in optimistic concurrency checks. |
+| Attribute Name                                                         | Is Required | Value                                                                                                                                                                                                                           |
+|:-----------------------------------------------------------------------|:------------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Name**                                                               | Yes         | The name of the property.                                                                                                                                                                                                       |
+| **Type**                                                               | Yes         | The type of the property value. The property value type must be an **EDMSimpleType** or a complex type (indicated by a fully-qualified name) that is within scope of the model.                                                 |
+| **Nullable**                                                           | No          | **True** (the default value) or <strong>False</strong> depending on whether the property can have a null value. <br/> [!NOTE]                                                                                                   |
+| > In the CSDL v1 a complex type property must have `Nullable="False"`. |             |                                                                                                                                                                                                                                 |
+| **DefaultValue**                                                       | No          | The default value of the property.                                                                                                                                                                                              |
+| **MaxLength**                                                          | No          | The maximum length of the property value.                                                                                                                                                                                       |
+| **FixedLength**                                                        | No          | **True** or **False** depending on whether the property value will be stored as a fixed length string.                                                                                                                          |
+| **Precision**                                                          | No          | The precision of the property value.                                                                                                                                                                                            |
+| **Scale**                                                              | No          | The scale of the property value.                                                                                                                                                                                                |
+| **SRID**                                                               | No          | Spatial System Reference Identifier. Valid only for properties of spatial types. For more information, see [SRID](http://en.wikipedia.org/wiki/SRID) and [SRID (SQL Server)](https://msdn.microsoft.com/library/bb964707.aspx). |
+| **Unicode**                                                            | No          | **True** or **False** depending on whether the property value will be stored as a Unicode string.                                                                                                                               |
+| **Collation**                                                          | No          | A string that specifies the collating sequence to be used in the data source.                                                                                                                                                   |
+| **ConcurrencyMode**                                                    | No          | **None** (the default value) or **Fixed**. If the value is set to **Fixed**, the property value will be used in optimistic concurrency checks.                                                                                  |
 
  
 
-> **Note**: Any number of annotation attributes (custom XML attributes) may be applied to the **Property** element. However, custom attributes may not belong to any XML namespace that is reserved for CSDL. The fully-qualified names for any two custom attributes cannot be the same.
+> [!NOTE]
+> Any number of annotation attributes (custom XML attributes) may be applied to the **Property** element. However, custom attributes may not belong to any XML namespace that is reserved for CSDL. The fully-qualified names for any two custom attributes cannot be the same.
 
  
 
@@ -1209,7 +1242,7 @@ The following table describes the attributes that can be applied to the **Proper
 
 The following example shows an **EntityType** element with three **Property** elements:
 
-```
+``` xml
  <EntityType Name="Book">
    <Key>
      <PropertyRef Name="ISBN" />
@@ -1227,7 +1260,7 @@ The following example shows an **EntityType** element with three **Property** el
 
 The following example shows a **ComplexType** element with five **Property** elements:
 
-```
+``` xml
  <ComplexType Name="Address" >
    <Property Type="String" Name="StreetAddress" Nullable="false" />
    <Property Type="String" Name="City" Nullable="false" />
@@ -1250,7 +1283,8 @@ The **Property** element can have exactly one of the following child elements:
 
 The **Property** element can have any number child annotation elements.
 
-> **Note**: Annotation elements are only allowed in CSDL v2 and later.
+> [!NOTE]
+> Annotation elements are only allowed in CSDL v2 and later.
 
  
 
@@ -1258,23 +1292,25 @@ The **Property** element can have any number child annotation elements.
 
 The following table describes the attributes that can be applied to the **Property** element.
 
-| Attribute Name | Is Required | Value |
-|----------------|-------------|-------|
-| **Name** | Yes | The name of the property. |
-| **Type** | Yes | The type of the property value. |
-| **Nullable** | No | **True** (the default value) or **False** depending on whether the property can have a null value. <br/> **Note**: In CSDL v1 a complex type property must have `Nullable="False"`. |
-| **DefaultValue** | No | The default value of the property. |
-| **MaxLength** | No | The maximum length of the property value. |
-| **FixedLength** | No | **True** or **False** depending on whether the property value will be stored as a fixed length string. |
-| **Precision** | No | The precision of the property value. |
-| **Scale** | No | The scale of the property value. |
-| **SRID** | No | Spatial System Reference Identifier. Valid only for properties of spatial types. For more information, see [SRID](http://en.wikipedia.org/wiki/SRID) and [SRID (SQL Server)](https://msdn.microsoft.com/library/bb964707.aspx). |
-| **Unicode** | No | **True** or **False** depending on whether the property value will be stored as a Unicode string. |
-| **Collation** | No | A string that specifies the collating sequence to be used in the data source. |
+| Attribute Name                                                     | Is Required | Value                                                                                                                                                                                                                           |
+|:-------------------------------------------------------------------|:------------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Name**                                                           | Yes         | The name of the property.                                                                                                                                                                                                       |
+| **Type**                                                           | Yes         | The type of the property value.                                                                                                                                                                                                 |
+| **Nullable**                                                       | No          | **True** (the default value) or **False** depending on whether the property can have a null value. <br/> [!NOTE]                                                                                                                |
+| > In CSDL v1 a complex type property must have `Nullable="False"`. |             |                                                                                                                                                                                                                                 |
+| **DefaultValue**                                                   | No          | The default value of the property.                                                                                                                                                                                              |
+| **MaxLength**                                                      | No          | The maximum length of the property value.                                                                                                                                                                                       |
+| **FixedLength**                                                    | No          | **True** or **False** depending on whether the property value will be stored as a fixed length string.                                                                                                                          |
+| **Precision**                                                      | No          | The precision of the property value.                                                                                                                                                                                            |
+| **Scale**                                                          | No          | The scale of the property value.                                                                                                                                                                                                |
+| **SRID**                                                           | No          | Spatial System Reference Identifier. Valid only for properties of spatial types. For more information, see [SRID](http://en.wikipedia.org/wiki/SRID) and [SRID (SQL Server)](https://msdn.microsoft.com/library/bb964707.aspx). |
+| **Unicode**                                                        | No          | **True** or **False** depending on whether the property value will be stored as a Unicode string.                                                                                                                               |
+| **Collation**                                                      | No          | A string that specifies the collating sequence to be used in the data source.                                                                                                                                                   |
 
  
 
-> **Note**: Any number of annotation attributes (custom XML attributes) may be applied to the **Property** element. However, custom attributes may not belong to any XML namespace that is reserved for CSDL. The fully-qualified names for any two custom attributes cannot be the same.
+> [!NOTE]
+> Any number of annotation attributes (custom XML attributes) may be applied to the **Property** element. However, custom attributes may not belong to any XML namespace that is reserved for CSDL. The fully-qualified names for any two custom attributes cannot be the same.
 
  
 
@@ -1282,7 +1318,7 @@ The following table describes the attributes that can be applied to the **Proper
 
 The following example shows **Property** elements used to define the shape of the return type of a model-defined function.
 
-```
+``` xml
  <Function Name="LastNamesAfter">
    <Parameter Name="someString" Type="Edm.String" />
    <ReturnType>
@@ -1313,7 +1349,8 @@ The **PropertyRef** element in conceptual schema definition language (CSDL) refe
 
 The **PropertyRef** element can only have annotation elements (zero or more) as child elements.
 
-> **Note**: Annotation elements are only allowed in CSDL v2 and later.
+> [!NOTE]
+> Annotation elements are only allowed in CSDL v2 and later.
 
  
 
@@ -1321,13 +1358,14 @@ The **PropertyRef** element can only have annotation elements (zero or more) as 
 
 The table below describes the attributes that can be applied to the **PropertyRef** element.
 
-| Attribute Name | Is Required | Value |
-|----------------|-------------|-------|
-| **Name** | Yes | The name of the referenced property. |
+| Attribute Name | Is Required | Value                                |
+|:---------------|:------------|:-------------------------------------|
+| **Name**       | Yes         | The name of the referenced property. |
 
  
 
-> **Note**: Any number of annotation attributes (custom XML attributes) may be applied to the **PropertyRef** element. However, custom attributes may not belong to any XML namespace that is reserved for CSDL. The fully-qualified names for any two custom attributes cannot be the same.
+> [!NOTE]
+> Any number of annotation attributes (custom XML attributes) may be applied to the **PropertyRef** element. However, custom attributes may not belong to any XML namespace that is reserved for CSDL. The fully-qualified names for any two custom attributes cannot be the same.
 
  
 
@@ -1335,7 +1373,7 @@ The table below describes the attributes that can be applied to the **PropertyRe
 
 The example below defines an entity type (**Book**). The entity key is defined by referencing the **ISBN** property of the entity type.
 
-```
+``` xml
  <EntityType Name="Book">
    <Key>
      <PropertyRef Name="ISBN" />
@@ -1353,7 +1391,7 @@ The example below defines an entity type (**Book**). The entity key is defined b
 
 In the next example, two **PropertyRef** elements are used to indicate that two properties (**Id** and **PublisherId**) are the principal and dependent ends of a referential constraint.
 
-```
+``` xml
  <Association Name="PublishedBy">
    <End Type="BooksModel.Book" Role="Book" Multiplicity="*" >
    </End>
@@ -1391,13 +1429,14 @@ A **ReferenceType** element can have the following child elements (in the order 
 
 The table below describes the attributes that can be applied to the **ReferenceType** element.
 
-| Attribute Name | Is Required | Value |
-|----------------|-------------|-------|
-| **Type** | Yes | The name of the entity type being referenced. |
+| Attribute Name | Is Required | Value                                         |
+|:---------------|:------------|:----------------------------------------------|
+| **Type**       | Yes         | The name of the entity type being referenced. |
 
  
 
-> **Note**: Any number of annotation attributes (custom XML attributes) may be applied to the **ReferenceType** element. However, custom attributes may not belong to any XML namespace that is reserved for CSDL. The fully-qualified names for any two custom attributes cannot be the same.
+> [!NOTE]
+> Any number of annotation attributes (custom XML attributes) may be applied to the **ReferenceType** element. However, custom attributes may not belong to any XML namespace that is reserved for CSDL. The fully-qualified names for any two custom attributes cannot be the same.
 
  
 
@@ -1405,7 +1444,7 @@ The table below describes the attributes that can be applied to the **ReferenceT
 
 The following example shows the **ReferenceType** element used as a child of a **Parameter** element in a model-defined function that accepts a reference to a **Person** entity type:
 
-```
+``` xml
  <Function Name="GetYearsEmployed" ReturnType="Edm.Int32">
    <Parameter Name="instructor">
      <ReferenceType Type="SchoolModel.Person" />
@@ -1419,7 +1458,7 @@ The following example shows the **ReferenceType** element used as a child of a *
 
 The following example shows the **ReferenceType** element used as a child of a **ReturnType** (Function) element in a model-defined function that returns a reference to a **Person** entity type:
 
-```
+``` xml
  <Function Name="GetPersonReference">
      <Parameter Name="p" Type="SchoolModel.Person" />
      <ReturnType>
@@ -1457,7 +1496,7 @@ The **ReferentialConstraint** element can have any number of annotation attribut
 
 The following example shows a **ReferentialConstraint** element being used as part of the definition of the **PublishedBy** association.
 
-```
+``` xml
  <Association Name="PublishedBy">
    <End Type="BooksModel.Book" Role="Book" Multiplicity="*" >
    </End>
@@ -1488,7 +1527,8 @@ The return type of a function can be specified with either the **Type** attribut
 -   ReferenceType
 -   RowType
 
-> **Note**: A model will not validate if you specify a function return type with both the **Type** attribute of the **ReturnType** (Function) element and one of the child elements.
+> [!NOTE]
+> A model will not validate if you specify a function return type with both the **Type** attribute of the **ReturnType** (Function) element and one of the child elements.
 
  
 
@@ -1496,13 +1536,14 @@ The return type of a function can be specified with either the **Type** attribut
 
 The following table describes the attributes that can be applied to the **ReturnType** (Function) element.
 
-| Attribute Name | Is Required | Value |
-|----------------|-------------|-------|
-| **ReturnType** | No | The type returned by the function. |
+| Attribute Name | Is Required | Value                              |
+|:---------------|:------------|:-----------------------------------|
+| **ReturnType** | No          | The type returned by the function. |
 
  
 
-> **Note**: Any number of annotation attributes (custom XML attributes) may be applied to the **ReturnType** (Function) element. However, custom attributes may not belong to any XML namespace that is reserved for CSDL. The fully-qualified names for any two custom attributes cannot be the same.
+> [!NOTE]
+> Any number of annotation attributes (custom XML attributes) may be applied to the **ReturnType** (Function) element. However, custom attributes may not belong to any XML namespace that is reserved for CSDL. The fully-qualified names for any two custom attributes cannot be the same.
 
  
 
@@ -1510,7 +1551,7 @@ The following table describes the attributes that can be applied to the **Return
 
 The following example uses a **Function** element to define a function that returns the number of years a book has been in print. Note that the return type is specified by the **Type** attribute of a **ReturnType** (Function) element.
 
-```
+``` xml
  <Function Name="GetYearsInPrint">
    \<ReturnType Type=="Edm.Int32">
    <Parameter Name="book" Type="BooksModel.Book" />
@@ -1535,14 +1576,15 @@ The return type of a function is specified with the **Type** attribute of the **
 
 The following table describes the attributes that can be applied to the **ReturnType** (FunctionImport) element.
 
-| Attribute Name | Is Required | Value |
-|----------------|-------------|-------|
-| **Type** | No | The type that the function returns. The value must be a collection of ComplexType, EntityType, or EDMSimpleType. |
-| **EntitySet** | No | If the function returns a collection of entity types, the value of the **EntitySet** must be the entity set to which the collection belongs. Otherwise, the **EntitySet** attribute must not be used. |
+| Attribute Name | Is Required | Value                                                                                                                                                                                                 |
+|:---------------|:------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Type**       | No          | The type that the function returns. The value must be a collection of ComplexType, EntityType, or EDMSimpleType.                                                                                      |
+| **EntitySet**  | No          | If the function returns a collection of entity types, the value of the **EntitySet** must be the entity set to which the collection belongs. Otherwise, the **EntitySet** attribute must not be used. |
 
  
 
-> **Note**: Any number of annotation attributes (custom XML attributes) may be applied to the **ReturnType** (FunctionImport) element. However, custom attributes may not belong to any XML namespace that is reserved for CSDL. The fully-qualified names for any two custom attributes cannot be the same.
+> [!NOTE]
+> Any number of annotation attributes (custom XML attributes) may be applied to the **ReturnType** (FunctionImport) element. However, custom attributes may not belong to any XML namespace that is reserved for CSDL. The fully-qualified names for any two custom attributes cannot be the same.
 
  
 
@@ -1550,7 +1592,7 @@ The following table describes the attributes that can be applied to the **Return
 
 The following example uses a **FunctionImport** that returns books and publishers. Note that the function returns two result sets and therefore two **ReturnType** (FunctionImport) elements are specified.
 
-```
+``` xml
  <FunctionImport Name="GetBooksAndPublishers">
    \<ReturnType Type=="Collection(BooksModel.Book )" EntitySet=”Books”>
    \<ReturnType Type=="Collection(BooksModel.Publisher)" EntitySet=”Publishers”>
@@ -1583,7 +1625,7 @@ Any number of annotation attributes (custom XML attributes) may be applied to th
 
 The following example shows a model-defined function that uses a **CollectionType** element to specify that the function returns a collection of rows (as specified in the **RowType** element).
 
-```
+``` xml
  <Function Name="LastNamesAfter">
    <Parameter Name="someString" Type="Edm.String" />
    <ReturnType>
@@ -1601,9 +1643,6 @@ The following example shows a model-defined function that uses a **CollectionTyp
    </DefiningExpression>
  </Function>
 ```
- 
-
- 
 
 ## Schema Element (CSDL)
 
@@ -1621,7 +1660,8 @@ The **Schema** element may contain zero or more of the following child elements:
 
 A **Schema** element may contain zero or one Annotation elements.
 
-> **Note**: The **Function** element and annotation elements are only allowed in CSDL v2 and later.
+> [!NOTE]
+> The **Function** element and annotation elements are only allowed in CSDL v2 and later.
 
  
 
@@ -1633,14 +1673,15 @@ A conceptual model namespace is different from the XML namespace of the **Schema
 
 The table below describes the attributes can be applied to the **Schema** element.
 
-| Attribute Name | Is Required | Value |
-|----------------|-------------|-------|
-| **Namespace** | Yes | The namespace of the conceptual model. The value of the **Namespace** attribute is used to form the fully qualified name of a type. For example, if an **EntityType** named *Customer* is in the Simple.Example.Model namespace, then the fully qualified name of the **EntityType** is SimpleExampleModel.Customer. <br/> The following strings cannot be used as the value for the **Namespace** attribute: **System**, **Transient**, or **Edm**. The value for the **Namespace** attribute cannot be the same as the value for the **Namespace** attribute in the SSDL Schema element. |
-| **Alias** | No | An identifier used in place of the namespace name. For example, if an **EntityType** named *Customer* is in the Simple.Example.Model namespace and the value of the **Alias** attribute is *Model*, then you can use Model.Customer as the fully qualified name of the **EntityType.** |
+| Attribute Name | Is Required | Value                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+|:---------------|:------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Namespace**  | Yes         | The namespace of the conceptual model. The value of the **Namespace** attribute is used to form the fully qualified name of a type. For example, if an **EntityType** named *Customer* is in the Simple.Example.Model namespace, then the fully qualified name of the **EntityType** is SimpleExampleModel.Customer. <br/> The following strings cannot be used as the value for the **Namespace** attribute: **System**, **Transient**, or **Edm**. The value for the **Namespace** attribute cannot be the same as the value for the **Namespace** attribute in the SSDL Schema element. |
+| **Alias**      | No          | An identifier used in place of the namespace name. For example, if an **EntityType** named *Customer* is in the Simple.Example.Model namespace and the value of the **Alias** attribute is *Model*, then you can use Model.Customer as the fully qualified name of the **EntityType.**                                                                                                                                                                                                                                                                                                     |
 
  
 
-> **Note**: Any number of annotation attributes (custom XML attributes) may be applied to the **Schema** element. However, custom attributes may not belong to any XML namespace that is reserved for CSDL. The fully-qualified names for any two custom attributes cannot be the same.
+> [!NOTE]
+> Any number of annotation attributes (custom XML attributes) may be applied to the **Schema** element. However, custom attributes may not belong to any XML namespace that is reserved for CSDL. The fully-qualified names for any two custom attributes cannot be the same.
 
  
 
@@ -1648,8 +1689,8 @@ The table below describes the attributes can be applied to the **Schema** elemen
 
 The following example shows a **Schema** element that contains an **EntityContainer** element, two **EntityType** elements, and one **Association** element.
 
-```
- \<Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm"
+``` xml
+ <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm"
       xmlns:cg="http://schemas.microsoft.com/ado/2009/11/codegeneration"
       xmlns:store="http://schemas.microsoft.com/ado/2009/11/edm/EntityStoreSchemaGenerator"
        Namespace="ExampleModel" Alias="Self">
@@ -1721,22 +1762,24 @@ A **TypeRef** element can have the following child elements (in the order listed
 
 The following table describes the attributes that can be applied to the **TypeRef** element. Note that the **DefaultValue**, **MaxLength**, **FixedLength**, **Precision**, **Scale**, **Unicode**, and **Collation** attributes are only applicable to **EDMSimpleTypes**.
 
-| Attribute Name | Is Required | Value |
-|----------------|-------------|-------|
-| **Type** | No | The name of the type being referenced. |
-| **Nullable** | No | **True** (the default value) or **False** depending on whether the property can have a null value. <br/> **Note**: In CSDL v1 a complex type property must have `Nullable="False"`. |
-| **DefaultValue** | No | The default value of the property. |
-| **MaxLength** | No | The maximum length of the property value. |
-| **FixedLength** | No | **True** or **False** depending on whether the property value will be stored as a fixed length string. |
-| **Precision** | No | The precision of the property value. |
-| **Scale** | No | The scale of the property value. |
-| **SRID** | No | Spatial System Reference Identifier. Valid only for properties of spatial types. For more information, see [SRID](http://en.wikipedia.org/wiki/SRID) and [SRID (SQL Server)](https://msdn.microsoft.com/library/bb964707.aspx). |
-| **Unicode** | No | **True** or **False** depending on whether the property value will be stored as a Unicode string. |
-| **Collation** | No | A string that specifies the collating sequence to be used in the data source. |
+| Attribute Name                                                     | Is Required | Value                                                                                                                                                                                                                           |
+|:-------------------------------------------------------------------|:------------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Type**                                                           | No          | The name of the type being referenced.                                                                                                                                                                                          |
+| **Nullable**                                                       | No          | **True** (the default value) or **False** depending on whether the property can have a null value. <br/> [!NOTE]                                                                                                                |
+| > In CSDL v1 a complex type property must have `Nullable="False"`. |             |                                                                                                                                                                                                                                 |
+| **DefaultValue**                                                   | No          | The default value of the property.                                                                                                                                                                                              |
+| **MaxLength**                                                      | No          | The maximum length of the property value.                                                                                                                                                                                       |
+| **FixedLength**                                                    | No          | **True** or **False** depending on whether the property value will be stored as a fixed length string.                                                                                                                          |
+| **Precision**                                                      | No          | The precision of the property value.                                                                                                                                                                                            |
+| **Scale**                                                          | No          | The scale of the property value.                                                                                                                                                                                                |
+| **SRID**                                                           | No          | Spatial System Reference Identifier. Valid only for properties of spatial types. For more information, see [SRID](http://en.wikipedia.org/wiki/SRID) and [SRID (SQL Server)](https://msdn.microsoft.com/library/bb964707.aspx). |
+| **Unicode**                                                        | No          | **True** or **False** depending on whether the property value will be stored as a Unicode string.                                                                                                                               |
+| **Collation**                                                      | No          | A string that specifies the collating sequence to be used in the data source.                                                                                                                                                   |
 
  
 
-> **Note**: Any number of annotation attributes (custom XML attributes) may be applied to the **CollectionType** element. However, custom attributes may not belong to any XML namespace that is reserved for CSDL. The fully-qualified names for any two custom attributes cannot be the same.
+> [!NOTE]
+> Any number of annotation attributes (custom XML attributes) may be applied to the **CollectionType** element. However, custom attributes may not belong to any XML namespace that is reserved for CSDL. The fully-qualified names for any two custom attributes cannot be the same.
 
  
 
@@ -1744,7 +1787,7 @@ The following table describes the attributes that can be applied to the **TypeRe
 
 The following example shows a model-defined function that uses the **TypeRef** element (as a child of a **CollectionType** element) to specify that the function accepts a collection of **Department** entity types.
 
-```
+``` xml
  <Function Name="GetAvgBudget">
       <Parameter Name="Departments">
           <CollectionType>
@@ -1765,7 +1808,8 @@ The following example shows a model-defined function that uses the **TypeRef** e
 
 The **Using** element in conceptual schema definition language (CSDL) imports the contents of a conceptual model that exists in a different namespace. By setting the value of the **Namespace** attribute, you can refer to entity types, complex types, and association types that are defined in another conceptual model. More than one **Using** element can be a child of a **Schema** element.
 
-> **Note**: The **Using** element in CSDL does not function exactly like a **using** statement in a programming language. By importing a namespace with a **using** statement in a programming language, you do not affect objects in the original namespace. In CSDL, an imported namespace can contain an entity type that is derived from an entity type in the original namespace. This can affect entity sets declared in the original namespace.
+> [!NOTE]
+> The **Using** element in CSDL does not function exactly like a **using** statement in a programming language. By importing a namespace with a **using** statement in a programming language, you do not affect objects in the original namespace. In CSDL, an imported namespace can contain an entity type that is derived from an entity type in the original namespace. This can affect entity sets declared in the original namespace.
 
  
 
@@ -1778,14 +1822,15 @@ The **Using** element can have the following child elements:
 
 The table below describes the attributes can be applied to the **Using** element.
 
-| Attribute Name | Is Required | Value |
-|----------------|-------------|-------|
-| **Namespace** | Yes | The name of the imported namespace. |
-| **Alias** | Yes | An identifier used in place of the namespace name. Although this attribute is required, it is not required that it be used in place of the namespace name to qualify object names. |
+| Attribute Name | Is Required | Value                                                                                                                                                                              |
+|:---------------|:------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Namespace**  | Yes         | The name of the imported namespace.                                                                                                                                                |
+| **Alias**      | Yes         | An identifier used in place of the namespace name. Although this attribute is required, it is not required that it be used in place of the namespace name to qualify object names. |
 
  
 
-> **Note**: Any number of annotation attributes (custom XML attributes) may be applied to the **Using** element. However, custom attributes may not belong to any XML namespace that is reserved for CSDL. The fully-qualified names for any two custom attributes cannot be the same.
+> [!NOTE]
+> Any number of annotation attributes (custom XML attributes) may be applied to the **Using** element. However, custom attributes may not belong to any XML namespace that is reserved for CSDL. The fully-qualified names for any two custom attributes cannot be the same.
 
  
 
@@ -1793,7 +1838,7 @@ The table below describes the attributes can be applied to the **Using** element
 
 The following example demonstrates the **Using** element being used to import a namespace that is defined elsewhere. Note that the namespace for the **Schema** element shown is `BooksModel`. The `Address` property on the `Publisher`**EntityType** is a complex type that is defined in the `ExtendedBooksModel` namespace (imported with the **Using** element).
 
-```
+``` xml
  \<Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm"
            xmlns:cg="http://schemas.microsoft.com/ado/2009/11/codegeneration"
            xmlns:store="http://schemas.microsoft.com/ado/2009/11/edm/EntityStoreSchemaGenerator"
@@ -1834,7 +1879,7 @@ Annotation attributes can be used to provide extra metadata about the elements i
 
 The following example shows an **EntityType** element with an annotation attribute (**CustomAttribute**). The example also shows an annotation element applied to the entity type element.
 
-```
+``` xml
  \<Schema Namespace="SchoolModel" Alias="Self"
          xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation"
          xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -1864,7 +1909,7 @@ The following example shows an **EntityType** element with an annotation attribu
 
 The following code retrieves the metadata in the annotation attribute and writes it to the console:
 
-```
+``` xml
  EdmItemCollection collection = new EdmItemCollection("School.csdl");
  MetadataWorkspace workspace = new MetadataWorkspace();
  workspace.RegisterItemCollection(collection);
@@ -1882,7 +1927,7 @@ The following code retrieves the metadata in the annotation attribute and writes
 
 The code above assumes that the `School.csdl` file is in the project's output directory and that you have added the following `Imports` and `Using` statements to your project:
 
-```
+``` csharp
  using System.Data.Metadata.Edm;
 ```
  
@@ -1904,19 +1949,19 @@ Annotation elements can be used to provide extra metadata about the elements in 
 
 The following example shows an **EntityType** element with an annotation element (**CustomElement**). The example also show an annotation attribute applied to the entity type element.
 
-```
- \<Schema Namespace="SchoolModel" Alias="Self"
+``` xml
+ <Schema Namespace="SchoolModel" Alias="Self"
          xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation"
          xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-   \<EntityContainer Name="SchoolEntities" annotation:LazyLoadingEnabled="true">
+   <EntityContainer Name="SchoolEntities" annotation:LazyLoadingEnabled="true">
      <EntitySet Name="People" EntityType="SchoolModel.Person" />
    </EntityContainer>
-   \<EntityType Name="Person" xmlns:p="http://CustomNamespace.com"
+   <EntityType Name="Person" xmlns:p="http://CustomNamespace.com"
                p:CustomAttribute="Data here.">
      <Key>
        <PropertyRef Name="PersonID" />
      </Key>
-     \<Property Name="PersonID" Type="Int32" Nullable="false"
+     <Property Name="PersonID" Type="Int32" Nullable="false"
                annotation:StoreGeneratedPattern="Identity" />
      <Property Name="LastName" Type="String" Nullable="false"
                MaxLength="50" Unicode="true" FixedLength="false" />
@@ -1924,9 +1969,9 @@ The following example shows an **EntityType** element with an annotation element
                MaxLength="50" Unicode="true" FixedLength="false" />
      <Property Name="HireDate" Type="DateTime" />
      <Property Name="EnrollmentDate" Type="DateTime" />
-     \<p:CustomElement>
+     <p:CustomElement>
        Custom metadata.
-     \</p:CustomElement>
+     </p:CustomElement>
    </EntityType>
  </Schema>
 ```
@@ -1934,7 +1979,7 @@ The following example shows an **EntityType** element with an annotation element
 
 The following code retrieves the metadata in the annotation element and writes it to the console:
 
-```
+``` csharp
  EdmItemCollection collection = new EdmItemCollection("School.csdl");
  MetadataWorkspace workspace = new MetadataWorkspace();
  workspace.RegisterItemCollection(collection);
@@ -1952,7 +1997,7 @@ The following code retrieves the metadata in the annotation element and writes i
 
 The code above assumes that the School.csdl file is in the project's output directory and that you have added the following `Imports` and `Using` statements to your project:
 
-```
+``` csharp
  using System.Data.Metadata.Edm;
 ```
  
@@ -1965,39 +2010,39 @@ Conceptual schema definition language (CSDL) supports a set of abstract primitiv
 
 The table below lists the primitive data types that are supported by CSDL. The table also lists the facets that can be applied to each **EDMSimpleType**.
 
-| EDMSimpleType | Description | Applicable Facets |
-|---------------|-------------|-------------------|
-| **Edm.Binary** | Contains binary data. | MaxLength, FixedLength, Nullable, Default |
-| **Edm.Boolean** | Contains the value **true** or **false**. | Nullable, Default |
-| **Edm.Byte** | Contains an unsigned 8-bit integer value. | Precision, Nullable, Default |
-| **Edm.DateTime** | Represents a date and time. | Precision, Nullable, Default |
-| **Edm.DateTimeOffset** | Contains a date and time as an offset in minutes from GMT. | Precision, Nullable, Default |
-| **Edm.Decimal** | Contains a numeric value with fixed precision and scale. | Precision, Nullable, Default |
-| **Edm.Double** | Contains a floating point number with 15-digit precision | Precision, Nullable, Default |
-| **Edm.Float** | Contains a floating point number with 7-digit precision. | Precision, Nullable, Default |
-| **Edm.Guid** | Contains a 16-byte unique identifier. | Precision, Nullable, Default |
-| **Edm.Int16** | Contains a signed 16-bit integer value. | Precision, Nullable, Default |
-| **Edm.Int32** | Contains a signed 32-bit integer value. | Precision, Nullable, Default |
-| **Edm.Int64** | Contains a signed 64-bit integer value. | Precision, Nullable, Default |
-| **Edm.SByte** | Contains a signed 8-bit integer value. | Precision, Nullable, Default |
-| **Edm.String** | Contains character data. | Unicode, FixedLength, MaxLength, Collation, Precision, Nullable, Default |
-| **Edm.Time** | Contains a time of day. | Precision, Nullable, Default |
-| **Edm.Geography** |   | Nullable, Default, SRID |
-| **Edm.GeographyPoint** |   | Nullable, Default, SRID |
-| **Edm.GeographyLineString** |   | Nullable, Default, SRID |
-| **Edm.GeographyPolygon** |   | Nullable, Default, SRID |
-| **Edm.GeographyMultiPoint** |   | Nullable, Default, SRID |
-| **Edm.GeographyMultiLineString** |   | Nullable, Default, SRID |
-| **Edm.GeographyMultiPolygon** |   | Nullable, Default, SRID |
-| **Edm.GeographyCollection** |   | Nullable, Default, SRID |
-| **Edm.Geometry** |   | Nullable, Default, SRID |
-| **Edm.GeometryPoint** |   | Nullable, Default, SRID |
-| **Edm.GeometryLineString** |   | Nullable, Default, SRID |
-| **Edm.GeometryPolygon** |   | Nullable, Default, SRID |
-| **Edm.GeometryMultiPoint** |   | Nullable, Default, SRID |
-| **Edm.GeometryMultiLineString** |   | Nullable, Default, SRID |
-| **Edm.GeometryMultiPolygon** |   | Nullable, Default, SRID |
-| **Edm.GeometryCollection** |   | Nullable, Default, SRID |
+| EDMSimpleType                    | Description                                                | Applicable Facets                                                        |
+|:---------------------------------|:-----------------------------------------------------------|:-------------------------------------------------------------------------|
+| **Edm.Binary**                   | Contains binary data.                                      | MaxLength, FixedLength, Nullable, Default                                |
+| **Edm.Boolean**                  | Contains the value **true** or **false**.                  | Nullable, Default                                                        |
+| **Edm.Byte**                     | Contains an unsigned 8-bit integer value.                  | Precision, Nullable, Default                                             |
+| **Edm.DateTime**                 | Represents a date and time.                                | Precision, Nullable, Default                                             |
+| **Edm.DateTimeOffset**           | Contains a date and time as an offset in minutes from GMT. | Precision, Nullable, Default                                             |
+| **Edm.Decimal**                  | Contains a numeric value with fixed precision and scale.   | Precision, Nullable, Default                                             |
+| **Edm.Double**                   | Contains a floating point number with 15-digit precision   | Precision, Nullable, Default                                             |
+| **Edm.Float**                    | Contains a floating point number with 7-digit precision.   | Precision, Nullable, Default                                             |
+| **Edm.Guid**                     | Contains a 16-byte unique identifier.                      | Precision, Nullable, Default                                             |
+| **Edm.Int16**                    | Contains a signed 16-bit integer value.                    | Precision, Nullable, Default                                             |
+| **Edm.Int32**                    | Contains a signed 32-bit integer value.                    | Precision, Nullable, Default                                             |
+| **Edm.Int64**                    | Contains a signed 64-bit integer value.                    | Precision, Nullable, Default                                             |
+| **Edm.SByte**                    | Contains a signed 8-bit integer value.                     | Precision, Nullable, Default                                             |
+| **Edm.String**                   | Contains character data.                                   | Unicode, FixedLength, MaxLength, Collation, Precision, Nullable, Default |
+| **Edm.Time**                     | Contains a time of day.                                    | Precision, Nullable, Default                                             |
+| **Edm.Geography**                |                                                            | Nullable, Default, SRID                                                  |
+| **Edm.GeographyPoint**           |                                                            | Nullable, Default, SRID                                                  |
+| **Edm.GeographyLineString**      |                                                            | Nullable, Default, SRID                                                  |
+| **Edm.GeographyPolygon**         |                                                            | Nullable, Default, SRID                                                  |
+| **Edm.GeographyMultiPoint**      |                                                            | Nullable, Default, SRID                                                  |
+| **Edm.GeographyMultiLineString** |                                                            | Nullable, Default, SRID                                                  |
+| **Edm.GeographyMultiPolygon**    |                                                            | Nullable, Default, SRID                                                  |
+| **Edm.GeographyCollection**      |                                                            | Nullable, Default, SRID                                                  |
+| **Edm.Geometry**                 |                                                            | Nullable, Default, SRID                                                  |
+| **Edm.GeometryPoint**            |                                                            | Nullable, Default, SRID                                                  |
+| **Edm.GeometryLineString**       |                                                            | Nullable, Default, SRID                                                  |
+| **Edm.GeometryPolygon**          |                                                            | Nullable, Default, SRID                                                  |
+| **Edm.GeometryMultiPoint**       |                                                            | Nullable, Default, SRID                                                  |
+| **Edm.GeometryMultiLineString**  |                                                            | Nullable, Default, SRID                                                  |
+| **Edm.GeometryMultiPolygon**     |                                                            | Nullable, Default, SRID                                                  |
+| **Edm.GeometryCollection**       |                                                            | Nullable, Default, SRID                                                  |
 
  
 
@@ -2016,18 +2061,18 @@ The following table describes the facets that are supported in CSDL. All facets 
 **Note**:
 For information about data types in a conceptual model, see Conceptual Model Types (CSDL).
 
-| Facet | Description | Applies to | Used for the database generation | Used by the runtime |
-|-------|-------------|------------|----------------------------------|---------------------|
-| **Collation** | Specifies the collating sequence (or sorting sequence) to be used when performing comparison and ordering operations on values of the property. | **Edm.String** | Yes | No |
-| **ConcurrencyMode** | Indicates that the value of the property should be used for optimistic concurrency checks. | All **EDMSimpleType** properties | No | Yes |
-| **Default** | Specifies the default value of the property if no value is supplied upon instantiation. | All **EDMSimpleType** properties | Yes | Yes |
-| **FixedLength** | Specifies whether the length of the property value can vary. | **Edm.Binary**, **Edm.String** | Yes | No |
-| **MaxLength** | Specifies the maximum length of the property value. | **Edm.Binary**, **Edm.String** | Yes | No |
-| **Nullable** | Specifies whether the property can have a **null** value. | All **EDMSimpleType** properties | Yes | Yes |
-| **Precision** | For properties of type **Decimal**, specifies the number of digits a property value can have. For properties of type **Time**, **DateTime**, and **DateTimeOffset**, specifies the number of digits for the fractional part of seconds of the property value. | **Edm.DateTime**, **Edm.DateTimeOffset**, **Edm.Decimal**, **Edm.Time** | Yes | No |
-| **Scale** | Specifies the number of digits to the right of the decimal point for the property value. | **Edm.Decimal** | Yes | No |
-| **SRID** | Specifies the Spatial System Reference System ID. For more information, see [SRID](http://en.wikipedia.org/wiki/SRID) and [SRID (SQL Server)](https://msdn.microsoft.com/library/bb964707.aspx). | **Edm.Geography, Edm.GeographyPoint, Edm.GeographyLineString, Edm.GeographyPolygon, Edm.GeographyMultiPoint, Edm.GeographyMultiLineString, Edm.GeographyMultiPolygon, Edm.GeographyCollection, Edm.Geometry, Edm.GeometryPoint, Edm.GeometryLineString, Edm.GeometryPolygon, Edm.GeometryMultiPoint, Edm.GeometryMultiLineString, Edm.GeometryMultiPolygon, Edm.GeometryCollection** | No | Yes |
-| **Unicode** | Indicates whether the property value is stored as Unicode. | **Edm.String** | Yes | Yes |
+| Facet               | Description                                                                                                                                                                                                                                                   | Applies to                                                                                                                                                                                                                                                                                                                                                                           | Used for the database generation | Used by the runtime |
+|:--------------------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:---------------------------------|:--------------------|
+| **Collation**       | Specifies the collating sequence (or sorting sequence) to be used when performing comparison and ordering operations on values of the property.                                                                                                               | **Edm.String**                                                                                                                                                                                                                                                                                                                                                                       | Yes                              | No                  |
+| **ConcurrencyMode** | Indicates that the value of the property should be used for optimistic concurrency checks.                                                                                                                                                                    | All **EDMSimpleType** properties                                                                                                                                                                                                                                                                                                                                                     | No                               | Yes                 |
+| **Default**         | Specifies the default value of the property if no value is supplied upon instantiation.                                                                                                                                                                       | All **EDMSimpleType** properties                                                                                                                                                                                                                                                                                                                                                     | Yes                              | Yes                 |
+| **FixedLength**     | Specifies whether the length of the property value can vary.                                                                                                                                                                                                  | **Edm.Binary**, **Edm.String**                                                                                                                                                                                                                                                                                                                                                       | Yes                              | No                  |
+| **MaxLength**       | Specifies the maximum length of the property value.                                                                                                                                                                                                           | **Edm.Binary**, **Edm.String**                                                                                                                                                                                                                                                                                                                                                       | Yes                              | No                  |
+| **Nullable**        | Specifies whether the property can have a **null** value.                                                                                                                                                                                                     | All **EDMSimpleType** properties                                                                                                                                                                                                                                                                                                                                                     | Yes                              | Yes                 |
+| **Precision**       | For properties of type **Decimal**, specifies the number of digits a property value can have. For properties of type **Time**, **DateTime**, and **DateTimeOffset**, specifies the number of digits for the fractional part of seconds of the property value. | **Edm.DateTime**, **Edm.DateTimeOffset**, **Edm.Decimal**, **Edm.Time**                                                                                                                                                                                                                                                                                                              | Yes                              | No                  |
+| **Scale**           | Specifies the number of digits to the right of the decimal point for the property value.                                                                                                                                                                      | **Edm.Decimal**                                                                                                                                                                                                                                                                                                                                                                      | Yes                              | No                  |
+| **SRID**            | Specifies the Spatial System Reference System ID. For more information, see [SRID](http://en.wikipedia.org/wiki/SRID) and [SRID (SQL Server)](https://msdn.microsoft.com/library/bb964707.aspx).                                                              | **Edm.Geography, Edm.GeographyPoint, Edm.GeographyLineString, Edm.GeographyPolygon, Edm.GeographyMultiPoint, Edm.GeographyMultiLineString, Edm.GeographyMultiPolygon, Edm.GeographyCollection, Edm.Geometry, Edm.GeometryPoint, Edm.GeometryLineString, Edm.GeometryPolygon, Edm.GeometryMultiPoint, Edm.GeometryMultiLineString, Edm.GeometryMultiPolygon, Edm.GeometryCollection** | No                               | Yes                 |
+| **Unicode**         | Indicates whether the property value is stored as Unicode.                                                                                                                                                                                                    | **Edm.String**                                                                                                                                                                                                                                                                                                                                                                       | Yes                              | Yes                 |
  
  
  
@@ -2043,7 +2088,7 @@ For information about data types in a conceptual model, see Conceptual Model Typ
 
 The following example shows facets applied to the properties of an entity type:
 
-```
+``` xml
  <EntityType Name="Product">
    <Key>
      <PropertyRef Name="ProductId" />

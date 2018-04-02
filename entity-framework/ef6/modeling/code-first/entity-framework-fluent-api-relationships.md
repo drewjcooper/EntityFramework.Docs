@@ -13,7 +13,8 @@ ms.assetid: fd73b4f8-16d5-40f1-9640-885ceafe67a1
 caps.latest.revision: 3
 ---
 # Entity Framework Fluent API - Relationships
-> **Note**: This page provides information about setting up relationships in your Code First model using the fluent API. For general information about relationships in EF and how to access and manipulate data using relationships, see [Relationships & Navigation Properties](../ef6/entity-framework-relationships-and-navigation-properties.md).  
+> [!NOTE]
+> This page provides information about setting up relationships in your Code First model using the fluent API. For general information about relationships in EF and how to access and manipulate data using relationships, see [Relationships & Navigation Properties](../ef6/entity-framework-relationships-and-navigation-properties.md).  
 
 When working with Code First, you define your model by defining your domain CLR classes. By default, Entity Framework uses the Code First conventions to map your classes to the database schema. If you use the Code First naming conventions, in most cases you can rely on Code First to set up relationships between your tables based on the foreign keys and navigation properties that you define on the classes. If you do not follow the conventions when defining your classes, or if you want to change the way the conventions work, you can use the fluent API or data annotations to configure your classes so Code First can map the relationships between your tables.  
 
@@ -27,7 +28,7 @@ You can then configure foreign key properties by using the HasForeignKey method.
 
 The following example configures a one-to-zero-or-one relationship. The OfficeAssignment has the InstructorID property that is a primary key and a foreign key, because the name of the property does not follow the convention the HasKey method is used to configure the primary key.  
 
-```  
+``` csharp
 // Configure the primary key for the OfficeAssignment
 modelBuilder.Entity<OfficeAssignment>()
     .HasKey(t => t.InstructorID);
@@ -42,7 +43,7 @@ modelBuilder.Entity<OfficeAssignment>()
 
 In most cases Entity Framework can infer which type is the dependent and which is the principal in a relationship. However, when both ends of the relationship are required or both sides are optional Entity Framework cannot identify the dependent and principal. When both ends of the relationship are required, use WithRequiredPrincipal or WithRequiredDependent after the HasRequired method. When both ends of the relationship are optional, use WithOptionalPrincipal or WithOptionalDependent after the HasOptional method.  
 
-```  
+``` csharp
 // Configure the primary key for the OfficeAssignment
 modelBuilder.Entity<OfficeAssignment>()
     .HasKey(t => t.InstructorID);
@@ -56,7 +57,7 @@ modelBuilder.Entity<Instructor>()
 
 The following code configures a many-to-many relationship between the Course and Instructor types. In the following example, the default Code First conventions are used to create a join table. As a result the CourseInstructor table is created with Course_CourseID and Instructor_InstructorID columns.  
 
-```  
+``` csharp
 modelBuilder.Entity<Course>()
     .HasMany(t => t.Instructors)
     .WithMany(t => t.Courses)
@@ -64,7 +65,7 @@ modelBuilder.Entity<Course>()
 
 If you want to specify the join table name and the names of the columns in the table you need to do additional configuration by using the Map method. The following code generates the CourseInstructor table with CourseID and InstructorID columns.  
 
-```  
+``` csharp
 modelBuilder.Entity<Course>()
     .HasMany(t => t.Instructors)
     .WithMany(t => t.Courses)
@@ -80,7 +81,7 @@ modelBuilder.Entity<Course>()
 
 A one-directional (also called unidirectional) relationship is when a navigation property is defined on only one of the relationship ends and not on both. By convention, Code First always interprets a unidirectional relationship as one-to-many. For example, if you want a one-to-one relationship between Instructor and OfficeAssignment, where you have a navigation property on only the Instructor type, you need to use the fluent API to configure this relationship.  
 
-```  
+``` csharp
 // Configure the primary Key for the OfficeAssignment
 modelBuilder.Entity<OfficeAssignment>()
     .HasKey(t => t.InstructorID);
@@ -101,7 +102,7 @@ modelBuilder.Conventions.Remove\<ManyToManyCascadeDeleteConvention\>()
 
 The following code configures the relationship to be required and then disables cascade delete.  
 
-```  
+``` csharp
 modelBuilder.Entity<Course>()
     .HasRequired(t => t.Department)
     .WithMany(t => t.Courses)
@@ -113,7 +114,7 @@ modelBuilder.Entity<Course>()
 
 If the primary key on the Department type consisted of DepartmentID and Name properties, you would configure the primary key for the Department and the foreign key on the Course types as follows:  
 
-```  
+``` csharp
 // Composite primary key
 modelBuilder.Entity<Department>()
 .HasKey(d => new { d.DepartmentID, d.Name });
@@ -129,7 +130,7 @@ modelBuilder.Entity<Course>()
 
 If you choose not to define a foreign key on the CLR type, but want to specify what name it should have in the database, do the following:  
 
-```  
+``` csharp
 modelBuilder.Entity<Course>()
     .HasRequired(c => c.Department)
     .WithMany(t => t.Courses)
@@ -140,7 +141,7 @@ modelBuilder.Entity<Course>()
 
 If the foreign key property on the Course class was called SomeDepartmentID instead of DepartmentID, you would need to do the following to specify that you want SomeDepartmentID to be the foreign key:  
 
-```  
+``` csharp
 modelBuilder.Entity<Course>()
          .HasRequired(c => c.Department)
          .WithMany(d => d.Courses)
@@ -151,7 +152,7 @@ modelBuilder.Entity<Course>()
 
 The following Code First model is used for the samples on this page.  
 
-```  
+``` csharp
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
 // add a reference to System.ComponentModel.DataAnnotations DLL

@@ -28,13 +28,14 @@ Connection retry is taken care of by an implementation of the IDbExecutionStrate
 3. **DbExecutionStrategy**: this class is suitable as a base class for other execution strategies, including your own custom ones. It implements an exponential retry policy, where the initial retry happens with zero delay and the delay increases exponentially until the maximum retry count is hit. This class has an abstract ShouldRetryOn method that can be implemented in derived execution strategies to control which exceptions should be retried.  
 4. **SqlAzureExecutionStrategy**: this execution strategy inherits from DbExecutionStrategy and will retry on exceptions that are known to be possibly transient when working with SqlAzure.  
 
-> **Note**: Execution strategies 2 and 4 are included in the Sql Server provider that ships with EF, which is in the EntityFramework.SqlServer assembly and are designed to work with SQL Server.  
+> [!NOTE]
+> Execution strategies 2 and 4 are included in the Sql Server provider that ships with EF, which is in the EntityFramework.SqlServer assembly and are designed to work with SQL Server.  
 
 ## Enabling an Execution Strategy  
 
 The easiest way to tell EF to use an execution strategy is with the SetExecutionStrategy method of the [DbConfiguration](~/ef6/advanced/configuration/entity-framework-code-based-configuration-ef6-onwards.md) class:  
 
-```  
+``` csharp
 public class MyConfiguration : DbConfiguration
 {
     public MyConfiguration()
@@ -52,7 +53,7 @@ The constructor of SqlAzureExecutionStrategy can accept two parameters, MaxRetry
 
 To set the maximum number of retries to 1 and the maximum delay to 30 seconds you would execue the following:  
 
-```  
+``` csharp
 public class MyConfiguration : DbConfiguration
 {
     public MyConfiguration()

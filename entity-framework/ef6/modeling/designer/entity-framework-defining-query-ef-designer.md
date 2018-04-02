@@ -75,7 +75,7 @@ In this step we will use the XML Editor to add a defining query and an entity ty
     -   The fully-qualified name of the entity type is used in the **EntityType** attribute.
     -   The SQL statement to be executed is specified in the **DefiningQuery** element.
 
-```
+``` xml
     \<!-- SSDL content -->
     \<edmx:StorageModels>
       \<Schema Namespace="SchoolModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
@@ -97,7 +97,7 @@ In this step we will use the XML Editor to add a defining query and an entity ty
     -   The property names correspond to the column names returned by the SQL statement in the **DefiningQuery** element (above).
     -   In this example, the entity key is composed of three properties to ensure a unique key value.
 
-```
+``` xml
     <EntityType Name="GradeReport">
       <Key>
         <PropertyRef Name="CourseID" />
@@ -157,7 +157,7 @@ The Entity Designer, which provides a design surface for editing your model, is 
 
 As a result, the following elements were added to the **CSDL** section of the .edmx file.
 
-```
+``` xml
     <EntitySet Name="GradeReport" EntityType="SchoolModel.GradeReport" />
 
     <EntityType Name="GradeReport">
@@ -179,7 +179,7 @@ In this step, we will use the Mapping Details window to map the conceptual and s
 
 As a result, the **EntitySetMapping** element is added to the mapping section of the .edmx file. 
 
-```
+``` xml
     <EntitySetMapping Name="GradeReports">
       <EntityTypeMapping TypeName="IsTypeOf(SchoolModel.GradeReport)">
         <MappingFragment StoreEntitySet="GradeReport">
@@ -200,7 +200,7 @@ As a result, the **EntitySetMapping** element is added to the mapping section o
 
 You can now execute the defining query by using the **GradeReport** entity type. 
 
-```
+``` csharp
     using (var context = new SchoolEntities())
     {
         var report = context.GradeReports.FirstOrDefault();

@@ -23,7 +23,7 @@ This article will show you two ways that you can use to access more than one res
 
 The examples in this article use a basic Blog and Posts model where a blog has many posts and a post belongs to a single blog. We will use a stored procedure in the database that returns all blogs and posts, something like this:
 
-```
+``` SQL
     CREATE PROCEDURE [dbo].[GetAllBlogsAndPosts]
     AS
         SELECT * FROM dbo.Blogs
@@ -40,7 +40,7 @@ In order to get multiple result sets working we need to drop to the ObjectContex
 
 Once we have an ObjectContext then we can use the Translate method to translate the results of our stored procedure into entities that can be tracked and used in EF as normal. The following code sample demonstrates this in action.
 
-```
+``` csharp
     using (var db = new BloggingContext())
     {
         // If using Code First we need to make sure the model is built before we open the connection
@@ -116,7 +116,7 @@ Once you have the model opened as XML then you need to do the following steps:
 
 -   Find the complex type and function import in your model:
 
-```
+``` xml
     \<!-- CSDL content -->
     \<edmx:ConceptualModels>
 
@@ -142,7 +142,7 @@ Once you have the model opened as XML then you need to do the following steps:
 -   Remove the complex type
 -   Update the function import so that it maps to your entities, in our case it will look like the following:
 
-```
+``` xml
     <FunctionImport Name="GetAllBlogsAndPosts">
       <ReturnType EntitySet="Blogs" Type="Collection(BlogModel.Blog)" />
       <ReturnType EntitySet="Posts" Type="Collection(BlogModel.Post)" />
@@ -155,7 +155,7 @@ This tells the model that the stored procedure will return two collections, one 
 
 -   Find the function mapping element:
 
-```
+``` xml
     \<!-- C-S mapping content -->
     \<edmx:Mappings>
 
@@ -182,7 +182,7 @@ This tells the model that the stored procedure will return two collections, one 
 
  
 
-```
+``` xml
     <ResultMapping>
       <EntityTypeMapping TypeName ="BlogModel.Blog">
         <ScalarProperty Name="BlogId" ColumnName="BlogId" />
@@ -206,7 +206,7 @@ It is also possible to map the result sets to complex types, such as the one cre
 
 Once these mappings have been changed then you can save the model and execute the following code to use the stored procedure:
 
-```
+``` csharp
     using (var db = new BlogEntities())
     {
         var results = db.GetAllBlogsAndPosts();

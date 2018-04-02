@@ -19,7 +19,7 @@ The techniques shown in this topic apply equally to models created with Code Fir
 
 Here are two examples of using Load. The first is taken from a Windows Forms data binding application where Load is used to query for entities before binding to the local collection, as described in [Local Data](../ef6/entity-framework-local-data.md):  
 
-```  
+``` csharp
 protected override void OnLoad(EventArgs e)
 {
     base.OnLoad(e);
@@ -33,7 +33,7 @@ protected override void OnLoad(EventArgs e)
 
 The second example shows using Load to load a filtered collection of related entities, as described in [Loading Related Entities](../ef6/entity-framework-loading-related-entities.md):  
 
-```  
+``` csharp
 using (var context = new BloggingContext())
 {
     var blog = context.Blogs.Find(1);

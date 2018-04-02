@@ -21,7 +21,7 @@ By default, Code First will configure all entities to perform insert, update and
 
 You can opt into using stored procedures for insert, update and delete using the Fluent API.  
 
-```  
+``` csharp
 modelBuilder
   .Entity<Blog>()
   .MapToStoredProcedures();
@@ -31,14 +31,15 @@ Doing this will cause Code First to use some conventions to build the expected s
 
 - Three stored procedures named **\<type_name\>_Insert**, **\<type_name\>_Update** and **\<type_name\>_Delete** (e.g. Blog_Insert, Blog_Update and Blog_Delete).  
 - Parameter names correspond to the property names.  
-    > **Note**: If you use HasColumnName() or the Column attribute to rename the column for a given property then this name is used for parameters instead of the property name.  
+    > [!NOTE]
+> If you use HasColumnName() or the Column attribute to rename the column for a given property then this name is used for parameters instead of the property name.  
 - **The insert stored procedure** will have a parameter for every property, except for those marked as store generated (identity or computed). The stored procedure should return a result set with a column for each store generated property.  
 - **The update stored procedure** will have a parameter for every property, except for those marked with a store generated pattern of 'Computed'. Some concurrency tokens require a parameter for the original value, see the *Concurrency Tokens* section below for details. The stored procedure should return a result set with a column for each computed property.  
 - **The delete stored procedure** should have a parameter for the key value of the entity (or multiple parameters if the entity has a composite key). Additionally, the delete procedure should also have parameters for any independent association foreign keys on the target table (relationships that do not have corresponding foreign key properties declared in the entity). Some concurrency tokens require a parameter for the original value, see the *Concurrency Tokens* section below for details.  
 
 Using the following class as an example:  
 
-```  
+``` csharp
 public class Blog  
 {  
   public int BlogId { get; set; }  
@@ -49,7 +50,7 @@ public class Blog
 
 The default stored procedures would be:  
 
-```  
+``` SQL
 CREATE PROCEDURE [dbo].[Blog_Insert]  
   @Name nvarchar(max),  
   @Url nvarchar(max)  
@@ -81,7 +82,7 @@ You can override part or all of what was configured by default.
 
 You can change the name of one or more stored procedures. This example renames the update stored procedure only.  
 
-```  
+``` csharp
 modelBuilder  
   .Entity<Blog>()  
   .MapToStoredProcedures(s =>  
@@ -90,7 +91,7 @@ modelBuilder
 
 This example renames all three stored procedures.  
 
-```  
+``` csharp
 modelBuilder  
   .Entity<Blog>()  
   .MapToStoredProcedures(s =>  
@@ -101,7 +102,7 @@ modelBuilder
 
 In these examples the calls are chained together, but you can also use lambda block syntax.  
 
-```  
+``` csharp
 modelBuilder  
   .Entity<Blog>()  
   .MapToStoredProcedures(s =>  
@@ -114,7 +115,7 @@ modelBuilder
 
 This example renames the parameter for the BlogId property on the update stored procedure.  
 
-```  
+``` csharp
 modelBuilder  
   .Entity<Blog>()  
   .MapToStoredProcedures(s =>  
@@ -123,7 +124,7 @@ modelBuilder
 
 These calls are all chainable and composable. Here is an example that renames all three stored procedures and their parameters.  
 
-```  
+``` csharp
 modelBuilder  
   .Entity<Blog>()  
   .MapToStoredProcedures(s =>  
@@ -140,12 +141,14 @@ modelBuilder
 
 You can also change the name of the columns in the result set that contains database generated values.  
 
-```  
+``` csharp
 modelBuilder
   .Entity<Blog>()
   .MapToStoredProcedures(s =>
     s.Insert(i => i.Result(b => b.BlogId, "generated_blog_identity")));
+```
 
+``` SQL
 CREATE PROCEDURE [dbo].[Blog_Insert]  
   @Name nvarchar(max),  
   @Url nvarchar(max)  
@@ -164,7 +167,7 @@ When a foreign key property is included in the class definition, the correspondi
 
 For example, the following class definitions would result in a Blog_BlogId parameter being expected in the stored procedures to insert and update Posts.  
 
-```  
+``` csharp
 public class Blog  
 {  
   public int BlogId { get; set; }  
@@ -188,7 +191,7 @@ public class Post
 
 You can change parameters for foreign keys that are not included in the class by supplying the path to the primary key property to the Parameter method.  
 
-```  
+``` csharp
 modelBuilder
   .Entity<Post>()  
   .MapToStoredProcedures(s =>  
@@ -197,7 +200,7 @@ modelBuilder
 
 If you don’t have a navigation property on the dependent entity (i.e no Post.Blog property) then you can use the Association method to identify the other end of the relationship and then configure the parameters that correspond to each of the key property(s).  
 
-```  
+``` csharp
 modelBuilder
   .Entity<Post>()  
   .MapToStoredProcedures(s =>  
@@ -218,7 +221,7 @@ By default EF uses the return value from ExecuteNonQuery to determine how many r
 
 This is an example class and update stored procedure with a timestamp concurrency token.  
 
-```  
+``` csharp
 public class Blog  
 {  
   public int BlogId { get; set; }  
@@ -227,6 +230,9 @@ public class Blog
   [Timestamp]
   public byte[] Timestamp { get; set; }
 }
+```
+
+``` SQL
 CREATE PROCEDURE [dbo].[Blog_Update]  
   @BlogId int,  
   @Name nvarchar(max),  
@@ -240,7 +246,7 @@ AS
 
 Here is an example class and update stored procedure with non-computed concurrency token.  
 
-```  
+``` csharp
 public class Blog  
 {  
   public int BlogId { get; set; }  
@@ -248,6 +254,9 @@ public class Blog
   [ConcurrencyCheck]
   public string Url { get; set; }  
 }
+```
+
+``` SQL
 CREATE PROCEDURE [dbo].[Blog_Update]  
   @BlogId int,  
   @Name nvarchar(max),  
@@ -263,7 +272,7 @@ AS
 
 You can optionally introduce a rows affected parameter.  
 
-```  
+``` csharp
 modelBuilder  
   .Entity<Blog>()  
   .MapToStoredProcedures(s =>  
@@ -272,7 +281,7 @@ modelBuilder
 
 For database computed concurrency tokens – where only the original value is passed – you can just use the standard parameter renaming mechanism to rename the parameter for the original value.  
 
-```  
+``` csharp
 modelBuilder  
   .Entity<Blog>()  
   .MapToStoredProcedures(s =>  
@@ -281,7 +290,7 @@ modelBuilder
 
 For non-computed concurrency tokens – where both the original and new value are passed – you can use an overload of Parameter that allows you to supply a name for each parameter.  
 
-```  
+``` csharp
 modelBuilder
  .Entity<Blog>()
  .MapToStoredProcedures(s => s.Update(u => u.Parameter(b => b.Url, "blog_url", "blog_original_url")));
@@ -291,7 +300,7 @@ modelBuilder
 
 We’ll use the following classes as an example in this section.  
 
-```  
+``` csharp
 public class Post  
 {  
   public int PostId { get; set; }  
@@ -312,7 +321,7 @@ public class Tag
 
 Many to many relationships can be mapped to stored procedures with the following syntax.  
 
-```  
+``` csharp
 modelBuilder  
   .Entity<Post>()  
   .HasMany(p => p.Tags)  
@@ -327,7 +336,7 @@ If no other configuration is supplied then the following stored procedure shape 
 
 Here are example insert and update stored procedures.  
 
-```  
+``` SQL
 CREATE PROCEDURE [dbo].[PostTag_Insert]  
   @Post_PostId int,  
   @Tag_TagId int  
@@ -346,7 +355,7 @@ AS
 
 The procedure and parameter names can be configured in a similar way to entity stored procedures.  
 
-```  
+``` csharp
 modelBuilder  
   .Entity<Post>()  
   .HasMany(p => p.Tags)  

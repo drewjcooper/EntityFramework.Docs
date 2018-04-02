@@ -19,7 +19,7 @@ Entity Framework supports three ways to load related data - eager loading, lazy 
 
 Eager loading is the process whereby a query for one type of entity also loads related entities as part of the query. Eager loading is achieved by use of the Include method. For example, the queries below will load blogs and all the posts related to each blog.  
 
-```  
+``` csharp
 using (var context = new BloggingContext())
 {
     // Load all blogs and related posts
@@ -54,7 +54,7 @@ Note that Include is an extension method in the System.Data.Entity namespace so 
 
 It is also possible to eagerly load multiple levels of related entities. The queries below show examples of how to do this for both collection and reference navigation properties.  
 
-```  
+``` csharp
 using (var context = new BloggingContext())
 {
     // Load all blogs, all related posts, and all related comments
@@ -87,7 +87,7 @@ Note that it is not currently possible to filter which related entities are load
 
 Lazy loading is the process whereby an entity or collection of entities is automatically loaded from the database the first time that a property referring to the entity/entities is accessed. When using POCO entity types, lazy loading is achieved by creating instances of derived proxy types and then overriding virtual properties to add the loading hook. For example, when using the Blog entity class defined below, the related Posts will be loaded the first time the Posts navigation property is accessed:  
 
-```  
+``` csharp
 public class Blog
 {  
     public int BlogId { get; set; }  
@@ -107,7 +107,7 @@ Lazy loading and serialization don’t mix well, and if you aren’t careful you
 
 Lazy loading of the Posts collection can be turned off by making the Posts property non-virtual:  
 
-```  
+``` csharp
 public class Blog
 {  
     public int BlogId { get; set; }  
@@ -125,7 +125,7 @@ Loading of the Posts collection can still be achieved using eager loading (see *
 
 Lazy loading can be turned off for all entities in the context by setting a flag on the Configuration property. For example:  
 
-```  
+``` csharp
 public class BloggingContext : DbContext
 {
     public BloggingContext()
@@ -141,7 +141,7 @@ Loading of related entities can still be achieved using eager loading (see *Eage
 
 Even with lazy loading disabled it is still possible to lazily load related entities, but it must be done with an explicit call. To do so you use the Load method on the related entity’s entry. For example:  
 
-```  
+``` csharp
 using (var context = new BloggingContext())
 {
     var post = context.Posts.Find(2);
@@ -169,7 +169,7 @@ Note that the Reference method should be used when an entity has a navigation pr
 
 The Query method provides access to the underlying query that Entity Framework will use when loading related entities. You can then use LINQ to apply filters to the query before executing it with a call to a LINQ extension method such as ToList, Load, etc. The Query method can be used with both reference and collection navigation properties but is most useful for collections where it can be used to load only part of the collection. For example:  
 
-```  
+``` csharp
 using (var context = new BloggingContext())
 {
     var blog = context.Blogs.Find(1);
@@ -199,7 +199,7 @@ Note that while the relationship can be specified as a string instead of a lambd
 
 Sometimes it is useful to know how many entities are related to another entity in the database without actually incurring the cost of loading all those entities. The Query method with the LINQ Count method can be used to do this. For example:  
 
-```  
+``` csharp
 using (var context = new BloggingContext())
 {
     var blog = context.Blogs.Find(1);

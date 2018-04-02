@@ -19,7 +19,7 @@ This topic covers the various ways you can query for data using Entity Framework
 
 DbSet and IDbSet implement IQueryable and so can be used as the starting point for writing a LINQ query against the database. This is not the appropriate place for an in-depth discussion of LINQ, but here are a couple of simple examples:  
 
-```  
+``` csharp
 using (var context = new BloggingContext())
 {
     // Query for all blogs with names starting with B
@@ -59,7 +59,7 @@ Find is different from using a query in two significant ways:
 
 The following code shows some uses of Find:  
 
-```  
+``` csharp
 using (var context = new BloggingContext())
 {
     // Will hit the database
@@ -82,7 +82,7 @@ using (var context = new BloggingContext())
 
 Entity Framework allows your entities to have composite keys - that's a key that is made up of more than one property. For example, you could have a BlogSettings entity that represents a users settings for a particular blog. Because a user would only ever have one BlogSettings for each blog you could chose to make the primary key of BlogSettings a combination of BlogId and Username. The following code attempts to find the BlogSettings with BlogId = 3 and Username = "johndoe1987":  
 
-```  
+``` csharp  
 using (var context = new BloggingContext())
 {
     var settings = context.BlogSettings.Find(3, "johndoe1987");

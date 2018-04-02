@@ -17,7 +17,7 @@ caps.latest.revision: 3
 
 Starting with EF6, Entity Framework contains a general-purpose mechanism for obtaining implementations of services that it requires. That is, when EF uses an instance of some interfaces or base classes it will ask for a concrete implementation of the interface or base class to use. This is achieved through use of the IDbDependencyResolver interface:  
 
-```  
+``` csharp
 public interface IDbDependencyResolver
 {
     object GetService(Type type, object key);

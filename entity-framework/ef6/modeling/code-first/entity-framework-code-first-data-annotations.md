@@ -28,7 +28,7 @@ This article will focus on using DataAnnotations (in the System.ComponentModel.D
 
 I’ll demonstrate code first DataAnnotations with a simple pair of classes: Blog and Post.
 
-```
+``` csharp
     public class Blog
     {
         public int Id { get; set; }
@@ -58,7 +58,7 @@ Entity Framework relies on every entity having a key value that it uses for trac
 
 The Blog and Post classes both follow this convention. But what if they didn’t? What if Blog used the name *PrimaryTrackingKey* instead or even *foo*? If code first does not find a property that matches this convention it will throw an exception because of Entity Framework’s requirement that you must have a key property. You can use the key annotation to specify which property is to be used as the EntityKey.
 
-```
+``` csharp
     public class Blog
     {
         [Key]
@@ -77,7 +77,7 @@ If you are using code first’s database generation feature, the Blog table will
 
 Entity Framework supports composite keys - primary keys that consist of more than one property. For example, your could have a Passport class whose primary key is a combination of PassportNumber and IssuingCountry.
 
-```
+``` csharp
     public class Passport
     {
         [Key]
@@ -97,7 +97,7 @@ When you have composite keys, Entity Framework requires you to define an order o
 
 > **Note:** The order value is relative (rather than index based) so any values can be used. For example, 100 and 200 would be acceptable in place of 1 and 2.
 
-```
+``` csharp
     public class Passport
     {
         [Key]
@@ -115,7 +115,7 @@ If you have entities with composite foreign keys then you must specify the same 
 
 Only the relative ordering within the foreign key properties needs to be the same, the exact values assigned to **Order** do not need to match. I.e. in the following example 3 and 4 could be used in place of 1 and 2.
 
-```
+``` csharp
     public class PassportStamp
     {
         [Key]
@@ -141,7 +141,7 @@ The Required annotation tells EF that a particular property is required.
 
 Adding Required to the Title property will force EF (and MVC) to ensure that the property has data in it.
 
-```
+``` csharp
     [Required]
     public string Title { get; set; }
 ```
@@ -166,7 +166,7 @@ The MaxLength and MinLength attributes allow you to specify additional property 
 
 Here is the BloggerName with length requirements. The example also demonstrates how to combine attributes.
 
-```
+``` csharp
     [MaxLength(10),MinLength(5)]
     public string BloggerName { get; set; }
 ```
@@ -177,7 +177,7 @@ The MaxLength annotation will impact the database by setting the property’s le
 
 MVC client-side annotation and EF 4.1 server-side annotation will both honor this validation, again dynamically building an error message: “The field BloggerName must be a string or array type with a maximum length of '10'.” That message is a little long. Many annotations let you specify an error message with the ErrorMessage attribute.
 
-```
+``` csharp
     [MaxLength(10, ErrorMessage="BloggerName must be 10 characters or less"),MinLength(5)]
     public string BloggerName { get; set; }
 ```
@@ -192,7 +192,7 @@ You can also specify ErrorMessage in the Required annotation.
 
 Code first convention dictates that every property that is of a supported data type is represented in the database. But this isn’t always the case in your applications. For example you might have a property in the Blog class that creates a code based on the Title and BloggerName fields. That property can be created dynamically and does not need to be stored. You can mark any properties that do not map to the database with the NotMapped annotation such as this BlogCode property.
 
-```
+``` csharp
     [NotMapped]
     public string BlogCode
     {
@@ -209,7 +209,7 @@ Code first convention dictates that every property that is of a supported data t
 
 It’s not uncommon to describe your domain entities across a set of classes and then layer those classes to describe a complete entity. For example, you may add a class called BlogDetails to your model.
 
-```
+``` csharp
     public class BlogDetails
     {
         public DateTime? DateCreated { get; set; }
@@ -223,7 +223,7 @@ Notice that BlogDetails does not have any type of key property. In domain driven
 
 However as a property in the Blog class, BlogDetails it will be tracked as part of a Blog object. In order for code first to recognize this, you must mark the BlogDetails class as a ComplexType.
 
-```
+``` csharp
     [ComplexType]
     public class BlogDetails
     {
@@ -236,7 +236,7 @@ However as a property in the Blog class, BlogDetails it will be tracked as part 
 
 Now you can add a property in the Blog class to represent the BlogDetails for that blog.
 
-```
+``` csharp
         public BlogDetails BlogDetail { get; set; }
 ```
 
@@ -254,14 +254,14 @@ The ConcurrencyCheck annotation allows you to flag one or more properties to be 
 
 Let’s see how ConcurrencyCheck works by adding it to the BloggerName property.
 
-```
+``` csharp
     [ConcurrencyCheck, MaxLength(10, ErrorMessage="BloggerName must be 10 characters or less"),MinLength(5)]
     public string BloggerName { get; set; }
 ```
 
 When SaveChanges is called, because of the ConcurrencyCheck annotation on the BloggerName field, the original value of that property will be used in the update. The command will attempt to locate the correct row by filtering not only on the key value but also on the original value of BloggerName.  Here are the critical parts of the UPDATE command sent to the database, where you can see the command will update the row that has a PrimaryTrackingKey is 1 and a BloggerName of “Julie” which was the original value when that blog was retrieved from the database.
 
-```
+``` SQL
     where (([PrimaryTrackingKey] = @4) and ([BloggerName] = @5))
     @4=1,@5=N'Julie'
 ```
@@ -276,7 +276,7 @@ It's more common to use rowversion or timestamp fields for concurrency checking.
 
 Adding the following property to the Blog class:
 
-```
+``` csharp
     [Timestamp]
     public Byte[] TimeStamp { get; set; }
 ```
@@ -293,14 +293,14 @@ If you are letting Code First create the database, you may want to change the na
 
 My class is named Blog and by convention, code first presumes this will map to a table named Blogs. If that's not the case you can specify the name of the table with the Table attribute. Here for example, the annotation is specifying that the table name is InternalBlogs.
 
-```
+``` csharp
     [Table("InternalBlogs")]
     public class Blog
 ```
 
 The Column annotation is a more adept in specifying the attributes of a mapped column. You can stipulate a name, data type or even the order in which a column appears in the table. Here is an example of the Column attribute.
 
-```
+``` csharp
     [Column(“BlogDescription", TypeName="ntext")]
     public String Description {get;set;}
 ```
@@ -317,7 +317,7 @@ Here is the table after it’s been regenerated. The table name has changed to I
 
 An important database features is the ability to have computed properties. If you're mapping your Code First classes to tables that contain computed columns, you don't want Entity Framework to try to update those columns. But you do want EF to return those values from the database after you've inserted or updated data. You can use the DatabaseGenerated annotation to flag those properties in your class along with the Computed enum. Other enums are None and Identity.
 
-```
+``` csharp
     [DatabaseGenerated(DatabaseGenerationOption.Computed)]
     public DateTime DateCreated { get; set; }
 ```
@@ -336,7 +336,7 @@ You can create an index on one or more columns using the **IndexAttribute**. Add
 
 For example, the following code will result in an index being created on the **Rating** column of the **Posts** table in the database.
 
-```
+``` csharp
     public class Post
     {
         public int Id { get; set; }
@@ -350,14 +350,14 @@ For example, the following code will result in an index being created on the **R
 
 By default, the index will be named **IX\_&lt;property name&gt;** (i.e. IX\_Rating in the above example). You can also specify a name for the index though. The following example specifies that the index should be named **PostRatingIndex**.
 
-```
+``` csharp
     [Index("PostRatingIndex")]
     public int Rating { get; set; }
 ```
 
 By default, indexes are non-unique, but you can use the **IsUnique** named parameter to specify that an index should be unique. The following example introduces a unique index on a **User**'s login name.
 
-```
+``` csharp
     public class User
     {
         public int UserId { get; set; }
@@ -374,7 +374,7 @@ By default, indexes are non-unique, but you can use the **IsUnique** named param
 
 Indexes that span multiple columns are specified by using the same name in multiple Index annotations for a given table. When you create multi-column indexes, you need to specify an order for the columns in the index. For example, the following code creates a multi-column index on **Rating** and **BlogId** called **IX\_BlogAndRating**. **BlogId** is the first column in the index and **Rating** is the second.
 
-```
+``` csharp
     public class Post
     {
         public int Id { get; set; }
@@ -391,7 +391,8 @@ Indexes that span multiple columns are specified by using the same name in multi
 
 ## Relationship Attributes: InverseProperty and ForeignKey
 
-> **Note**: This page provides information about setting up relationships in your Code First model using Data Annotations. For general information about relationships in EF and how to access and manipulate data using relationships, see [Relationships & Navigation Properties](../ef6/entity-framework-relationships-and-navigation-properties.md).*
+> [!NOTE]
+> This page provides information about setting up relationships in your Code First model using Data Annotations. For general information about relationships in EF and how to access and manipulate data using relationships, see [Relationships & Navigation Properties](../ef6/entity-framework-relationships-and-navigation-properties.md).*
 
 Code first convention will take care of the most common relationships in your model, but there are some cases where it needs help.
 
@@ -399,7 +400,7 @@ Changing the name of the key property in the Blog class created a problem with i
 
 When generating the database, code first sees the BlogId property in the Post class and recognizes it, by the convention that it matches a class name plus “Id”, as a foreign key to the Blog class. But there is no BlogId property in the blog class. The solution for this is to create a navigation property in the Post and use the Foreign DataAnnotation to help code first understand how to build the relationship between the two classes —using the Post.BlogId property — as well as how to specify constraints in the database.
 
-```
+``` csharp
     public class Post
     {
             public int Id { get; set; }
@@ -421,14 +422,14 @@ The InverseProperty is used when you have multiple relationships between classes
 
 In the Post class, you may want to keep track of who wrote a blog post as well as who edited it. Here are two new navigation properties for the Post class.
 
-```
+``` csharp
     public Person CreatedBy { get; set; }
     public Person UpdatedBy { get; set; }
 ```
 
 You’ll also need to add in the Person class referenced by these properties. The Person class has navigation properties back to the Post, one for all of the posts written by the person and one for all of the posts updated by that person.
 
-```
+``` csharp
     public class Person
     {
             public int Id { get; set; }
@@ -444,7 +445,7 @@ Code first is not able to match up the properties in the two classes on its own.
 
 To fix these problems, you can use the InverseProperty annotation to specify the alignment of the properties.
 
-```
+``` csharp
     [InverseProperty("CreatedBy")]
     public List<Post> PostsWritten { get; set; }
 

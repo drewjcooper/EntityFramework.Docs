@@ -31,7 +31,7 @@ By default, Entity Framework performs Detect Changes automatically when the foll
 
 If you are tracking a lot of entities in your context and you call one of these methods many times in a loop, then you may get significant performance improvements by turning off detection of changes for the duration of the loop. For example:  
 
-```  
+``` csharp
 using (var context = new BloggingContext())
 {
     try

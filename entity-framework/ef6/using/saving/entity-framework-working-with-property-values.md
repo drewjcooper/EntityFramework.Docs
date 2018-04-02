@@ -30,7 +30,7 @@ The sections below show examples of using both of the above mechanisms.
 
 The example below shows how the current value of a property can be read and then set to a new value:  
 
-```  
+``` csharp
 using (var context = new BloggingContext())
 {
     var blog = context.Blogs.Find(3);
@@ -61,7 +61,7 @@ When a property value is set in this way the change is automatically detected ev
 
 The current value of a property that is not mapped to the database can also be read. An example of an unmapped property could be an RssLink property on Blog. This value may be calculated based on the BlogId, and therefore doesn't need to be stored in the database. For example:  
 
-```  
+``` csharp
 using (var context = new BloggingContext())
 {
     var blog = context.Blogs.Find(1);
@@ -77,7 +77,7 @@ The current value can also be set if the property exposes a setter.
 
 Reading the values of unmapped properties is useful when performing Entity Framework validation of unmapped properties. For the same reason current values can be read and set for properties of entities that are not currently being tracked by the context. For example:  
 
-```  
+``` csharp
 using (var context = new BloggingContext())
 {
     // Create an entity that is not being tracked
@@ -97,7 +97,7 @@ Note that original values are not available for unmapped properties or for prope
 
 The example below shows how to check whether or not an individual property is marked as modified:  
 
-```  
+``` csharp
 using (var context = new BloggingContext())
 {
     var blog = context.Blogs.Find(1);
@@ -115,7 +115,7 @@ The values of modified properties are sent as updates to the database when SaveC
 
 The example below shows how to force an individual property to be marked as modified:  
 
-```  
+``` csharp
 using (var context = new BloggingContext())
 {
     var blog = context.Blogs.Find(1);
@@ -135,7 +135,7 @@ It is not currently possible to reset an individual property to be not modified 
 
 The example below shows how to read the current values, the original values, and the values actually in the database for all mapped properties of an entity.  
 
-```  
+``` csharp
 using (var context = new BloggingContext())
 {
     var blog = context.Blogs.Find(1);
@@ -173,7 +173,7 @@ The current values are the values that the properties of the entity currently co
 
 The current or original values of a tracked entity can be updated by copying values from another object. For example:  
 
-```  
+``` csharp
 using (var context = new BloggingContext())
 {
     var blog = context.Blogs.Find(1);
@@ -220,7 +220,7 @@ Note that only properties that are set to different values when copied from the 
 
 The current or original values of a tracked entity can be updated by copying values from a dictionary or some other data structure. For example:  
 
-```  
+``` csharp
 using (var context = new BloggingContext())
 {
     var blog = context.Blogs.Find(1);
@@ -248,7 +248,7 @@ Use the OriginalValues property instead of the CurrentValues property to set ori
 
 An alternative to using CurrentValues or OriginalValues as shown above is to use the Property method to set the value of each property. This can be preferable when you need to set the values of complex properties. For example:  
 
-```  
+``` csharp
 using (var context = new BloggingContext())
 {
     var user = context.Users.Find("johndoe1987");
@@ -276,7 +276,7 @@ In the example above complex properties are accessed using dotted names. For oth
 
 The DbPropertyValues object returned from CurrentValues, OriginalValues, or GetDatabaseValues can be used to create a clone of the entity. This clone will contain the property values from the DbPropertyValues object used to create it. For example:  
 
-```  
+``` csharp
 using (var context = new BloggingContext())
 {
     var blog = context.Blogs.Find(1);
@@ -293,7 +293,7 @@ The cloned object can be useful for resolving issues related to concurrent updat
 
 The value of an entire complex object can be read and set using the Property method just as it can be for a primitive property. In addition you can drill down into the complex object and read or set properties of that object, or even a nested object. Here are some examples:  
 
-```  
+``` csharp
 using (var context = new BloggingContext())
 {
     var user = context.Users.Find("johndoe1987");
@@ -346,7 +346,7 @@ Note that either the Property or the ComplexProperty method can be used to acces
 
 When you use CurrentValues, OriginalValues, or GetDatabaseValues to get all the current, original, or database values for an entity, the values of any complex properties are returned as nested DbPropertyValues objects. These nested objects can then be used to get values of the complex object. For example, the following method will print out the values of all properties, including values of any complex properties and nested complex properties.  
 
-```  
+``` csharp
 public static void WritePropertyValues(string parentPropertyName, DbPropertyValues propertyValues)
 {
     foreach (var propertyName in propertyValues.PropertyNames)
@@ -368,7 +368,7 @@ public static void WritePropertyValues(string parentPropertyName, DbPropertyValu
 
 To print out all current property values the method would be called like this:  
 
-```  
+``` csharp
 using (var context = new BloggingContext())
 {
     var user = context.Users.Find("johndoe1987");

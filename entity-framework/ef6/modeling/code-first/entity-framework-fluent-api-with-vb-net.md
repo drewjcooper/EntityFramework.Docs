@@ -49,7 +49,7 @@ In this step you will define VB.NET POCO entity types that represent the concept
 -   Add a new class to the project, enter **SchoolModel** for the class name
 -   Replace the contents of the new class with the following code
 
-```
+``` 
    Public Class Department
         Public Sub New()
             Me.Courses = New List(Of Course)()
@@ -147,8 +147,9 @@ In this step you will define VB.NET POCO entity types that represent the concept
 
 We’re about to start to using types from the Entity Framework so we need to add the EntityFramework NuGet package.
 
--   **Project –&gt; Manage NuGet Packages…**
-    Note: If you don’t have the **Manage NuGet Packages…** option you should install the [latest version of NuGet](http://visualstudiogallery.msdn.microsoft.com/27077b70-9dad-4c64-adcf-c7cf6bc9970c)
+-   **Project –&gt; **Manage NuGet Packages…**
+> [!NOTE]
+> If you don’t have the **Manage NuGet Packages…** option you should install the [latest version of NuGet](http://visualstudiogallery.msdn.microsoft.com/27077b70-9dad-4c64-adcf-c7cf6bc9970c)
 -   Select the **Online** tab
 -   Select the **EntityFramework** package
 -   Click **Install**
@@ -158,7 +159,7 @@ Now it’s time to define a derived context, which represents a session with the
 -   Add a new class to the project, enter **SchoolContext** for the class name
 -   Replace the contents of the new class with the following code
 
-```
+``` csharp
     Imports System.Data.Entity
     Imports System.Data.Entity.Infrastructure
     Imports System.Data.Entity.ModelConfiguration.Conventions

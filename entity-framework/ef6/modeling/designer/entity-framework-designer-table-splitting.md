@@ -60,7 +60,8 @@ The Entity Designer, which provides a design surface for editing your model, is 
 
 In this section you will split the **Person** entity into two entities and then map them to a single table.
 
-> **Note**: The **Person** entity does not contain any properties that may contain large amount of data; it is just used as an example.
+> [!NOTE]
+> The **Person** entity does not contain any properties that may contain large amount of data; it is just used as an example.
 
 -   Right-click an empty area of the design surface, point to **Add New**, and click **Entity**.
     The **New Entity** dialog box appears.

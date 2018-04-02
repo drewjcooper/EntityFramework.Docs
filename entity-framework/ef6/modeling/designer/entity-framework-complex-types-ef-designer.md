@@ -171,7 +171,7 @@ When you delete a complex type, the type is deleted from the conceptual model an
 
 The following code shows how to execute a query that returns a collection of entity type objects that contain a complex type property.
 
-```
+``` csharp
     using (SchoolEntities context = new SchoolEntities())
     {
         var courses =

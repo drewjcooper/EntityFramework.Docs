@@ -13,13 +13,15 @@ ms.assetid: 402fe960-754b-470f-976b-e5de3e9986b5
 caps.latest.revision: 3
 ---
 # Entity Framework Relationships - EF Designer
-> **Note**: This page provides information about setting up relationships in your model using the EF Designer. For general information about relationships in EF and how to access and manipulate data using relationships, see [Relationships & Navigation Properties](../ef6/entity-framework-relationships-and-navigation-properties.md).
+> [!NOTE]
+> This page provides information about setting up relationships in your model using the EF Designer. For general information about relationships in EF and how to access and manipulate data using relationships, see [Relationships & Navigation Properties](../ef6/entity-framework-relationships-and-navigation-properties.md).
 
 Associations define relationships between entity types in a model. This topic shows how to map associations with the Entity Framework Designer (EF Designer). The following image shows the main windows that are used when working with the EF Designer.
 
 ![EFDesigner](../ef6/media/efdesigner.png)
 
-> **Note**: When you build the conceptual model, warnings about unmapped entities and associations may appear in the Error List. You can ignore these warnings because after you choose to generate the database from the model, the errors will go away.
+> [!NOTE]
+> When you build the conceptual model, warnings about unmapped entities and associations may appear in the Error List. You can ignore these warnings because after you choose to generate the database from the model, the errors will go away.
 
 ## Associations Overview
 
@@ -27,7 +29,8 @@ When you design your model using the EF Designer, an .edmx file represents your 
 
 At run time, entity type instances at one end of an association can be accessed through navigation properties or foreign keys (if you choose to expose foreign keys in your entities). With foreign keys exposed, the relationship between the entities is managed with a **ReferentialConstraint** element (a child element of the **Association** element). It is recommended that you always expose foreign keys for relationships in your entities.
 
-> **Note**: In many-to-many (\*:\*) you cannot add foreign keys to the entities. In a \*:\* relationship, the association information is managed with an independent object.
+> [!NOTE]
+> In many-to-many (\*:\*) you cannot add foreign keys to the entities. In a \*:\* relationship, the association information is managed with an independent object.
 
 For information about CSDL elements (**ReferentialConstraint**, **Association**, etc.) see the [CSDL specification](../ef6/entity-framework-csdl-specification.md).
 
@@ -37,7 +40,8 @@ For information about CSDL elements (**ReferentialConstraint**, **Association**,
 
 Creating an association with the EF Designer updates the model content of the .edmx file. After creating an association, you must create the mappings for the association (discussed later in this topic).
 
-> **Note**: This section assumes that you already added the entities you wish to create an association between to your model.
+> [!NOTE]
+> This section assumes that you already added the entities you wish to create an association between to your model.
 
 ### To create an association
 
@@ -46,7 +50,8 @@ Creating an association with the EF Designer updates the model content of the .e
 
     ![AddAssociation](../ef6/media/addassociation.png)
 
-    > **Note**: You can choose to not add navigation properties or foreign key properties to the entities at the ends of the association by clearing the **Navigation Property **and **Add foreign key properties to the &lt;entity type name&gt; Entity **checkboxes. If you add only one navigation property, the association will be traversable in only one direction. If you add no navigation properties, you must choose to add foreign key properties in order to access entities at the ends of the association.
+    > [!NOTE]
+> You can choose to not add navigation properties or foreign key properties to the entities at the ends of the association by clearing the **Navigation Property **and **Add foreign key properties to the &lt;entity type name&gt; Entity **checkboxes. If you add only one navigation property, the association will be traversable in only one direction. If you add no navigation properties, you must choose to add foreign key properties in order to access entities at the ends of the association.
 3.  Click **OK**.
 
 ### To delete an association
@@ -86,7 +91,8 @@ When you use the EF Designer to add or edit a referential constraint, the EF Des
 
 You can specify how an association maps to the database in the **Mapping Details** window of the EF Designer.
 
-> **Note**: You can only map details for the associations that do not have a referential constraint specified. If a referential constraint is specified then a foreign key property is included in the entity and you can use the Mapping Details for the entity to control which column the foreign key maps to.
+> [!NOTE]
+> You can only map details for the associations that do not have a referential constraint specified. If a referential constraint is specified then a foreign key property is included in the entity and you can use the Mapping Details for the entity to control which column the foreign key maps to.
 
 ### Create an association mapping
 

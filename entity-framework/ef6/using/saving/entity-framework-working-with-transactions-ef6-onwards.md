@@ -35,7 +35,8 @@ However some users require greater control over their transactions – this is c
 
 Prior to EF6 Entity Framework insisted on opening the database connection itself (it threw an exception if it was passed a connection that was already open). Since a transaction can only be started on an open connection, this meant that the only way a user could wrap several operations into one transaction was either to use a [TransactionScope](https://msdn.microsoft.com/library/system.transactions.transactionscope.aspx) or use the **ObjectContext.Connection** property and start calling **Open()** and **BeginTransaction()** directly on the returned **EntityConnection** object. In addition, API calls which contacted the database would fail if you had started a transaction on the underlying database connection on your own.  
 
-> **Note**: The limitation of only accepting closed connections was removed in Entity Framework 6. For details, see [Connection Management (EF6 Onwards)](../ef6/entity-framework-connection-management.md).  
+> [!NOTE]
+> The limitation of only accepting closed connections was removed in Entity Framework 6. For details, see [Connection Management (EF6 Onwards)](../ef6/entity-framework-connection-management.md).  
 
 Starting with EF6 the framework now provides:  
 
@@ -48,7 +49,7 @@ Starting with EF6 the framework now provides:
 
 The **DbContextTransaction** is meant to be disposed once it has been committed or rolled back. One easy way to accomplish this is the **using(…) {…}** syntax which will automatically call **Dispose()** when the using block completes:  
 
-```  
+``` csharp
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -94,7 +95,8 @@ namespace TransactionsExamples
 }
 ```  
 
-> **Note**: Beginning a transaction requires that the underlying store connection is open. So calling Database.BeginTransaction() will open the connection  if it is not already opened. If DbContextTransaction opened the connection then it will close it when Dispose() is called.  
+> [!NOTE]
+> Beginning a transaction requires that the underlying store connection is open. So calling Database.BeginTransaction() will open the connection  if it is not already opened. If DbContextTransaction opened the connection then it will close it when Dispose() is called.  
 
 ### Passing an existing transaction to the context  
 
@@ -102,9 +104,10 @@ Sometimes you would like a transaction which is even broader in scope and which 
 
 To do this you must define and use a constructor on your context class which inherits from one of the DbContext constructors which take i) an existing connection parameter and ii) the contextOwnsConnection boolean.  
 
-> **Note**: The contextOwnsConnection flag must be set to false when called in this scenario. This is important as it informs Entity Framework that it should not close the connection when it is done with it (e.g. see line 4 below):  
+> [!NOTE]
+> The contextOwnsConnection flag must be set to false when called in this scenario. This is important as it informs Entity Framework that it should not close the connection when it is done with it (e.g. see line 4 below):  
 
-```  
+``` csharp
 using (var conn = new SqlConnection("..."))
 {
     conn.Open();
@@ -118,7 +121,7 @@ Furthermore, you must start the transaction yourself (including the IsolationLev
 
 Then you are free to execute database operations either directly on the SqlConnection itself, or on the DbContext. All such operations are executed within one transaction. You take responsibility for committing or rolling back the transaction and for calling Dispose() on it, as well as for closing and disposing the database connection. E.g.:  
 
-```  
+``` csharp
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -203,7 +206,7 @@ The approach outlined in the previous sections needs no further options or setti
 
 Prior to EF6 the recommended way of providing larger scope transactions was to use a TransactionScope object:  
 
-```  
+``` csharp
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.SqlClient;
@@ -252,7 +255,7 @@ The SqlConnection and Entity Framework would both use the ambient TransactionSco
 
 Starting with .NET 4.5.1 TransactionScope has been updated to also work with asynchronous methods via the use of the [TransactionScopeAsyncFlowOption](https://msdn.microsoft.com/library/system.transactions.transactionscopeasyncflowoption.aspx) enumeration:  
 
-```  
+``` csharp
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.SqlClient;

@@ -59,7 +59,7 @@ Let's go ahead and generate the database.
 -   The new database will now appear in Server Explorer, right-click on it and select **New Query**
 -   Copy the following SQL into the new query, then right-click on the query and select **Execute**
 
-```
+``` SQL
 CREATE TABLE [dbo].[Blogs] (
     [BlogId] INT IDENTITY (1, 1) NOT NULL,
     [Name] NVARCHAR (200) NULL,
@@ -149,7 +149,7 @@ Now that we have a model it’s time to use it to access some data. The classes 
 
 Implement the Main method in Program.cs as shown below. This code creates a new instance of our context and then uses it to insert a new Blog. Then it uses a LINQ query to retrieve all Blogs from the database ordered alphabetically by Title.
 
-```
+``` csharp
 class Program
 {
     static void Main(string[] args)
@@ -201,7 +201,7 @@ The first step is to make some changes to the database schema. We’re going to 
 -   Right-click on the **DatabaseFirst.Blogging** database in Server Explorer and select **New Query**
 -   Copy the following SQL into the new query, then right-click on the query and select **Execute**
 
-```
+``` SQL
 CREATE TABLE [dbo].[Users]
 (
     [Username] NVARCHAR(50) NOT NULL PRIMARY KEY,  

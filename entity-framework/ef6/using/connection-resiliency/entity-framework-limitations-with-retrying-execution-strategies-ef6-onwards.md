@@ -21,7 +21,7 @@ There are a couple of limitations when using a retrying execution strategy:
 
 By default, EF6 and later version will buffer query results rather than streaming them. If you want to have results streamed you can use the AsStreaming method to change a LINQ to Entities query to streaming.  
 
-```  
+``` csharp
 using (var db = new BloggingContext())
 {
     var query = (from b in db.Blogs
@@ -43,7 +43,7 @@ By default, EF will perform any database updates within a transaction. You don�
 
 For example, in the following code SaveChanges is automatically performed within a transaction. If SaveChanges were to fail after inserting one of the new Site’s then the transaction would be rolled back and no changes applied to the database. The context is also left in a state that allows SaveChanges to be called again to retry applying the changes.  
 
-```  
+``` csharp
 using (var db = new BloggingContext())
 {
     db.Blogs.Add(new Site { Url = "http://msdn.com/data/ef" });
@@ -56,7 +56,7 @@ using (var db = new BloggingContext())
 
 When not using a retrying execution strategy you can wrap multiple operations in a single transaction. For example, the following code wraps two SaveChanges calls in a single transaction. If any part of either operation fails then none of the changes are applied.  
 
-```  
+``` csharp
 using (var db = new BloggingContext())
 {
     using (var trn = db.Database.BeginTransaction())
@@ -81,7 +81,7 @@ This is not supported when using a retrying execution strategy because EF isn’
 
 One possible workaround is to suspend the retrying execution strategy for the piece of code that needs to use a user initiated transaction. The easiest way to do this is to add a SuspendExecutionStrategy flag to your code based configuration class and change the execution strategy lambda to return the default (non-retying) execution strategy when the flag is set.  
 
-```  
+``` csharp
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.SqlServer;
@@ -117,7 +117,7 @@ Note that we are using CallContext to store the flag value. This provides simila
 
 We can now suspend the execution strategy for the section of code that uses a user initiated transaction.  
 
-```  
+``` csharp
 using (var db = new BloggingContext())
 {
     MyConfiguration.SuspendExecutionStrategy = true;
@@ -144,7 +144,7 @@ Another option is to manually use the execution strategy and give it the entire 
 
 Note that any contexts should be constructed within the code block to be retried. This ensures that we are starting with a clean state for each retry.  
 
-```  
+``` csharp
 var executionStrategy = new SqlAzureExecutionStrategy();
 
 MyConfiguration.SuspendExecutionStrategy = true;

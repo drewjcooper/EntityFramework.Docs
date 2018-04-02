@@ -19,7 +19,7 @@ Entity Framework allows you to query using LINQ with your entity classes. Howeve
 
 The SqlQuery method on DbSet allows a raw SQL query to be written that will return entity instances. The returned objects will be tracked by the context just as they would be if they were returned by a LINQ query. For example:  
 
-```  
+``` csharp  
 using (var context = new BloggingContext())
 {
     var blogs = context.Blogs.SqlQuery("SELECT * FROM dbo.Blogs").ToList();
@@ -36,7 +36,7 @@ Second, some types of raw SQL query expose potential security risks, especially 
 
 You can use DbSet.SqlQuery to load entities from the results of a stored procedure. For example, the following code calls the dbo.GetBlogs procedure in the database:  
 
-```  
+``` csharp
 using (var context = new BloggingContext())
 {
     var blogs = context.Blogs.SqlQuery("dbo.GetBlogs").ToList();
@@ -45,7 +45,7 @@ using (var context = new BloggingContext())
 
 You can also pass parameters to a stored procedure using the following syntax:  
 
-```  
+``` csharp
 using (var context = new BloggingContext())
 {
     var blogId = 1;
@@ -58,7 +58,7 @@ using (var context = new BloggingContext())
 
 A SQL query returning instances of any type, including primitive types, can be created using the SqlQuery method on the Database class. For example:  
 
-```  
+``` csharp
 using (var context = new BloggingContext())
 {
     var blogNames = context.Database.SqlQuery<string>(
@@ -72,7 +72,7 @@ The results returned from SqlQuery on Database will never be tracked by the cont
 
 Non-query commands can be sent to the database using the ExecuteSqlCommand method on Database. For example:  
 
-```  
+``` csharp
 using (var context = new BloggingContext())
 {
     context.Database.ExecuteSqlCommand(

@@ -41,22 +41,22 @@ Let’s take a high-level view of where time is spent when executing a query usi
 
 **First Query Execution – cold query**
 
-| Code User Writes | Action | EF4 Performance Impact | EF5 Performance Impact | EF6 Performance Impact |
-|------------------|--------|------------------------|------------------------|------------------------|
-| `using(var db = new MyContext())` <br/> `{` | Context creation | Medium | Medium | Low |
-| `  var q1 = ` <br/> `    from c in db.Customers` <br/> `    where c.Id == id1` <br/> `    select c;` | Query expression creation | Low | Low | Low |
-| `  var c1 = q1.First();` | LINQ query execution | - Metadata loading: High but cached <br/> - View generation: Potentially very high but cached <br/> - Parameter evaluation: Medium <br/> - Query translation: Medium <br/> - Materializer generation: Medium but cached <br/> - Database query execution: Potentially high <br/> + Connection.Open <br/> + Command.ExecuteReader <br/> + DataReader.Read <br/> Object materialization: Medium <br/> - Identity lookup: Medium | - Metadata loading: High but cached <br/> - View generation: Potentially very high but cached <br/> - Parameter evaluation: Low <br/> - Query translation: Medium but cached <br/> - Materializer generation: Medium but cached <br/> - Database query execution: Potentially high (Better queries in some situations) <br/> + Connection.Open <br/> + Command.ExecuteReader <br/> + DataReader.Read <br/> Object materialization: Medium <br/> - Identity lookup: Medium | - Metadata loading: High but cached <br/> - View generation: Medium but cached <br/> - Parameter evaluation: Low <br/> - Query translation: Medium but cached <br/> - Materializer generation: Medium but cached <br/> - Database query execution: Potentially high (Better queries in some situations) <br/> + Connection.Open <br/> + Command.ExecuteReader <br/> + DataReader.Read <br/> Object materialization: Medium (Faster than EF5) <br/> - Identity lookup: Medium |
-| `}` | Connection.Close | Low | Low | Low |
+| Code User Writes                                                                                     | Action                    | EF4 Performance Impact                                                                                                                                                                                                                                                                                                                                                                                                        | EF5 Performance Impact                                                                                                                                                                                                                                                                                                                                                                                                                                                    | EF6 Performance Impact                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+|:-----------------------------------------------------------------------------------------------------|:--------------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `using(var db = new MyContext())` <br/> `{`                                                          | Context creation          | Medium                                                                                                                                                                                                                                                                                                                                                                                                                        | Medium                                                                                                                                                                                                                                                                                                                                                                                                                                                                    | Low                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| `  var q1 = ` <br/> `    from c in db.Customers` <br/> `    where c.Id == id1` <br/> `    select c;` | Query expression creation | Low                                                                                                                                                                                                                                                                                                                                                                                                                           | Low                                                                                                                                                                                                                                                                                                                                                                                                                                                                       | Low                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| `  var c1 = q1.First();`                                                                             | LINQ query execution      | - Metadata loading: High but cached <br/> - View generation: Potentially very high but cached <br/> - Parameter evaluation: Medium <br/> - Query translation: Medium <br/> - Materializer generation: Medium but cached <br/> - Database query execution: Potentially high <br/> + Connection.Open <br/> + Command.ExecuteReader <br/> + DataReader.Read <br/> Object materialization: Medium <br/> - Identity lookup: Medium | - Metadata loading: High but cached <br/> - View generation: Potentially very high but cached <br/> - Parameter evaluation: Low <br/> - Query translation: Medium but cached <br/> - Materializer generation: Medium but cached <br/> - Database query execution: Potentially high (Better queries in some situations) <br/> + Connection.Open <br/> + Command.ExecuteReader <br/> + DataReader.Read <br/> Object materialization: Medium <br/> - Identity lookup: Medium | - Metadata loading: High but cached <br/> - View generation: Medium but cached <br/> - Parameter evaluation: Low <br/> - Query translation: Medium but cached <br/> - Materializer generation: Medium but cached <br/> - Database query execution: Potentially high (Better queries in some situations) <br/> + Connection.Open <br/> + Command.ExecuteReader <br/> + DataReader.Read <br/> Object materialization: Medium (Faster than EF5) <br/> - Identity lookup: Medium |
+| `}`                                                                                                  | Connection.Close          | Low                                                                                                                                                                                                                                                                                                                                                                                                                           | Low                                                                                                                                                                                                                                                                                                                                                                                                                                                                       | Low                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
 
 
 **Second Query Execution – warm query**
 
-| Code User Writes | Action | EF4 Performance Impact | EF5 Performance Impact | EF6 Performance Impact |
-|------------------|--------|------------------------|------------------------|------------------------|
-| `using(var db = new MyContext())` <br/> `{` | Context creation | Medium | Medium | Low |
-| `  var q1 = ` <br/> `    from c in db.Customers` <br/> `    where c.Id == id1` <br/> `    select c;` | Query expression creation | Low | Low | Low |
-| `  var c1 = q1.First();` | LINQ query execution | - Metadata ~~loading~~ lookup: ~~High but cached~~ Low <br/> - View ~~generation~~ lookup: ~~Potentially very high but cached~~ Low <br/> - Parameter evaluation: Medium <br/> - Query ~~translation~~ lookup: Medium <br/> - Materializer ~~generation~~ lookup: ~~Medium but cached~~ Low <br/> - Database query execution: Potentially high <br/> + Connection.Open <br/> + Command.ExecuteReader <br/> + DataReader.Read <br/> Object materialization: Medium <br/> - Identity lookup: Medium | - Metadata ~~loading~~ lookup: ~~High but cached~~ Low <br/> - View ~~generation~~ lookup: ~~Potentially very high but cached~~ Low <br/> - Parameter evaluation: Low <br/> - Query ~~translation~~ lookup: ~~Medium but cached~~ Low <br/> - Materializer ~~generation~~ lookup: ~~Medium but cached~~ Low <br/> - Database query execution: Potentially high (Better queries in some situations) <br/> + Connection.Open <br/> + Command.ExecuteReader <br/> + DataReader.Read <br/> Object materialization: Medium <br/> - Identity lookup: Medium | - Metadata ~~loading~~ lookup: ~~High but cached~~ Low <br/> - View ~~generation~~ lookup: ~~Medium but cached~~ Low <br/> - Parameter evaluation: Low <br/> - Query ~~translation~~ lookup: ~~Medium but cached~~ Low <br/> - Materializer ~~generation~~ lookup: ~~Medium but cached~~ Low <br/> - Database query execution: Potentially high (Better queries in some situations) <br/> + Connection.Open <br/> + Command.ExecuteReader <br/> + DataReader.Read <br/> Object materialization: Medium (Faster than EF5) <br/> - Identity lookup: Medium |
-| `}` | Connection.Close | Low | Low | Low |
+| Code User Writes                                                                                     | Action                    | EF4 Performance Impact                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | EF5 Performance Impact                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | EF6 Performance Impact                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|:-----------------------------------------------------------------------------------------------------|:--------------------------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `using(var db = new MyContext())` <br/> `{`                                                          | Context creation          | Medium                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | Medium                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | Low                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| `  var q1 = ` <br/> `    from c in db.Customers` <br/> `    where c.Id == id1` <br/> `    select c;` | Query expression creation | Low                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | Low                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | Low                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| `  var c1 = q1.First();`                                                                             | LINQ query execution      | - Metadata ~~loading~~ lookup: ~~High but cached~~ Low <br/> - View ~~generation~~ lookup: ~~Potentially very high but cached~~ Low <br/> - Parameter evaluation: Medium <br/> - Query ~~translation~~ lookup: Medium <br/> - Materializer ~~generation~~ lookup: ~~Medium but cached~~ Low <br/> - Database query execution: Potentially high <br/> + Connection.Open <br/> + Command.ExecuteReader <br/> + DataReader.Read <br/> Object materialization: Medium <br/> - Identity lookup: Medium | - Metadata ~~loading~~ lookup: ~~High but cached~~ Low <br/> - View ~~generation~~ lookup: ~~Potentially very high but cached~~ Low <br/> - Parameter evaluation: Low <br/> - Query ~~translation~~ lookup: ~~Medium but cached~~ Low <br/> - Materializer ~~generation~~ lookup: ~~Medium but cached~~ Low <br/> - Database query execution: Potentially high (Better queries in some situations) <br/> + Connection.Open <br/> + Command.ExecuteReader <br/> + DataReader.Read <br/> Object materialization: Medium <br/> - Identity lookup: Medium | - Metadata ~~loading~~ lookup: ~~High but cached~~ Low <br/> - View ~~generation~~ lookup: ~~Medium but cached~~ Low <br/> - Parameter evaluation: Low <br/> - Query ~~translation~~ lookup: ~~Medium but cached~~ Low <br/> - Materializer ~~generation~~ lookup: ~~Medium but cached~~ Low <br/> - Database query execution: Potentially high (Better queries in some situations) <br/> + Connection.Open <br/> + Command.ExecuteReader <br/> + DataReader.Read <br/> Object materialization: Medium (Faster than EF5) <br/> - Identity lookup: Medium |
+| `}`                                                                                                  | Connection.Close          | Low                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | Low                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | Low                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 
 
 There are several ways to reduce the performance cost of both cold and warm queries, and we'll take a look at these in the following section. Specifically, we'll look at reducing the cost of model loading in cold queries by using pre-generated views, which should help alleviate performance pains experienced during view generation. For warm queries, we'll cover query plan caching, no tracking queries, and different query execution options.
@@ -143,11 +143,11 @@ When using EDMGen or the Entity Designer in Visual Studio, you get FKs by defaul
 
 If you have a large Code First model, using Independent Associations will have the same effect on view generation. You can avoid this impact by including Foreign Key properties on the classes for your dependent objects, though some developers will consider this to be polluting their object model. You can find more information on this subject in \<http://blog.oneunicorn.com/2011/12/11/whats-the-deal-with-mapping-foreign-keys-using-the-entity-framework/>.
 
-| When using | Do this |
-|------------|---------|
+| When using      | Do this                                                                                                                                                                                                                                                                                                                             |
+|:----------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Entity Designer | After adding an association between two entities, make sure you have a referential constraint. Referential constraints tell Entity Frameworkto use Foreign Keys instead of Independent Associations. For additional details visit \<http://blogs.msdn.com/b/efdesign/archive/2009/03/16/foreign-keys-in-the-entity-framework.aspx>. |
-| EDMGen | When using EDMGen to generate your files from the database, your Foreign Keys will be respected and added to the model as such. For more information on the different options exposed by EDMGen visit [http://msdn.microsoft.com/library/bb387165.aspx](https://msdn.microsoft.com/library/bb387165.aspx). |
-| Code First | See the "Relationship Convention" section of the [Code First Conventions](../ef6/entity-framework-code-first-conventions.md) topic for information on how to include foreign key properties on dependent objects when using Code First. |
+| EDMGen          | When using EDMGen to generate your files from the database, your Foreign Keys will be respected and added to the model as such. For more information on the different options exposed by EDMGen visit [http://msdn.microsoft.com/library/bb387165.aspx](https://msdn.microsoft.com/library/bb387165.aspx).                          |
+| Code First      | See the "Relationship Convention" section of the [Code First Conventions](../ef6/entity-framework-code-first-conventions.md) topic for information on how to include foreign key properties on dependent objects when using Code First.                                                                                             |
 
 #### 2.4.2 Moving your model to a separate assembly
 
@@ -187,7 +187,7 @@ There is a performance consideration to be taken when using Find. Invocations to
 
 Example of Find with auto-detect changes disabled:
 
-```
+``` csharp
     context.Configuration.AutoDetectChangesEnabled = false;
     var product = context.Products.Find(productId);
     context.Configuration.AutoDetectChangesEnabled = true;
@@ -218,7 +218,7 @@ The query plan cache is shared across ObjectContext instances within the same Ap
 -   The query plan cache is shared for all query types: Entity SQL, LINQ to Entities, and CompiledQuery objects.
 -   By default, query plan caching is enabled for Entity SQL queries, whether executed through an EntityCommand or through an ObjectQuery. It is also enabled by default for LINQ to Entities queries in Entity Framework on .NET 4.5, and in Entity Framework 6
     -   Query plan caching can be disabled by setting the EnablePlanCaching property (on EntityCommand or ObjectQuery) to false. For example:
-```
+``` csharp
                     var query = from customer in context.Customer
                                 where customer.CustomerId == id
                                 select new
@@ -252,11 +252,11 @@ To demonstrate the effect of query plan caching on your application's performanc
 
 ##### 3.2.3.1       Test Results
 
-| Test | EF5 no cache | EF5 cached | EF6 no cache | EF6 cached |
-|------|--------------|------------|--------------|------------|
-| Enumerating all 18723 queries | 124 | 125.4 | 124.3 | 125.3 |
-| Avoiding sweep (just the first 800 queries, regardless of complexity) | 41.7 | 5.5 | 40.5 | 5.4 |
-| Just the AggregatingSubtotals queries (178 total - which avoids sweep) | 39.5 | 4.5 | 38.1 | 4.6 |
+| Test                                                                   | EF5 no cache | EF5 cached | EF6 no cache | EF6 cached |
+|:-----------------------------------------------------------------------|:-------------|:-----------|:-------------|:-----------|
+| Enumerating all 18723 queries                                          | 124          | 125.4      | 124.3        | 125.3      |
+| Avoiding sweep (just the first 800 queries, regardless of complexity)  | 41.7         | 5.5        | 40.5         | 5.4        |
+| Just the AggregatingSubtotals queries (178 total - which avoids sweep) | 39.5         | 4.5        | 38.1         | 4.6        |
 
 *All times in seconds.*
 
@@ -280,7 +280,7 @@ Since compiling a LINQ query is a time-consuming process, we don’t want to do 
 
 For example, suppose your page has the following method body to handle displaying the products for the selected category:
 
-```
+``` csharp
     // Warning: this is the wrong way of using CompiledQuery
     using (NorthwindEntities context = new NorthwindEntities())
     {
@@ -302,7 +302,7 @@ In this case, you will create a new CompiledQuery instance on the fly every time
 
 Instead, you want to create a static instance of the compiled query, so you are invoking the same compiled query every time the method is called. One way to so this is by adding the CompiledQuery instance as a member of your object context.  You can then make things a little cleaner by accessing the CompiledQuery through a helper method:
 
-```
+``` csharp
     public partial class NorthwindEntities : ObjectContext
     {
         private static readonly Func<NorthwindEntities, string, IEnumerable<Product>> productsForCategoryCQ = CompiledQuery.Compile(
@@ -318,7 +318,7 @@ Instead, you want to create a static instance of the compiled query, so you are 
 
 This helper method would be invoked as follows:
 
-```
+``` csharp
     this.productsGrid.DataSource = context.GetProductsForCategory(selectedCategory);
 ```
 
@@ -328,11 +328,11 @@ The ability to compose over any LINQ query is extremely useful; to do this, you 
 
 Some components will make use of composed IQueryable objects to enable advanced functionality. For example, ASP.NET’s GridView can be data-bound to an IQueryable object via the SelectMethod property. The GridView will then compose over this IQueryable object to allow sorting and paging over the data model. As you can see, using a CompiledQuery for the GridView would not hit the compiled query but would generate a new autocompiled query.
 
-The Customer Advisory Team discusses this in their "Potential Performance Issues with Compiled LINQ Query Re-Compiles" blog post: \<http://blogs.msdn.com/b/appfabriccat/archive/2010/08/06/potential-performance-issues-with-compiled-linq-query-re-compiles.aspx>.
+The Customer Advisory Team discusses this in their "Potential Performance Issues with Compiled LINQ Query Re-Compiles" blog post: <http://blogs.msdn.com/b/appfabriccat/archive/2010/08/06/potential-performance-issues-with-compiled-linq-query-re-compiles.aspx>.
 
 One place where you may run into this is when adding progressive filters to a query. For example, suppose you had a Customers page with several drop-down lists for optional filters (e.g. Country and OrdersCount). You can compose these filters over the IQueryable results of a CompiledQuery, but doing so will result in the new query going through the plan compiler every time you execute it.
 
-```
+``` csharp
     using (NorthwindEntities context = new NorthwindEntities())
     {
         IQueryable<Customer> myCustomers = context.InvokeCustomersForEmployee();
@@ -355,7 +355,7 @@ One place where you may run into this is when adding progressive filters to a qu
 
  To avoid this re-compilation, you can rewrite the CompiledQuery to take the possible filters into account:
 
-```
+``` csharp
     private static readonly Func<NorthwindEntities, int, int?, string, IQueryable<Customer>> customersForEmployeeWithFiltersCQ = CompiledQuery.Compile(
         (NorthwindEntities context, int empId, int? countFilter, string countryFilter) =>
             context.Customers.Where(c => c.Orders.Any(o => o.EmployeeID == empId))
@@ -366,7 +366,7 @@ One place where you may run into this is when adding progressive filters to a qu
 
 Which would be invoked in the UI like:
 
-```
+``` csharp
     using (NorthwindEntities context = new NorthwindEntities())
     {
         int? countFilter = (this.orderCountFilterList.SelectedIndex == 0) ?
@@ -387,7 +387,7 @@ Which would be invoked in the UI like:
 
  A tradeoff here is the generated store command will always have the filters with the null checks, but these should be fairly simple for the database server to optimize:
 
-```
+``` SQL
 ...
 WHERE ((0 = (CASE WHEN (@p__linq__1 IS NOT NULL) THEN cast(1 as bit) WHEN (@p__linq__1 IS NULL) THEN cast(0 as bit) END)) OR ([Project3].[C2] > @p__linq__2)) AND (@p__linq__3 IS NULL OR [Project3].[Country] = @p__linq__4)
 ```
@@ -445,7 +445,7 @@ Other conditions can prevent your query from using the cache. Common examples ar
 
 Entity Framework does not cache queries that invoke IEnumerable&lt;T&gt;.Contains&lt;T&gt;(T value) against an in-memory collection, since the values of the collection are considered volatile. The following example query will not be cached, so it will always be processed by the plan compiler:
 
-```
+``` csharp
 int[] ids = new int[10000];
 ...
 using (var context = new MyContext())
@@ -466,7 +466,7 @@ Entity Framework 6 contains optimizations to the way IEnumerable&lt;T&gt;.Contai
 
 The Skip(), Take(), Contains() and DefautIfEmpty() LINQ operators do not produce SQL queries with parameters but instead put the values passed to them as constants. Because of this, queries that might otherwise be identical end up polluting the query plan cache, both on the EF stack and on the database server, and do not get reutilized unless the same constants are used in a subsequent query execution. For example:
 
-```
+``` csharp
 var id = 10;
 ...
 using (var context = new MyContext())
@@ -485,7 +485,7 @@ In particular pay attention to the use of Skip and Take when doing paging. In EF
 
 Consider the following code, which is suboptimal but is only meant to exemplify this class of queries:
 
-```
+``` csharp
 var customers = context.Customers.OrderBy(c => c.LastName);
 for (var i = 0; i < count; ++i)
 {
@@ -497,7 +497,7 @@ for (var i = 0; i < count; ++i)
 
 A faster version of this same code would involve calling Skip with a lambda:
 
-```
+``` csharp
 var customers = context.Customers.OrderBy(c => c.LastName);
 for (var i = 0; i \< count; ++i)
 {
@@ -509,7 +509,7 @@ for (var i = 0; i \< count; ++i)
 
 The second snippet may run up to 11% faster because the same query plan is used every time the query is run, which saves CPU time and avoids polluting the query cache. Furthermore, because the parameter to Skip is in a closure the code might as well look like this now:
 
-```
+``` csharp
 var i = 0;
 var skippyCustomers = context.Customers.OrderBy(c => c.LastName).Skip(() => i);
 for (; i < count; ++i)
@@ -524,7 +524,7 @@ for (; i < count; ++i)
 
 When a query uses the properties of a non-mapped object type as a parameter then the query will not get cached. For example:
 
-```
+``` csharp
 using (var context = new MyContext())
 {
     var myObject = new NonMappedType();
@@ -540,7 +540,7 @@ using (var context = new MyContext())
 
 In this example, assume that class NonMappedType is not part of the Entity model. This query can easily be changed to not use a non-mapped type and instead use a local variable as the parameter to the query:
 
-```
+``` csharp
 using (var context = new MyContext())
 {
     var myObject = new NonMappedType();
@@ -560,7 +560,7 @@ In this case, the query will be able to get cached and will benefit from the que
 
 Following the same example as above, if you have a second query that relies on a query that needs to be recompiled, your entire second query will also be recompiled. Here’s an example to illustrate this scenario:
 
-```
+``` csharp
 int[] ids = new int[10000];
 ...
 using (var context = new MyContext())
@@ -594,7 +594,7 @@ When querying using ObjectContext, ObjectQuery and ObjectSet instances will reme
 
 You can switch the mode of a query to NoTracking by chaining a call to the AsNoTracking() method in the query. Unlike ObjectQuery, the DbSet and DbQuery classes in the DbContext API don’t have a mutable property for the MergeOption.
 
-```
+``` csharp
     var productsForCategory = from p in context.Products.AsNoTracking()
                                 where p.Category.CategoryName == selectedCategory
                                 select p;
@@ -604,7 +604,7 @@ You can switch the mode of a query to NoTracking by chaining a call to the AsNoT
 
 #### 5.1.2 Disabling change tracking at the query level using ObjectContext
 
-```
+``` csharp
     var productsForCategory = from p in context.Products
                                 where p.Category.CategoryName == selectedCategory
                                 select p;
@@ -614,7 +614,7 @@ You can switch the mode of a query to NoTracking by chaining a call to the AsNoT
 
 #### 5.1.3 Disabling change tracking for an entire entity set using ObjectContext
 
-```
+``` csharp
     context.Products.MergeOption = MergeOption.NoTracking;
 
     var productsForCategory = from p in context.Products
@@ -632,10 +632,10 @@ In this test we look at the cost of filling the ObjectStateManager by comparing 
 
 Test Results, median over 3 runs:
 
-|   | NO TRACKING – WORKING SET | NO TRACKING – TIME | APPEND ONLY – WORKING SET | APPEND ONLY – TIME |
-|---|---------------------------|--------------------|---------------------------|--------------------|
-| **Entity Framework 5** | 460361728 | 1163536 ms | 596545536 | 1273042 ms |
-| **Entity Framework 6** | 647127040 | 190228 ms | 832798720 | 195521 ms |
+|                        | NO TRACKING – WORKING SET | NO TRACKING – TIME | APPEND ONLY – WORKING SET | APPEND ONLY – TIME |
+|:-----------------------|:--------------------------|:-------------------|:--------------------------|:-------------------|
+| **Entity Framework 5** | 460361728                 | 1163536 ms         | 596545536                 | 1273042 ms         |
+| **Entity Framework 6** | 647127040                 | 190228 ms          | 832798720                 | 195521 ms          |
 
  
 
@@ -659,7 +659,7 @@ Entity Framework offers several different ways to query. We'll take a look at th
 
 ### 6.1       LINQ to Entities queries
 
-```
+``` csharp
 var q = context.Products.Where(p => p.Category.CategoryName == "Beverages");
 ```
 
@@ -680,7 +680,7 @@ var q = context.Products.Where(p => p.Category.CategoryName == "Beverages");
 
 When the context derives ObjectContext:
 
-```
+``` csharp
 context.Products.MergeOption = MergeOption.NoTracking;
 var q = context.Products.Where(p => p.Category.CategoryName == "Beverages");
 ```
@@ -688,7 +688,7 @@ var q = context.Products.Where(p => p.Category.CategoryName == "Beverages");
 
 When the context derives DbContext:
 
-```
+``` csharp
 var q = context.Products.AsNoTracking()
                         .Where(p => p.Category.CategoryName == "Beverages");
 ```
@@ -709,7 +709,7 @@ var q = context.Products.AsNoTracking()
 
 Note that queries that project scalar properties are not tracked even if the NoTracking is not specified. For example:
 
-```
+``` csharp
 var q = context.Products.Where(p => p.Category.CategoryName == "Beverages").Select(p => new { p.ProductName });
 ```
 
@@ -717,7 +717,7 @@ This particular query doesn’t explicitly specify being NoTracking, but since i
 
 ### 6.3       Entity SQL over an ObjectQuery
 
-```
+``` csharp
 ObjectQuery<Product> products = context.Products.Where("it.Category.CategoryName = 'Beverages'");
 ```
 
@@ -733,7 +733,7 @@ ObjectQuery<Product> products = context.Products.Where("it.Category.CategoryName
 
 ### 6.4       Entity SQL over an Entity Command
 
-```
+``` csharp
 EntityCommand cmd = eConn.CreateCommand();
 cmd.CommandText = "Select p From NorthwindEntities.Products As p Where p.Category.CategoryName = 'Beverages'";
 
@@ -760,21 +760,21 @@ using (EntityDataReader reader = cmd.ExecuteReader(CommandBehavior.SequentialAcc
 
 SqlQuery on Database:
 
-```
+``` csharp
 // use this to obtain entities and not track them
 var q1 = context.Database.SqlQuery<Product>("select * from products");
 ```
 
 SqlQuery on DbSet:
 
-```
+``` csharp
 // use this to obtain entities and have them tracked
 var q2 = context.Products.SqlQuery("select * from products");
 ```
 
 ExecyteStoreQuery:
 
-```
+``` csharp
 var beverages = context.ExecuteStoreQuery<Product>(
 @"     SELECT        P.ProductID, P.ProductName, P.SupplierID, P.CategoryID, P.QuantityPerUnit, P.UnitPrice, P.UnitsInStock, P.UnitsOnOrder, P.ReorderLevel, P.Discontinued, P.DiscontinuedDate
        FROM            Products AS P INNER JOIN Categories AS C ON P.CategoryID = C.CategoryID
@@ -796,7 +796,7 @@ var beverages = context.ExecuteStoreQuery<Product>(
 
 ### 6.6       CompiledQuery
 
-```
+``` csharp
 private static readonly Func<NorthwindEntities, string, IQueryable<Product>> productsForCategoryCQ = CompiledQuery.Compile(
     (NorthwindEntities context, string categoryName) =>
         context.Products.Where(p => p.Category.CategoryName == categoryName)
@@ -821,19 +821,19 @@ var q = context.InvokeProductsForCategoryCQ("Beverages");
 
 Simple microbenchmarks where the context creation was not timed were put to the test. We measured querying 5000 times for a set of non-cached entities in a controlled environment. These numbers are to be taken with a warning: they do not reflect actual numbers produced by an application, but instead they are a very accurate measurement of how much of a performance difference there is when different querying options are compared apples-to-apples, excluding the cost of creating a new context.
 
-| EF | Test | Time (ms) | Memory |
-|----|------|-----------|--------|
-| EF5 | ObjectContext ESQL | 2414 | 38801408 |
-| EF5 | ObjectContext Linq Query | 2692 | 38277120 |
-| EF5 | DbContext Linq Query No Tracking | 2818 | 41840640 |
-| EF5 | DbContext Linq Query | 2930 | 41771008 |
-| EF5 | ObjectContext Linq Query No Tracking | 3013 | 38412288 |
-|    |    |    |    |
-| EF6 | ObjectContext ESQL | 2059 | 46039040 |
-| EF6 | ObjectContext Linq Query | 3074 | 45248512 |
-| EF6 | DbContext Linq Query No Tracking | 3125 | 47575040 |
-| EF6 | DbContext Linq Query | 3420 | 47652864 |
-| EF6 | ObjectContext Linq Query No Tracking | 3593 | 45260800 |
+| EF  | Test                                 | Time (ms) | Memory   |
+|:----|:-------------------------------------|:----------|:---------|
+| EF5 | ObjectContext ESQL                   | 2414      | 38801408 |
+| EF5 | ObjectContext Linq Query             | 2692      | 38277120 |
+| EF5 | DbContext Linq Query No Tracking     | 2818      | 41840640 |
+| EF5 | DbContext Linq Query                 | 2930      | 41771008 |
+| EF5 | ObjectContext Linq Query No Tracking | 3013      | 38412288 |
+|     |                                      |           |          |
+| EF6 | ObjectContext ESQL                   | 2059      | 46039040 |
+| EF6 | ObjectContext Linq Query             | 3074      | 45248512 |
+| EF6 | DbContext Linq Query No Tracking     | 3125      | 47575040 |
+| EF6 | DbContext Linq Query                 | 3420      | 47652864 |
+| EF6 | ObjectContext Linq Query No Tracking | 3593      | 45260800 |
 
 ![EF5Micro5000Warm](../ef6/media/ef5micro5000warm.png)
 
@@ -843,29 +843,29 @@ Microbenchmarks are very sensitive to small changes in the code. In this case, t
 
 To compare the real-world performance of the different query options, we created 5 separate test variations where we use a different query option to select all products whose category name is "Beverages". Each iteration includes the cost of creating the context, and the cost of materializing all returned entities. 10 iterations are run untimed before taking the sum of 1000 timed iterations. The results shown are the median run taken from 5 runs of each test. For more information, see Appendix B which includes the code for the test.
 
-| EF | Test | Time (ms) | Memory |
-|----|------|-----------|--------|
-| EF5 | ObjectContext Entity Command | 621 | 39350272 |
-| EF5 | DbContext Sql Query on Database | 825 | 37519360 |
-| EF5 | ObjectContext Store Query | 878 | 39460864 |
-| EF5 | ObjectContext Linq Query No Tracking | 969 | 38293504 |
-| EF5 | ObjectContext Entity Sql using Object Query | 1089 | 38981632 |
-| EF5 | ObjectContext Compiled Query | 1099 | 38682624 |
-| EF5 | ObjectContext Linq Query | 1152 | 38178816 |
-| EF5 | DbContext Linq Query No Tracking | 1208 | 41803776 |
-| EF5 | DbContext Sql Query on DbSet | 1414 | 37982208 |
-| EF5 | DbContext Linq Query | 1574 | 41738240 |
-|    |    |    |    |
-| EF6 | ObjectContext Entity Command | 480 | 47247360 |
-| EF6 | ObjectContext Store Query | 493 | 46739456 |
-| EF6 | DbContext Sql Query on Database | 614 | 41607168 |
-| EF6 | ObjectContext Linq Query No Tracking | 684 | 46333952 |
-| EF6 | ObjectContext Entity Sql using Object Query | 767 | 48865280 |
-| EF6 | ObjectContext Compiled Query | 788 | 48467968 |
-| EF6 | DbContext Linq Query No Tracking | 878 | 47554560 |
-| EF6 | ObjectContext Linq Query | 953 | 47632384 |
-| EF6 | DbContext Sql Query on DbSet | 1023 | 41992192 |
-| EF6 | DbContext Linq Query | 1290 | 47529984 |
+| EF  | Test                                        | Time (ms) | Memory   |
+|:----|:--------------------------------------------|:----------|:---------|
+| EF5 | ObjectContext Entity Command                | 621       | 39350272 |
+| EF5 | DbContext Sql Query on Database             | 825       | 37519360 |
+| EF5 | ObjectContext Store Query                   | 878       | 39460864 |
+| EF5 | ObjectContext Linq Query No Tracking        | 969       | 38293504 |
+| EF5 | ObjectContext Entity Sql using Object Query | 1089      | 38981632 |
+| EF5 | ObjectContext Compiled Query                | 1099      | 38682624 |
+| EF5 | ObjectContext Linq Query                    | 1152      | 38178816 |
+| EF5 | DbContext Linq Query No Tracking            | 1208      | 41803776 |
+| EF5 | DbContext Sql Query on DbSet                | 1414      | 37982208 |
+| EF5 | DbContext Linq Query                        | 1574      | 41738240 |
+|     |                                             |           |          |
+| EF6 | ObjectContext Entity Command                | 480       | 47247360 |
+| EF6 | ObjectContext Store Query                   | 493       | 46739456 |
+| EF6 | DbContext Sql Query on Database             | 614       | 41607168 |
+| EF6 | ObjectContext Linq Query No Tracking        | 684       | 46333952 |
+| EF6 | ObjectContext Entity Sql using Object Query | 767       | 48865280 |
+| EF6 | ObjectContext Compiled Query                | 788       | 48467968 |
+| EF6 | DbContext Linq Query No Tracking            | 878       | 47554560 |
+| EF6 | ObjectContext Linq Query                    | 953       | 47632384 |
+| EF6 | DbContext Sql Query on DbSet                | 1023      | 41992192 |
+| EF6 | DbContext Linq Query                        | 1290      | 47529984 |
 
  
 
@@ -905,12 +905,12 @@ A SQL Server-specific improvement to the algorithm that generates the store-laye
 
 The model contains 1005 entity sets and 4227 association sets.
 
-| Configuration | Breakdown of time consumed |
-|---------------|----------------------------|
-| Visual Studio 2010, Entity Framework 4 | SSDL Generation: 2 hr 27 min <br/> Mapping Generation: 1 second <br/> CSDL Generation: 1 second <br/> ObjectLayer Generation: 1 second <br/> View Generation: 2 h 14 min |
-| Visual Studio 2010 SP1, Entity Framework 4 | SSDL Generation: 1 second <br/> Mapping Generation: 1 second <br/> CSDL Generation: 1 second <br/> ObjectLayer Generation: 1 second <br/> View Generation: 1 hr 53 min |
-| Visual Studio 2013, Entity Framework 5 | SSDL Generation: 1 second <br/> Mapping Generation: 1 second <br/> CSDL Generation: 1 second <br/> ObjectLayer Generation: 1 second <br/> View Generation: 65 minutes |
-| Visual Studio 2013, Entity Framework 6 | SSDL Generation: 1 second <br/> Mapping Generation: 1 second <br/> CSDL Generation: 1 second <br/> ObjectLayer Generation: 1 second <br/> View Generation: 28 seconds. |
+| Configuration                              | Breakdown of time consumed                                                                                                                                               |
+|:-------------------------------------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Visual Studio 2010, Entity Framework 4     | SSDL Generation: 2 hr 27 min <br/> Mapping Generation: 1 second <br/> CSDL Generation: 1 second <br/> ObjectLayer Generation: 1 second <br/> View Generation: 2 h 14 min |
+| Visual Studio 2010 SP1, Entity Framework 4 | SSDL Generation: 1 second <br/> Mapping Generation: 1 second <br/> CSDL Generation: 1 second <br/> ObjectLayer Generation: 1 second <br/> View Generation: 1 hr 53 min   |
+| Visual Studio 2013, Entity Framework 5     | SSDL Generation: 1 second <br/> Mapping Generation: 1 second <br/> CSDL Generation: 1 second <br/> ObjectLayer Generation: 1 second <br/> View Generation: 65 minutes    |
+| Visual Studio 2013, Entity Framework 6     | SSDL Generation: 1 second <br/> Mapping Generation: 1 second <br/> CSDL Generation: 1 second <br/> ObjectLayer Generation: 1 second <br/> View Generation: 28 seconds.   |
 
 
 It's worth noting that when generating the SSDL, the load is almost entirely spent on the SQL Server, while the client development machine is waiting idle for results to come back from the server. DBAs should particularly appreciate this improvement. It's also worth noting that essentially the entire cost of model generation takes place in View Generation now.
@@ -961,7 +961,7 @@ As an example of what's happening under the hood, suppose you want to query for 
 
 **Using Eager Loading**
 
-```
+``` csharp
 using (NorthwindEntities context = new NorthwindEntities())
 {
     var ukCustomers = context.Customers.Include(c => c.Orders).Where(c => c.Address.Country == "UK");
@@ -972,7 +972,7 @@ using (NorthwindEntities context = new NorthwindEntities())
 
 **Using Lazy Loading**
 
-```
+``` csharp
 using (NorthwindEntities context = new NorthwindEntities())
 {
     context.ContextOptions.LazyLoadingEnabled = true;
@@ -987,7 +987,7 @@ using (NorthwindEntities context = new NorthwindEntities())
 
 When using eager loading, you'll issue a single query that returns all customers and all orders. The store command looks like:
 
-```
+``` SQL
 SELECT
 [Project1].[C1] AS [C1],
 [Project1].[CustomerID] AS [CustomerID],
@@ -1053,7 +1053,7 @@ ORDER BY [Project1].[CustomerID] ASC, [Project1].[C2] ASC
 
 When using lazy loading, you'll issue the following query initially:
 
-```
+``` SQL
 SELECT
 [Extent1].[CustomerID] AS [CustomerID],
 [Extent1].[CompanyName] AS [CompanyName],
@@ -1072,7 +1072,7 @@ WHERE N'UK' = [Extent1].[Country]
 
 And each time you access the Orders navigation property of a customer another query like the following is issued against the store:
 
-```
+``` SQL
 exec sp_executesql N'SELECT
 [Extent1].[OrderID] AS [OrderID],
 [Extent1].[CustomerID] AS [CustomerID],
@@ -1098,11 +1098,11 @@ For more information, see the [Loading Related Objects](https://msdn.microsoft.c
 
 There’s no such thing as a one-size-fits-all to choosing eager loading versus lazy loading. Try first to understand the differences between both strategies so you can do a well informed decision; also, consider if your code fits to any of the following scenarios:
 
-| Scenario | Our Suggestion |
-|----------|----------------|
-| Do you need to access many navigation properties from the fetched entities? | **No** - Both options will probably do. However, if the payload your query is bringing is not too big, you may experience performance benefits by using Eager loading as it’ll require less network round trips to materialize your objects. <br/> <br/> **Yes** - 	If you need to access many navigation properties from the entities, you’d do that by using multiple include statements in your query with Eager loading. The more entities you include, the bigger the payload your query will return. Once you include three or more entities into your query, consider switching to Lazy loading.|
-| Do you know exactly what data will be needed at run time?	| **No** - Lazy loading will be better for you. Otherwise, you may end up querying for data that you will not need. <br/> <br/> **Yes** - Eager loading is probably your best bet; it will help loading entire sets faster. If your query requires fetching a very large amount of data, and this becomes too slow, then try Lazy loading instead.|
-| Is your code executing far from your database? (increased network latency) | **No** - When the network latency is not an issue, using Lazy loading may simplify your code. Remember that the topology of your application may change, so don’t take database proximity for granted. <br/> <br/> **Yes** - When the network is a problem, only you can decide what fits better for your scenario. Typically Eager loading will be better because it requires fewer round trips. |
+| Scenario                                                                    | Our Suggestion                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+|:----------------------------------------------------------------------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Do you need to access many navigation properties from the fetched entities? | **No** - Both options will probably do. However, if the payload your query is bringing is not too big, you may experience performance benefits by using Eager loading as it’ll require less network round trips to materialize your objects. <br/> <br/> **Yes** - 	If you need to access many navigation properties from the entities, you’d do that by using multiple include statements in your query with Eager loading. The more entities you include, the bigger the payload your query will return. Once you include three or more entities into your query, consider switching to Lazy loading. |
+| Do you know exactly what data will be needed at run time?                   | **No** - Lazy loading will be better for you. Otherwise, you may end up querying for data that you will not need. <br/> <br/> **Yes** - Eager loading is probably your best bet; it will help loading entire sets faster. If your query requires fetching a very large amount of data, and this becomes too slow, then try Lazy loading instead.                                                                                                                                                                                                                                                       |
+| Is your code executing far from your database? (increased network latency)  | **No** - When the network latency is not an issue, using Lazy loading may simplify your code. Remember that the topology of your application may change, so don’t take database proximity for granted. <br/> <br/> **Yes** - When the network is a problem, only you can decide what fits better for your scenario. Typically Eager loading will be better because it requires fewer round trips.                                                                                                                                                                                                      |
 
 
 #### 8.2.2       Performance concerns with multiple Includes
@@ -1115,7 +1115,7 @@ You can check for cases where your queries are returning excessively large paylo
 
 **Before breaking the query:**
 
-```
+``` csharp
 using (NorthwindEntities context = new NorthwindEntities())
 {
     var customers = from c in context.Customers.Include(c => c.Orders)
@@ -1131,7 +1131,7 @@ using (NorthwindEntities context = new NorthwindEntities())
 
 **After breaking the query:**
 
-```
+``` csharp
 using (NorthwindEntities context = new NorthwindEntities())
 {
     var orders = from o in context.Orders
@@ -1167,7 +1167,7 @@ A good resource that shows how to enable table splitting is Gil Fink's "Table Sp
 
 Some users might experience resource contention that limits the parallelism they are expecting when the Garbage Collector is not properly configured. Whenever EF is used in a multithreaded scenario, or in any application that resembles a server-side system, make sure to enable Server Garbage Collection. This is done via a simple setting in your application config file:
 
-```
+``` xml
 \<?xmlversion="1.0" encoding="utf-8" ?>
 <configuration>
         <runtime>
@@ -1184,7 +1184,7 @@ As mentioned earlier, Entity Frameworkmight show performance issues when the obj
 
 It is generally a good practice to leave Entity Framework’s automatic change detection enabled for the entire life of your application. If your scenario is being negatively affected by high CPU usage and your profiles indicate that the culprit is the call to DetectChanges, consider temporarily turning off AutoDetectChanges in the sensitive portion of your code:
 
-```
+``` csharp
 try
 {
     context.Configuration.AutoDetectChangesEnabled = false;
@@ -1207,7 +1207,7 @@ Entity Framework’s contexts are meant to be used as short-lived instances in o
 
 Entity Framework by default will generate SQL code that has C\# null comparison semantics. Consider the following example query:
 
-```
+``` csharp
             int? categoryId = 7;
             int? supplierId = 8;
             decimal? unitPrice = 0;
@@ -1232,7 +1232,7 @@ In this example, we’re comparing a number of nullable variables against nullab
 
 One way to deal with this situation is by using database null semantics. Note that this might potentially behave differently to the C\# null semantics since now Entity Framework will generate simpler SQL that exposes the way the database engine handles null values. Database null semantics can be activated per-context with one single configuration line against the context configuration:
 
-```
+``` csharp
                 context.Configuration.UseDatabaseNullSemantics = true;
 ```
 
@@ -1282,7 +1282,7 @@ For more information on profiling your application's database activity, see Juli
 
 If you are using Entity Framework 6 also consider using the built-in logging functionality. The Database property of the context can be instructed to log its activity via a simple one-line configuration:
 
-```
+``` csharp
     using (var context = newQueryComparison.DbC.NorthwindEntities())
     {
         context.Database.Log = Console.WriteLine;
@@ -1295,7 +1295,7 @@ In this example the database activity will be logged to the console, but the Log
 
 If you want to enable database logging without recompiling, and you are using Entity Framework 6.1 or later, you can do so by adding an interceptor in the web.config or app.config file of your application.
 
-```
+``` xml
   <interceptors>
     <interceptor type="System.Data.Entity.Infrastructure.Interception.DatabaseLogger, EntityFramework">
       <parameters>
@@ -1348,7 +1348,7 @@ This environment uses a 2-machine setup with the database on a separate machine 
 
 The Northwind model was used to execute these tests. It was generated from the database using the Entity Framework designer. Then, the following code was used to compare the performance of the query execution options:
 
-```
+``` csharp
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -1529,7 +1529,7 @@ A simple lookup query with no aggregations
 -   Count: 16232
 -   Example:
 
-```
+``` xml
   <Query complexity="Lookup">
     <CommandText>Select value distinct top(4) e.Idle_Time From NavisionFKContext.Session as e</CommandText>
   </Query>
@@ -1542,7 +1542,7 @@ A normal BI query with multiple aggregations, but no subtotals (single query)
 -   Count: 2313
 -   Example:
 
-```
+``` xml
   <Query complexity="SingleAggregating">
     <CommandText>NavisionFK.MDF_SessionLogin_Time_Max()</CommandText>
   </Query>
@@ -1550,7 +1550,7 @@ A normal BI query with multiple aggregations, but no subtotals (single query)
 
 Where MDF\_SessionLogin\_Time\_Max() is defined in the model as:
 
-```
+``` xml
   <Function Name="MDF_SessionLogin_Time_Max" ReturnType="Collection(DateTime)">
     <DefiningExpression>SELECT VALUE Edm.Min(E.Login_Time) FROM NavisionFKContext.Session as E</DefiningExpression>
   </Function>
@@ -1563,7 +1563,7 @@ A BI query with aggregations and subtotals (via union all)
 -   Count: 178
 -   Example:
 
-```
+``` xml
   <Query complexity="AggregatingSubtotals">
     <CommandText>
 using NavisionFK;

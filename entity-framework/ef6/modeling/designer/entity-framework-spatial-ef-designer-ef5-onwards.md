@@ -99,7 +99,7 @@ Open the Program.cs file where the Main method is defined. Add the following cod
 
 The code adds two new University objects to the context. Spatial properties are initialized by using the DbGeography.FromText method. The geography point represented as WellKnownText is passed to the method. The code then saves the data. Then, the LINQ query that that returns a University object where its location is closest to the specified location, is constructed and executed.
 
-```
+``` csharp
 using (var context = new UniversityModelContainer())
 {
     context.Universities.Add(new University()

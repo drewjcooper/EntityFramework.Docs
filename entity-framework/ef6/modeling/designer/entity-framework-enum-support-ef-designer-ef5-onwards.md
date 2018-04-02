@@ -122,7 +122,7 @@ Now we can generate a database that is based on the model.
 
 Open the Program.cs file where the Main method is defined. Add the following code into the Main function. The code adds a new Department object to the context. It then saves the data. The code also executes a LINQ query that returns a Department where the name is DepartmentNames.English.
 
-```
+``` csharp
 using (var context = new EnumTestModelContainer())
 {
     context.Departments.Add(new Department{ Name = DepartmentNames.English });

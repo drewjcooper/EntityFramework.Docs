@@ -49,13 +49,13 @@ The University has the Location property of the DbGeography type. To use the DbG
 
 Open the Program.cs file and paste the following using statements at the top of the file:
 
-```
+``` csharp
 using System.Data.Spatial;
 ```
 
 Add the following University class definition to the Program.cs file.
 
-```
+``` csharp
 public class University  
 {
     public int UniversityID { get; set; }
@@ -82,13 +82,13 @@ Note, that in addition to the EntityFramework  assembly, a reference to the Sys
 
 At the top of the Program.cs file, add the following using statement:
 
-```
+``` csharp
 using System.Data.Entity;
 ```
 
 In the Program.cs add the context definition. 
 
-```
+``` csharp
 public partial class UniversityContext : DbContext
 {
     public DbSet<University> Universities { get; set; }
@@ -102,7 +102,7 @@ Open the Program.cs file where the Main method is defined. Add the following cod
 
 The code adds two new University objects to the context. Spatial properties are initialized by using the DbGeography.FromText method. The geography point represented as WellKnownText is passed to the method. The code then saves the data. Then, the LINQ query that that returns a University object where its location is closest to the specified location, is constructed and executed.
 
-```
+``` csharp
 using (var context = new UniversityContext ())
 {
     context.Universities.Add(new University()

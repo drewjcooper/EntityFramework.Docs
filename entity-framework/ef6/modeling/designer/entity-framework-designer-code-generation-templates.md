@@ -70,7 +70,8 @@ If you are using an older version of the EntityFramework NuGet package (one with
 
 This template will generate entity classes that derive from EntityObject and a context that derives from ObjectContext.
 
-> **Note**: Consider using the DbContext Generator
+> [!NOTE]
+> Consider using the DbContext Generator
 
 The DbContext Generator is now the recommended template for new applications. The DbContext Generator takes advantage of the simpler DbContext API. The EntityObject Generator continues to be available to support existing applications.
 
@@ -101,14 +102,17 @@ If you are using Visual Studio 2010 this template is already installed. If you c
 
 This template will generate Self-Tracking Entity classes and a context that derives from ObjectContext. In an EF application, a context is responsible for tracking changes in the entities. However, in N-Tier scenarios, the context might not be available on the tier that modifies the entities. Self-tracking entities help you track changes in any tier. For more information, see [Self-Tracking Entities](../ef6/entity-framework-self-tracking-entities.md).
 
-> **Note**: STE Template Not Recommended
+> [!NOTE]
+> STE Template Not Recommended
 
 We no longer recommend using the STE template in new applications, it continues to be available to support existing applications. Visit the [N-Tier page](../ef6/entity-framework-n-tier.md) for other options we recommend for N-Tier scenarios.
 
-> **Note**: There is no EF 6.x version of the STE template.
+> [!NOTE]
+> There is no EF 6.x version of the STE template.
 
 
-> **Note**: There is no Visual Studio 2013 version of the STE template.
+> [!NOTE]
+> There is no Visual Studio 2013 version of the STE template.
 
 **Visual Studio 2012**
 
@@ -127,14 +131,17 @@ If you are using Visual Studio 2010 this template is already installed.
 
 This template will generate POCO entity classes and a context that derives from ObjectContext
 
-> **Note**: Consider using the DbContext Generator
+> [!NOTE]
+> Consider using the DbContext Generator
 
 The DbContext Generator is now the recommended template for generating POCO classes in new applications. The DbContext Generator takes advantage of the new DbContext API and can generate simpler POCO classes. The POCO Entity Generator continues to be available to support existing applications.
 
-> **Note**: There is no EF 5.x or EF 6.x version of the STE template.
+> [!NOTE]
+> There is no EF 5.x or EF 6.x version of the STE template.
 
 
-> **Note**: There is no Visual Studio 2013 version of the POCO template.
+> [!NOTE]
+> There is no Visual Studio 2013 version of the POCO template.
 
 **Visual Studio 2012 &amp; Visual Studio 2010**
 

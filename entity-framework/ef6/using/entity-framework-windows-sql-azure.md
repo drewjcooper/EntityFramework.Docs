@@ -22,7 +22,7 @@ This topic provides guidance for deploying to Windows Azure and accessing a Wind
 
 In order to use spatial data types on Windows Azure you will need to deploy the Microsoft.SqlServer.Types assembly with your application. The easiest way to do this is to install the [Microsoft.SqlServer.Types NuGet package](http://www.nuget.org/packages/Microsoft.SqlServer.Types/) in your application.
 
-```
+``` PowerShell
 Install-Package Microsoft.SqlServer.Types
 ```
 

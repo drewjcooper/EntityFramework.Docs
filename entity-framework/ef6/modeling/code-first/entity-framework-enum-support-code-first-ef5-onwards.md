@@ -46,7 +46,7 @@ The code also defines the DepartmentNames enumeration. By default, the enumerati
 
 Open the Program.cs file and paste the following class definitions.
 
-```
+``` csharp
 public enum DepartmentNames
 {
     English,
@@ -80,13 +80,13 @@ Note, that in addition to the EntityFramework  assembly, references to System.C
 
 At the top of the Program.cs file, add the following using statement:
 
-```
+``` csharp
 using System.Data.Entity;
 ```
 
 In the Program.cs add the context definition. 
 
-```
+``` csharp
 public partial class EnumTestContext : DbContext
 {
     public DbSet<Department> Departments { get; set; }
@@ -98,7 +98,7 @@ public partial class EnumTestContext : DbContext
 
 Open the Program.cs file where the Main method is defined. Add the following code into the Main function. The code adds a new Department object to the context. It then saves the data. The code also executes a LINQ query that returns a Department where the name is DepartmentNames.English.
 
-```
+``` csharp
 using (var context = new EnumTestContext())
 {
     context.Departments.Add(new Department { Name = DepartmentNames.English });
@@ -118,7 +118,7 @@ using (var context = new EnumTestContext())
 
 Compile and run the application. The program produces the following output:
 
-```
+``` csharp
 DepartmentID: 1 Name: English
 ```
  

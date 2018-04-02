@@ -38,7 +38,7 @@ The following examples show ways in which the state of an entity or an entity gr
 
 A new entity can be added to the context by calling the Add method on DbSet. This puts the entity into the Added state, meaning that it will be inserted into the database the next time that SaveChanges is called. For example:  
 
-```  
+``` csharp
 using (var context = new BloggingContext())
 {
     var blog = new Blog { Name = "ADO.NET Blog" };
@@ -49,7 +49,7 @@ using (var context = new BloggingContext())
 
 Another way to add a new entity to the context is to change its state to Added. For example:  
 
-```  
+``` csharp
 using (var context = new BloggingContext())
 {
     var blog = new Blog { Name = "ADO.NET Blog" };
@@ -60,7 +60,7 @@ using (var context = new BloggingContext())
 
 Finally, you can add a new entity to the context by hooking it up to another entity that is already being tracked. This could be by adding the new entity to the collection navigation property of another entity or by setting a reference navigation property of another entity to point to the new entity. For example:  
 
-```  
+``` csharp
 using (var context = new BloggingContext())
 {
     // Add a new User by setting a reference from a tracked Blog
@@ -81,7 +81,7 @@ Note that for all of these examples if the entity being added has references to 
 
 If you have an entity that you know already exists in the database but which is not currently being tracked by the context then you can tell the context to track the entity using the Attach method on DbSet. The entity will be in the Unchanged state in the context. For example:  
 
-```
+``` csharp
 var existingBlog = new Blog { BlogId = 1, Name = "ADO.NET Blog" };
 
 using (var context = new BloggingContext())
@@ -98,7 +98,7 @@ Note that no changes will be made to the database if SaveChanges is called witho
 
 Another way to attach an existing entity to the context is to change its state to Unchanged. For example:  
 
-```  
+``` csharp
 var existingBlog = new Blog { BlogId = 1, Name = "ADO.NET Blog" };
 
 using (var context = new BloggingContext())
@@ -117,7 +117,7 @@ Note that for both of these examples if the entity being attached has references
 
 If you have an entity that you know already exists in the database but to which changes may have been made then you can tell the context to attach the entity and set its state to Modified. For example:  
 
-```  
+``` csharp
 var existingBlog = new Blog { BlogId = 1, Name = "ADO.NET Blog" };
 
 using (var context = new BloggingContext())
@@ -138,7 +138,7 @@ Note that if the entity being attached has references to other entities that are
 
 You can change the state of an entity that is already being tracked by setting the State property on its entry. For example:  
 
-```  
+``` csharp
 var existingBlog = new Blog { BlogId = 1, Name = "ADO.NET Blog" };
 
 using (var context = new BloggingContext())
@@ -158,7 +158,7 @@ Note that calling Add or Attach for an entity that is already tracked can also b
 
 A common pattern for some applications is to either Add an entity as new (resulting in a database insert) or Attach an entity as existing and mark it as modified (resulting in a database update) depending on the value of the primary key. For example, when using database generated integer primary keys it is common to treat an entity with a zero key as new and an entity with a non-zero key as existing. This pattern can be achieved by setting the entity state based on a check of the primary key value. For example:  
 
-```  
+``` csharp
 public void InsertOrUpdate(Blog blog)
 {
     using (var context = new BloggingContext())

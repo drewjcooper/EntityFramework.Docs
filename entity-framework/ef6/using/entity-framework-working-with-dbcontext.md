@@ -21,7 +21,7 @@ This page gives some guidance on how to manage the context class.
 
 The recommended way to work with context is to define a class that derives from DbContext and exposes DbSet properties that represent collections of the specified entities in the context. If you are working with the EF Designer, the context will be generated for you. If you are working with Code First, you will typically write the context yourself.  
 
-```  
+``` csharp
 public class ProductContext : DbContext
 {
     public DbSet<Category> Categories { get; set; }
@@ -40,7 +40,7 @@ Once you have a context, you would query for, add (using `Add` or `Attach` metho
 
 The lifetime of the context begins when the instance is created and ends when the instance is either disposed or garbage-collected. Use **using** if you want all the resources that the context controls to be disposed at the end of the block. When you use **using**, the compiler automatically creates a try/finally block and calls dispose in the **finally** block.  
 
-```  
+``` csharp
 using (var context = new ProductContext())
 {     
     // Perform data access using the context

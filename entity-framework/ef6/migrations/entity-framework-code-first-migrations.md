@@ -176,7 +176,7 @@ So far we’ve generated and run a migration without making any changes. Now let
 
 -   We'll also add a **Posts** collection to the **Blog** class to form the other end of the relationship between **Blog** and **Post**
 
-```
+``` csharp
     public virtual List<Post> Posts { get; set; }
 ```
 

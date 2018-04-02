@@ -17,7 +17,7 @@ Sometimes you may want to get entities back from a query but not have those enti
 
 A new extension method AsNoTracking allows any query to be run in this way. For example:  
 
-```  
+``` csharp
 using (var context = new BloggingContext())
 {
     // Query for all blogs without tracking them

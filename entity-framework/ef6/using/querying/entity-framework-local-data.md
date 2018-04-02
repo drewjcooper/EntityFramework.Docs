@@ -19,7 +19,7 @@ Running a LINQ query directly against a DbSet will always send a query to the da
 
 The Local property of DbSet provides simple access to the entities of the set that are currently being tracked by the context and have not been marked as Deleted. Accessing the Local property never causes a query to be sent to the database. This means that it is usually used after a query has already been performed. The Load extension method can be used to execute a query so that the context tracks the results. For example:  
 
-```  
+``` csharp
 using (var context = new BloggingContext())
 {
     // Load all blogs from the database into the context
@@ -77,7 +77,7 @@ This illustrates three points:
 
 The Local property on DbSet returns an [ObservableCollection](https://msdn.microsoft.com/library/ms668604.aspx) with events hooked up such that it stays in sync with the contents of the context. This means that entities can be added or removed from either the Local collection or the DbSet. It also means that queries that bring new entities into the context will result in the Local collection being updated with those entities. For example:  
 
-```  
+``` csharp
 using (var context = new BloggingContext())
 {
     // Load some posts from the database into the context
@@ -159,7 +159,7 @@ This is not an appropriate place for a full WPF data binding sample but the key 
 
 If you are doing master/detail data binding you may want to bind the detail view to a navigation property of one of your entities. An easy way to make this work is to use an ObservableCollection for the navigation property. For example:  
 
-```  
+``` csharp
 public class Blog
 {
     private readonly ObservableCollection<Post> _posts =
@@ -179,7 +179,7 @@ public class Blog
 
 In most cases entities removed from a navigation property will not be automatically marked as deleted in the context. For example, if you remove a Post object from the Blog.Posts collection then that post will not be automatically deleted when SaveChanges is called. If you need it to be deleted then you may need to find these dangling entities and mark them as deleted before calling SaveChanges or as part of an overridden SaveChanges. For example:  
 
-```  
+``` csharp
 public override int SaveChanges()
 {
     foreach (var post in this.Posts.Local.ToList())
@@ -212,7 +212,7 @@ Many of the examples in this series use the Entry method to return a DbEntityEnt
 
 The Entries methods return DbEntityEntry objects for many or all entities being tracked by the context. This allows you to gather information or perform operations on many entities rather than just a single entry. For example:  
 
-```  
+``` csharp
 using (var context = new BloggingContext())
 {
     // Load some entities into the context
@@ -269,7 +269,7 @@ using (var context = new BloggingContext())
 
 You'll notice we are introducing a Author and Reader class into the example - both of these classes implement the IPerson interface.  
 
-```  
+``` csharp
 public class Author : IPerson
 {
     public int AuthorId { get; set; }
@@ -290,7 +290,7 @@ public interface IPerson
 }
 ```  
 
-Let's assume we have the following data in the database:  
+Let's assume we have the following data in the database:
 
 Blog with BlogId = 1 and Name = 'ADO.NET Blog'  
 Blog with BlogId = 2 and Name = 'The Visual Studio Blog'  

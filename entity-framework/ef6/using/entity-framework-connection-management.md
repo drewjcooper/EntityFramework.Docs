@@ -21,7 +21,7 @@ This page describes the behavior of Entity Framework with regard to passing conn
 
 There are two constructors which accept connections:  
 
-```  
+``` csharp
 public DbContext(DbConnection existingConnection, bool contextOwnsConnection)
 public DbContext(DbConnection existingConnection, DbCompiledModel model, bool contextOwnsConnection)
 ```  
@@ -33,7 +33,7 @@ It is possible to use these but you have to work around a couple of limitations:
 
 It is possible to work around the first limitation above by passing a closed connection and only executing code that would open it once all contexts have been created:  
 
-```  
+``` csharp
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Data.Entity;
@@ -79,7 +79,7 @@ The second limitation just means you need to refrain from disposing any of your 
 
 In EF6 and future versions the DbContext has the same two constructors but no longer requires that the connection passed to the constructor be closed when it is received. So this is now possible:  
 
-```  
+``` csharp
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.SqlClient;
@@ -129,7 +129,8 @@ Also the contextOwnsConnection flag now controls whether or not the connection i
 
 Of course it is still possible for the DbContext to take control of the connection (just set contextOwnsConnection to true or use one of the other constructors) if you so wish.  
 
-> **Note**: There are some additional considerations when using transactions with this new model. For details see [Working with Transactions (EF6 Onwards)](../ef6/entity-framework-working-with-transactions-ef6-onwards.md).  
+> [!NOTE]
+> There are some additional considerations when using transactions with this new model. For details see [Working with Transactions (EF6 Onwards)](../ef6/entity-framework-working-with-transactions-ef6-onwards.md).  
 
 ## Database.Connection.Open()  
 
@@ -137,13 +138,13 @@ Of course it is still possible for the DbContext to take control of the connecti
 
 In EF5 and earlier versions there is a bug such that the **ObjectContext.Connection.State** was not updated to reflect the true state of the underlying store connection. For example, if you executed the following code you can be returned the status **Closed** even though in fact the underlying store connection is **Open**.  
 
-```  
+``` csharp
 ((IObjectContextAdapter)context).ObjectContext.Connection.State
 ```  
 
 Separately, if you open the database connection by calling Database.Connection.Open() it will be open until the next time you execute a query or call anything which requires a database connection (e.g. SaveChanges()) but after that the underlying store connection will be closed. The context will then re-open and re-close the connection any time another database operation is required:  
 
-```  
+``` csharp
 using System;
 using System.Data;
 using System.Data.Entity;
@@ -189,11 +190,12 @@ namespace ConnectionManagementExamples
 
 For EF6 and future versions we have taken the approach that if the calling code chooses to open the connection by calling context.Database.Connection.Open() then it has a good reason for doing so and the framework will assume that it wants control over opening and closing of the connection and will no longer close the connection automatically.  
 
-> **Note**: This can potentially lead to connections which are open for a long time so use with care.  
+> [!NOTE]
+> This can potentially lead to connections which are open for a long time so use with care.  
 
 We also updated the code so that ObjectContext.Connection.State now keeps track of the state of the underlying connection correctly.  
 
-```  
+``` csharp
 using System;
 using System.Data;
 using System.Data.Entity;
@@ -210,7 +212,7 @@ namespace ConnectionManagementExamples
             {
                 // At this point the underlying store connection is closed
 
-                context.Database.Connection.Open(); 
+                context.Database.Connection.Open();
 
                 // Now the underlying store connection is open and the
                 // ObjectContext.Connection.State correctly reports open too

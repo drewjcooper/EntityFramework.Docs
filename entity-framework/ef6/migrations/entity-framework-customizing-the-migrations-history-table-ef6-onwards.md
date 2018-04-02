@@ -50,7 +50,7 @@ First, you will need to create a class derived from System.Data.Entity.Migration
 
 Let’s say you want to rename the migrations history table and put it to a custom schema called “admin”. In addition your DBA would like you to rename the MigrationId column to Migration\_ID.  You could achieve this by creating the following class derived from HistoryContext:
 
-```
+``` csharp
     using System.Data.Common;
     using System.Data.Entity;
     using System.Data.Entity.Migrations.History;
@@ -78,7 +78,7 @@ Let’s say you want to rename the migrations history table and put it to a cust
 
 Once your custom HistoryContext is ready you need to make EF aware of it by registering it via [code-based configuration](http://msdn.com/data/jj680699):
 
-```
+``` csharp
     using System.Data.Entity;
 
     namespace CustomizableMigrationsHistoryTableSample

@@ -19,7 +19,7 @@ When developing with the Code First workflow you define a derived DbContext that
 
 The common case shown in Code First examples is to have a DbContext with public automatic DbSet properties for the entity types of your model. For example:  
 
-```  
+``` csharp
 public class BloggingContext : DbContext
 {
     public DbSet<Blog> Blogs { get; set; }
@@ -33,7 +33,7 @@ When used in Code First mode, this will configure Unicorn, Princess, LadyInWaiti
 
 There a situations, such as when creating mocks or fakes, where it is more useful to declare your set properties using an interface. In such cases the IDbSet interface can be used in place of DbSet. For example:  
 
-```  
+``` csharp
 public class BloggingContext : DbContext
 {
     public IDbSet<Blog> Blogs { get; set; }
@@ -47,7 +47,7 @@ This context works in exactly the same way as the context that uses the DbSet cl
 
 If you do not wish to expose public setters for your DbSet or IDbSet properties you can instead create read-only properties and create the set instances yourself. For example:  
 
-```  
+``` csharp
 public class BloggingContext : DbContext
 {
     public DbSet<Blog> Blogs

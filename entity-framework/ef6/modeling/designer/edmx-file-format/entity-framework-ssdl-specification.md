@@ -21,11 +21,11 @@ The Entity Framework Designer (EF Designer) stores storage model information in 
 
 Versions of SSDL are differentiated by XML namespaces.
 
-| SSDL Version | XML Namespace |
-|--------------|---------------|
-| SSDL v1 | http://schemas.microsoft.com/ado/2006/04/edm/ssdl |
-| SSDL v2 | http://schemas.microsoft.com/ado/2009/02/edm/ssdl |
-| SSDL v3 | http://schemas.microsoft.com/ado/2009/11/edm/ssdl |
+| SSDL Version | XML Namespace                                     |
+|:-------------|:--------------------------------------------------|
+| SSDL v1      | http://schemas.microsoft.com/ado/2006/04/edm/ssdl |
+| SSDL v2      | http://schemas.microsoft.com/ado/2009/02/edm/ssdl |
+| SSDL v3      | http://schemas.microsoft.com/ado/2009/11/edm/ssdl |
 
  
 
@@ -47,13 +47,14 @@ The **Association** element can have the following child elements (in the order 
 
 The following table describes the attributes that can be applied to the **Association** element.
 
-| Attribute Name | Is Required | Value |
-|----------------|-------------|-------|
-| **Name** | Yes | The name of the corresponding foreign key constraint in the underlying database. |
+| Attribute Name | Is Required | Value                                                                            |
+|:---------------|:------------|:---------------------------------------------------------------------------------|
+| **Name**       | Yes         | The name of the corresponding foreign key constraint in the underlying database. |
 
  
 
-> **Note**: Any number of annotation attributes (custom XML attributes) may be applied to the **Association** element. However, custom attributes may not belong to any XML namespace that is reserved for SSDL. The fully-qualified names for any two custom attributes cannot be the same.
+> [!NOTE]
+> Any number of annotation attributes (custom XML attributes) may be applied to the **Association** element. However, custom attributes may not belong to any XML namespace that is reserved for SSDL. The fully-qualified names for any two custom attributes cannot be the same.
 
  
 
@@ -61,7 +62,7 @@ The following table describes the attributes that can be applied to the **Associ
 
 The following example shows an **Association** element that uses a **ReferentialConstraint** element to specify the columns that participate in the **FK\_CustomerOrders** foreign key constraint:
 
-```
+``` xml
  <Association Name="FK_CustomerOrders">
    <End Role="Customers"
         Type="ExampleModel.Store.Customers" Multiplicity="1">
@@ -99,14 +100,15 @@ The **AssociationSet** element can have the following child elements (in the ord
 
 The following table describes the attributes that can be applied to the **AssociationSet** element.
 
-| Attribute Name | Is Required | Value |
-|----------------|-------------|-------|
-| **Name** | Yes | The name of the foreign key constraint that the association set represents. |
-| **Association** | Yes | The name of the association that defines the columns that participate in the foreign key constraint. |
+| Attribute Name  | Is Required | Value                                                                                                |
+|:----------------|:------------|:-----------------------------------------------------------------------------------------------------|
+| **Name**        | Yes         | The name of the foreign key constraint that the association set represents.                          |
+| **Association** | Yes         | The name of the association that defines the columns that participate in the foreign key constraint. |
 
  
 
-> **Note**: Any number of annotation attributes (custom XML attributes) may be applied to the **AssociationSet** element. However, custom attributes may not belong to any XML namespace that is reserved for SSDL. The fully-qualified names for any two custom attributes cannot be the same.
+> [!NOTE]
+> Any number of annotation attributes (custom XML attributes) may be applied to the **AssociationSet** element. However, custom attributes may not belong to any XML namespace that is reserved for SSDL. The fully-qualified names for any two custom attributes cannot be the same.
 
  
 
@@ -114,7 +116,7 @@ The following table describes the attributes that can be applied to the **Associ
 
 The following example shows an **AssociationSet** element that represents the `FK_CustomerOrders` foreign key constraint in the underlying database:
 
-```
+``` xml
  <AssociationSet Name="FK_CustomerOrders"
                  Association="ExampleModel.Store.FK_CustomerOrders">
    <End Role="Customers" EntitySet="Customers" />
@@ -129,7 +131,8 @@ The following example shows an **AssociationSet** element that represents the `F
 
 The **CollectionType** element in store schema definition language (SSDL) specifies that a function’s return type is a collection. The **CollectionType** element is a child of the ReturnType element. The type of collection is specified by using the RowType child element:
 
-> **Note**: Any number of annotation attributes (custom XML attributes) may be applied to the **CollectionType** element. However, custom attributes may not belong to any XML namespace that is reserved for SSDL. The fully-qualified names for any two custom attributes cannot be the same.
+> [!NOTE]
+> Any number of annotation attributes (custom XML attributes) may be applied to the **CollectionType** element. However, custom attributes may not belong to any XML namespace that is reserved for SSDL. The fully-qualified names for any two custom attributes cannot be the same.
 
  
 
@@ -137,7 +140,7 @@ The **CollectionType** element in store schema definition language (SSDL) specif
 
 The following example shows a function that uses a **CollectionType** element to specify that the function returns a collection of rows.
 
-```
+``` xml
    <Function Name="GetProducts" IsComposable="true" Schema="dbo">
      <ReturnType>
        <CollectionType>
@@ -168,7 +171,7 @@ No attributes are applicable to the **CommandText** element.
 
 The following example shows a **Function** element with a child **CommandText** element. Expose the **UpdateProductInOrder** function as a method on the ObjectContext by importing it into the conceptual model.  
 
-```
+``` xml
  <Function Name="UpdateProductInOrder" IsComposable="false">
    <CommandText>
      UPDATE Orders
@@ -193,7 +196,7 @@ The following example shows a **Function** element with a child **CommandText** 
 
 The following SSDL syntax shows the declaration of an **EntitySet** followed by the **DefiningQuery** element that contains a query used to retrieve the view.
 
-```
+``` xml
  <Schema>
      <EntitySet Name="Tables" EntityType="Self.STable">
          <DefiningQuery>
@@ -226,13 +229,14 @@ The **Dependent** element can have the following child elements (in the order li
 
 The following table describes the attributes that can be applied to the **Dependent** element.
 
-| Attribute Name | Is Required | Value |
-|----------------|-------------|-------|
-| **Role** | Yes | The same value as the **Role** attribute (if used) of the corresponding End element; otherwise, the name of the table that contains the referencing column. |
+| Attribute Name | Is Required | Value                                                                                                                                                       |
+|:---------------|:------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Role**       | Yes         | The same value as the **Role** attribute (if used) of the corresponding End element; otherwise, the name of the table that contains the referencing column. |
 
  
 
-> **Note**: Any number of annotation attributes (custom XML attributes) may be applied to the **Dependent** element. However, custom attributes may not belong to any XML namespace that is reserved for CSDL. The fully-qualified names for any two custom attributes cannot be the same.
+> [!NOTE]
+> Any number of annotation attributes (custom XML attributes) may be applied to the **Dependent** element. However, custom attributes may not belong to any XML namespace that is reserved for CSDL. The fully-qualified names for any two custom attributes cannot be the same.
 
  
 
@@ -240,7 +244,7 @@ The following table describes the attributes that can be applied to the **Depend
 
 The following example shows an Association element that uses a **ReferentialConstraint** element to specify the columns that participate in the **FK\_CustomerOrders** foreign key constraint. The **Dependent** element specifies the **CustomerId** column of the **Order** table as the dependent end of the constraint.
 
-```
+``` xml
  <Association Name="FK_CustomerOrders">
    <End Role="Customers"
         Type="ExampleModel.Store.Customers" Multiplicity="1">
@@ -279,7 +283,7 @@ Any number of annotation attributes (custom XML attributes) may be applied to th
 
 The following example shows the **Documentation** element as a child element of an EntityType element.
 
-```
+``` xml
  <EntityType Name="Customers">
    <Documentation>
      <Summary>Summary here.</Summary>
@@ -314,15 +318,16 @@ An **End** element can have the following child elements (in the order listed):
 
 The following table describes the attributes that can be applied to the **End** element when it is the child of an **Association** element.
 
-| Attribute Name | Is Required | Value |
-|----------------|-------------|-------|
-| **Type** | Yes | The fully qualified name of the SSDL entity set that is at the end of the foreign key constraint. |
-| **Role** | No | The value of the **Role** attribute in either the Principal or Dependent element of the corresponding ReferentialConstraint element (if used). |
-| **Multiplicity** | Yes | **1**, **0..1**, or **\*** depending on the number of rows that can be at the end of the foreign key constraint. <br/> **1** indicates that exactly one row exists at the foreign key constraint end. <br/> **0..1** indicates that zero or one row exists at the foreign key constraint end. <br/> **\*** indicates that zero, one, or more rows exist at the foreign key constraint end. |
+| Attribute Name   | Is Required | Value                                                                                                                                                                                                                                                                                                                                                                                      |
+|:-----------------|:------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Type**         | Yes         | The fully qualified name of the SSDL entity set that is at the end of the foreign key constraint.                                                                                                                                                                                                                                                                                          |
+| **Role**         | No          | The value of the **Role** attribute in either the Principal or Dependent element of the corresponding ReferentialConstraint element (if used).                                                                                                                                                                                                                                             |
+| **Multiplicity** | Yes         | **1**, **0..1**, or **\*** depending on the number of rows that can be at the end of the foreign key constraint. <br/> **1** indicates that exactly one row exists at the foreign key constraint end. <br/> **0..1** indicates that zero or one row exists at the foreign key constraint end. <br/> **\*** indicates that zero, one, or more rows exist at the foreign key constraint end. |
 
  
 
-> **Note**: Any number of annotation attributes (custom XML attributes) may be applied to the **End** element. However, custom attributes may not belong to any XML namespace that is reserved for CSDL. The fully-qualified names for any two custom attributes cannot be the same.
+> [!NOTE]
+> Any number of annotation attributes (custom XML attributes) may be applied to the **End** element. However, custom attributes may not belong to any XML namespace that is reserved for CSDL. The fully-qualified names for any two custom attributes cannot be the same.
 
  
 
@@ -330,7 +335,7 @@ The following table describes the attributes that can be applied to the **End** 
 
 The following example shows an **Association** element that defines the **FK\_CustomerOrders** foreign key constraint. The **Multiplicity** values specified on each **End** element indicate that many rows in the **Orders** table can be associated with a row in the **Customers** table, but only one row in the **Customers** table can be associated with a row in the **Orders** table. Additionally, the **OnDelete** element indicates that all rows in the **Orders** table that reference a particular row in the **Customers** table will be deleted if the row in the **Customers** table is deleted.
 
-```
+``` xml
  <Association Name="FK_CustomerOrders">
    <End Role="Customers"
         Type="ExampleModel.Store.Customers" Multiplicity="1">
@@ -363,14 +368,15 @@ An **End** element can have the following child elements (in the order listed):
 
 The following table describes the attributes that can be applied to the **End** element when it is the child of an **AssociationSet** element.
 
-| Attribute Name | Is Required | Value |
-|----------------|-------------|-------|
-| **EntitySet** | Yes | The name of the SSDL entity set that is at the end of the foreign key constraint. |
-| **Role** | No | The value of one of the **Role** attributes specified on one **End** element of the corresponding Association element. |
+| Attribute Name | Is Required | Value                                                                                                                  |
+|:---------------|:------------|:-----------------------------------------------------------------------------------------------------------------------|
+| **EntitySet**  | Yes         | The name of the SSDL entity set that is at the end of the foreign key constraint.                                      |
+| **Role**       | No          | The value of one of the **Role** attributes specified on one **End** element of the corresponding Association element. |
 
  
 
-> **Note**: Any number of annotation attributes (custom XML attributes) may be applied to the **End** element. However, custom attributes may not belong to any XML namespace that is reserved for CSDL. The fully-qualified names for any two custom attributes cannot be the same.
+> [!NOTE]
+> Any number of annotation attributes (custom XML attributes) may be applied to the **End** element. However, custom attributes may not belong to any XML namespace that is reserved for CSDL. The fully-qualified names for any two custom attributes cannot be the same.
 
  
 
@@ -378,7 +384,7 @@ The following table describes the attributes that can be applied to the **End** 
 
 The following example shows an **EntityContainer** element with an **AssociationSet** element with two **End** elements:
 
-```
+``` xml
  <EntityContainer Name="ExampleModelStoreContainer">
    <EntitySet Name="Customers"
               EntityType="ExampleModel.Store.Customers"
@@ -413,13 +419,14 @@ An **EntityContainer** element can have zero or more of the following child elem
 
 The table below describes the attributes that can be applied to the **EntityContainer** element.
 
-| Attribute Name | Is Required | Value |
-|----------------|-------------|-------|
-| **Name** | Yes | The name of the entity container. This name cannot contain periods (.). |
+| Attribute Name | Is Required | Value                                                                   |
+|:---------------|:------------|:------------------------------------------------------------------------|
+| **Name**       | Yes         | The name of the entity container. This name cannot contain periods (.). |
 
  
 
-> **Note**: Any number of annotation attributes (custom XML attributes) may be applied to the **EntityContainer** element. However, custom attributes may not belong to any XML namespace that is reserved for SSDL. The fully-qualified names for any two custom attributes cannot be the same.
+> [!NOTE]
+> Any number of annotation attributes (custom XML attributes) may be applied to the **EntityContainer** element. However, custom attributes may not belong to any XML namespace that is reserved for SSDL. The fully-qualified names for any two custom attributes cannot be the same.
 
  
 
@@ -427,7 +434,7 @@ The table below describes the attributes that can be applied to the **EntityCont
 
 The following example shows an **EntityContainer** element that defines two entity sets and one association set. Note that entity type and association type names are qualified by the conceptual model namespace name.
 
-```
+``` xml
  <EntityContainer Name="ExampleModelStoreContainer">
    <EntitySet Name="Customers"
               EntityType="ExampleModel.Store.Customers"
@@ -460,16 +467,17 @@ The **EntitySet** element can have the following child elements (in the order li
 
 The following table describes the attributes that can be applied to the **EntitySet** element.
 
-> **Note**: Some attributes (not listed here) may be qualified with the **store** alias. These attributes are used by the Update Model Wizard when updating a model.
+> [!NOTE]
+> Some attributes (not listed here) may be qualified with the **store** alias. These attributes are used by the Update Model Wizard when updating a model.
 
  
 
-| Attribute Name | Is Required | Value |
-|----------------|-------------|-------|
-| **Name** | Yes | The name of the entity set. |
-| **EntityType** | Yes | The fully-qualified name of the entity type for which the entity set contains instances. |
-| **Schema** | No | The database schema. |
-| **Table** | No | The database table. |
+| Attribute Name | Is Required | Value                                                                                    |
+|:---------------|:------------|:-----------------------------------------------------------------------------------------|
+| **Name**       | Yes         | The name of the entity set.                                                              |
+| **EntityType** | Yes         | The fully-qualified name of the entity type for which the entity set contains instances. |
+| **Schema**     | No          | The database schema.                                                                     |
+| **Table**      | No          | The database table.                                                                      |
  
  
  
@@ -477,7 +485,8 @@ The following table describes the attributes that can be applied to the **Entity
  
  
 
-> **Note**: Any number of annotation attributes (custom XML attributes) may be applied to the **EntitySet** element. However, custom attributes may not belong to any XML namespace that is reserved for SSDL. The fully-qualified names for any two custom attributes cannot be the same.
+> [!NOTE]
+> Any number of annotation attributes (custom XML attributes) may be applied to the **EntitySet** element. However, custom attributes may not belong to any XML namespace that is reserved for SSDL. The fully-qualified names for any two custom attributes cannot be the same.
 
  
 
@@ -485,7 +494,7 @@ The following table describes the attributes that can be applied to the **Entity
 
 The following example shows an **EntityContainer** element that has two **EntitySet** elements and one **AssociationSet** element:
 
-```
+``` xml
  <EntityContainer Name="ExampleModelStoreContainer">
    <EntitySet Name="Customers"
               EntityType="ExampleModel.Store.Customers"
@@ -518,13 +527,14 @@ The **EntityType** element can have the following child elements (in the order l
 
 The table below describes the attributes that can be applied to the **EntityType** element.
 
-| Attribute Name | Is Required | Value |
-|----------------|-------------|-------|
-| **Name** | Yes | The name of the entity type. This value is usually the same as the name of the table in which the entity type represents a row. This value can contain no periods (.). |
+| Attribute Name | Is Required | Value                                                                                                                                                                  |
+|:---------------|:------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Name**       | Yes         | The name of the entity type. This value is usually the same as the name of the table in which the entity type represents a row. This value can contain no periods (.). |
 
  
 
-> **Note**: Any number of annotation attributes (custom XML attributes) may be applied to the **EntityType** element. However, custom attributes may not belong to any XML namespace that is reserved for SSDL. The fully-qualified names for any two custom attributes cannot be the same.
+> [!NOTE]
+> Any number of annotation attributes (custom XML attributes) may be applied to the **EntityType** element. However, custom attributes may not belong to any XML namespace that is reserved for SSDL. The fully-qualified names for any two custom attributes cannot be the same.
 
  
 
@@ -532,7 +542,7 @@ The table below describes the attributes that can be applied to the **EntityType
 
 The following example shows an **EntityType** element with two properties:
 
-```
+``` xml
  <EntityType Name="Customers">
    <Documentation>
      <Summary>Summary here.</Summary>
@@ -569,21 +579,22 @@ Stored procedures that are specified in the storage model can be imported into t
 
 The following table describes the attributes that can be applied to the **Function** element.
 
-> **Note**: Some attributes (not listed here) may be qualified with the **store** alias. These attributes are used by the Update Model Wizard when updating a model.
+> [!NOTE]
+> Some attributes (not listed here) may be qualified with the **store** alias. These attributes are used by the Update Model Wizard when updating a model.
 
  
 
-| Attribute Name | Is Required | Value |
-|----------------|-------------|-------|
-| **Name** | Yes | The name of the stored procedure. |
-| **ReturnType** | No | The return type of the stored procedure. |
-| **Aggregate** | No | **True** if the stored procedure returns an aggregate value; otherwise **False**. |
-| **BuiltIn** | No | **True** if the function is a built-in<sup>1</sup> function; otherwise **False**. |
-| **StoreFunctionName** | No | The name of the stored procedure. |
-| **NiladicFunction** | No | **True** if the function is a niladic<sup>2</sup> function; **False** otherwise. |
-| **IsComposable** | No | **True** if the function is a composable<sup>3</sup> function; **False** otherwise. |
-| **ParameterTypeSemantics** | No | The enumeration that defines the type semantics used to resolve function overloads. The enumeration is defined in the provider manifest per function definition. The default value is **AllowImplicitConversion**. |
-| **Schema** | No | The name of the schema in which the stored procedure is defined. |
+| Attribute Name             | Is Required | Value                                                                                                                                                                                                              |
+|:---------------------------|:------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Name**                   | Yes         | The name of the stored procedure.                                                                                                                                                                                  |
+| **ReturnType**             | No          | The return type of the stored procedure.                                                                                                                                                                           |
+| **Aggregate**              | No          | **True** if the stored procedure returns an aggregate value; otherwise **False**.                                                                                                                                  |
+| **BuiltIn**                | No          | **True** if the function is a built-in<sup>1</sup> function; otherwise **False**.                                                                                                                                  |
+| **StoreFunctionName**      | No          | The name of the stored procedure.                                                                                                                                                                                  |
+| **NiladicFunction**        | No          | **True** if the function is a niladic<sup>2</sup> function; **False** otherwise.                                                                                                                                   |
+| **IsComposable**           | No          | **True** if the function is a composable<sup>3</sup> function; **False** otherwise.                                                                                                                                |
+| **ParameterTypeSemantics** | No          | The enumeration that defines the type semantics used to resolve function overloads. The enumeration is defined in the provider manifest per function definition. The default value is **AllowImplicitConversion**. |
+| **Schema**                 | No          | The name of the schema in which the stored procedure is defined.                                                                                                                                                   |
 
  
 
@@ -593,7 +604,8 @@ The following table describes the attributes that can be applied to the **Functi
 
 <sup>3</sup> Two functions are composable if the output of one function can be the input for the other function.
 
-> **Note**: Any number of annotation attributes (custom XML attributes) may be applied to the **Function** element. However, custom attributes may not belong to any XML namespace that is reserved for SSDL. The fully-qualified names for any two custom attributes cannot be the same.
+> [!NOTE]
+> Any number of annotation attributes (custom XML attributes) may be applied to the **Function** element. However, custom attributes may not belong to any XML namespace that is reserved for SSDL. The fully-qualified names for any two custom attributes cannot be the same.
 
  
 
@@ -601,7 +613,7 @@ The following table describes the attributes that can be applied to the **Functi
 
 The following example shows a **Function** element that corresponds to the **UpdateOrderQuantity** stored procedure. The stored procedure accepts two parameters and does not return a value.
 
-```
+``` xml
  <Function Name="UpdateOrderQuantity"
            Aggregate="false"
            BuiltIn="false"
@@ -632,7 +644,7 @@ No attributes are applicable to the **Key** element.
 
 The following example shows an **EntityType** element with a key that references one property:
 
-```
+``` xml
  <EntityType Name="Customers">
    <Documentation>
      <Summary>Summary here.</Summary>
@@ -662,13 +674,14 @@ An **OnDelete** element can have the following child elements (in the order list
 
 The following table describes the attributes that can be applied to the **OnDelete** element.
 
-| Attribute Name | Is Required | Value |
-|----------------|-------------|-------|
-| **Action** | Yes | **Cascade** or **None**. (The value **Restricted** is valid but has the same behavior as **None**.) |
+| Attribute Name | Is Required | Value                                                                                               |
+|:---------------|:------------|:----------------------------------------------------------------------------------------------------|
+| **Action**     | Yes         | **Cascade** or **None**. (The value **Restricted** is valid but has the same behavior as **None**.) |
 
  
 
-> **Note**: Any number of annotation attributes (custom XML attributes) may be applied to the **OnDelete** element. However, custom attributes may not belong to any XML namespace that is reserved for SSDL. The fully-qualified names for any two custom attributes cannot be the same.
+> [!NOTE]
+> Any number of annotation attributes (custom XML attributes) may be applied to the **OnDelete** element. However, custom attributes may not belong to any XML namespace that is reserved for SSDL. The fully-qualified names for any two custom attributes cannot be the same.
 
  
 
@@ -676,7 +689,7 @@ The following table describes the attributes that can be applied to the **OnDele
 
 The following example shows an **Association** element that defines the **FK\_CustomerOrders** foreign key constraint. The **OnDelete** element indicates that all rows in the **Orders** table that reference a particular row in the **Customers** table will be deleted if the row in the **Customers** table is deleted.
 
-```
+``` xml
  <Association Name="FK_CustomerOrders">
    <End Role="Customers"
         Type="ExampleModel.Store.Customers" Multiplicity="1">
@@ -711,19 +724,20 @@ The **Parameter** element can have the following child elements (in the order li
 
 The table below describes the attributes that can be applied to the **Parameter** element.
 
-| Attribute Name | Is Required | Value |
-|----------------|-------------|-------|
-| **Name** | Yes | The name of the parameter. |
-| **Type** | Yes | The parameter type. |
-| **Mode** | No | **In**, **Out**, or **InOut** depending on whether the parameter is an input, output, or input/output parameter. |
-| **MaxLength** | No | The maximum length of the parameter. |
-| **Precision** | No | The precision of the parameter. |
-| **Scale** | No | The scale of the parameter. |
-| **SRID** | No | Spatial System Reference Identifier. Valid only for parameters of spatial types. For more information, see [SRID](http://en.wikipedia.org/wiki/SRID) and [SRID (SQL Server)](https://msdn.microsoft.com/library/bb964707.aspx). |
+| Attribute Name | Is Required | Value                                                                                                                                                                                                                           |
+|:---------------|:------------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Name**       | Yes         | The name of the parameter.                                                                                                                                                                                                      |
+| **Type**       | Yes         | The parameter type.                                                                                                                                                                                                             |
+| **Mode**       | No          | **In**, **Out**, or **InOut** depending on whether the parameter is an input, output, or input/output parameter.                                                                                                                |
+| **MaxLength**  | No          | The maximum length of the parameter.                                                                                                                                                                                            |
+| **Precision**  | No          | The precision of the parameter.                                                                                                                                                                                                 |
+| **Scale**      | No          | The scale of the parameter.                                                                                                                                                                                                     |
+| **SRID**       | No          | Spatial System Reference Identifier. Valid only for parameters of spatial types. For more information, see [SRID](http://en.wikipedia.org/wiki/SRID) and [SRID (SQL Server)](https://msdn.microsoft.com/library/bb964707.aspx). |
 
  
 
-> **Note**: Any number of annotation attributes (custom XML attributes) may be applied to the **Parameter** element. However, custom attributes may not belong to any XML namespace that is reserved for SSDL. The fully-qualified names for any two custom attributes cannot be the same.
+> [!NOTE]
+> Any number of annotation attributes (custom XML attributes) may be applied to the **Parameter** element. However, custom attributes may not belong to any XML namespace that is reserved for SSDL. The fully-qualified names for any two custom attributes cannot be the same.
 
  
 
@@ -731,7 +745,7 @@ The table below describes the attributes that can be applied to the **Parameter*
 
 The following example shows a **Function** element that has two **Parameter** elements that specify input parameters:
 
-```
+``` xml
  <Function Name="UpdateOrderQuantity"
            Aggregate="false"
            BuiltIn="false"
@@ -760,13 +774,14 @@ The **Principal** element can have the following child elements (in the order li
 
 The following table describes the attributes that can be applied to the **Principal** element.
 
-| Attribute Name | Is Required | Value |
-|----------------|-------------|-------|
-| **Role** | Yes | The same value as the **Role** attribute (if used) of the corresponding End element; otherwise, the name of the table that contains the referenced column. |
+| Attribute Name | Is Required | Value                                                                                                                                                      |
+|:---------------|:------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Role**       | Yes         | The same value as the **Role** attribute (if used) of the corresponding End element; otherwise, the name of the table that contains the referenced column. |
 
  
 
-> **Note**: Any number of annotation attributes (custom XML attributes) may be applied to the **Principal** element. However, custom attributes may not belong to any XML namespace that is reserved for CSDL. The fully-qualified names for any two custom attributes cannot be the same.
+> [!NOTE]
+> Any number of annotation attributes (custom XML attributes) may be applied to the **Principal** element. However, custom attributes may not belong to any XML namespace that is reserved for CSDL. The fully-qualified names for any two custom attributes cannot be the same.
 
  
 
@@ -774,7 +789,7 @@ The following table describes the attributes that can be applied to the **Princi
 
 The following example shows an Association element that uses a **ReferentialConstraint** element to specify the columns that participate in the **FK\_CustomerOrders** foreign key constraint. The **Principal** element specifies the **CustomerId** column of the **Customer** table as the principal end of the constraint.
 
-```
+``` xml
  <Association Name="FK_CustomerOrders">
    <End Role="Customers"
         Type="ExampleModel.Store.Customers" Multiplicity="1">
@@ -806,24 +821,25 @@ A **Property** element cannot have any child elements.
 
 The following table describes the attributes that can be applied to the **Property** element.
 
-| Attribute Name | Is Required | Value |
-|----------------|-------------|-------|
-| **Name** | Yes | The name of the corresponding column. |
-| **Type** | Yes | The type of the corresponding column. |
-| **Nullable** | No | **True** (the default value) or **False** depending on whether the corresponding column can have a null value. |
-| **DefaultValue** | No | The default value of the corresponding column. |
-| **MaxLength** | No | The maximum length of the corresponding column. |
-| **FixedLength** | No | **True** or **False** depending on whether the corresponding column value will be stored as a fixed length string. |
-| **Precision** | No | The precision of the corresponding column. |
-| **Scale** | No | The scale of the corresponding column. |
-| **Unicode** | No | **True** or **False** depending on whether the corresponding column value will be stored as a Unicode string. |
-| **Collation** | No | A string that specifies the collating sequence to be used in the data source. |
-| **SRID** | No | Spatial System Reference Identifier. Valid only for properties of spatial types. For more information, see [SRID](http://en.wikipedia.org/wiki/SRID) and [SRID (SQL Server)](https://msdn.microsoft.com/library/bb964707.aspx). |
-| **StoreGeneratedPattern** | No | **None**, **Identity** (if the corresponding column value is an identity that is generated in the database), or **Computed** (if the corresponding column value is computed in the database). Not Valid for RowType properties. |
+| Attribute Name            | Is Required | Value                                                                                                                                                                                                                           |
+|:--------------------------|:------------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Name**                  | Yes         | The name of the corresponding column.                                                                                                                                                                                           |
+| **Type**                  | Yes         | The type of the corresponding column.                                                                                                                                                                                           |
+| **Nullable**              | No          | **True** (the default value) or **False** depending on whether the corresponding column can have a null value.                                                                                                                  |
+| **DefaultValue**          | No          | The default value of the corresponding column.                                                                                                                                                                                  |
+| **MaxLength**             | No          | The maximum length of the corresponding column.                                                                                                                                                                                 |
+| **FixedLength**           | No          | **True** or **False** depending on whether the corresponding column value will be stored as a fixed length string.                                                                                                              |
+| **Precision**             | No          | The precision of the corresponding column.                                                                                                                                                                                      |
+| **Scale**                 | No          | The scale of the corresponding column.                                                                                                                                                                                          |
+| **Unicode**               | No          | **True** or **False** depending on whether the corresponding column value will be stored as a Unicode string.                                                                                                                   |
+| **Collation**             | No          | A string that specifies the collating sequence to be used in the data source.                                                                                                                                                   |
+| **SRID**                  | No          | Spatial System Reference Identifier. Valid only for properties of spatial types. For more information, see [SRID](http://en.wikipedia.org/wiki/SRID) and [SRID (SQL Server)](https://msdn.microsoft.com/library/bb964707.aspx). |
+| **StoreGeneratedPattern** | No          | **None**, **Identity** (if the corresponding column value is an identity that is generated in the database), or **Computed** (if the corresponding column value is computed in the database). Not Valid for RowType properties. |
 
  
 
-> **Note**: Any number of annotation attributes (custom XML attributes) may be applied to the **Property** element. However, custom attributes may not belong to any XML namespace that is reserved for SSDL. The fully-qualified names for any two custom attributes cannot be the same.
+> [!NOTE]
+> Any number of annotation attributes (custom XML attributes) may be applied to the **Property** element. However, custom attributes may not belong to any XML namespace that is reserved for SSDL. The fully-qualified names for any two custom attributes cannot be the same.
 
  
 
@@ -831,7 +847,7 @@ The following table describes the attributes that can be applied to the **Proper
 
 The following example shows an **EntityType** element with two child **Property** elements:
 
-```
+``` xml
  <EntityType Name="Customers">
    <Documentation>
      <Summary>Summary here.</Summary>
@@ -864,13 +880,14 @@ The **PropertyRef** element can only have the following child elements:
 
 The table below describes the attributes that can be applied to the **PropertyRef** element.
 
-| Attribute Name | Is Required | Value |
-|----------------|-------------|-------|
-| **Name** | Yes | The name of the referenced property. |
+| Attribute Name | Is Required | Value                                |
+|:---------------|:------------|:-------------------------------------|
+| **Name**       | Yes         | The name of the referenced property. |
 
  
 
-> **Note**: Any number of annotation attributes (custom XML attributes) may be applied to the **PropertyRef** element. However, custom attributes may not belong to any XML namespace that is reserved for CSDL. The fully-qualified names for any two custom attributes cannot be the same.
+> [!NOTE]
+> Any number of annotation attributes (custom XML attributes) may be applied to the **PropertyRef** element. However, custom attributes may not belong to any XML namespace that is reserved for CSDL. The fully-qualified names for any two custom attributes cannot be the same.
 
  
 
@@ -878,7 +895,7 @@ The table below describes the attributes that can be applied to the **PropertyRe
 
 The following example shows a **PropertyRef** element used to define a primary key by referencing a property that is defined on an **EntityType** element.
 
-```
+``` xml
  <EntityType Name="Customers">
    <Documentation>
      <Summary>Summary here.</Summary>
@@ -916,7 +933,7 @@ Any number of annotation attributes (custom XML attributes) may be applied to th
 
 The following example shows an **Association** element that uses a **ReferentialConstraint** element to specify the columns that participate in the **FK\_CustomerOrders** foreign key constraint:
 
-```
+``` xml
  <Association Name="FK_CustomerOrders">
    <End Role="Customers"
         Type="ExampleModel.Store.Customers" Multiplicity="1">
@@ -945,13 +962,14 @@ The **ReturnType** element can have the following child elements:
 
 - CollectionType (one)  
 
-> **Note**: Any number of annotation attributes (custom XML attributes) may be applied to the **ReturnType** element. However, custom attributes may not belong to any XML namespace that is reserved for SSDL. The fully-qualified names for any two custom attributes cannot be the same.
+> [!NOTE]
+> Any number of annotation attributes (custom XML attributes) may be applied to the **ReturnType** element. However, custom attributes may not belong to any XML namespace that is reserved for SSDL. The fully-qualified names for any two custom attributes cannot be the same.
 
 ### Example
 
 The following example uses a **Function** that returns a collection of rows.
 
-```
+``` xml
    <Function Name="GetProducts" IsComposable="true" Schema="dbo">
      <ReturnType>
        <CollectionType>
@@ -983,7 +1001,7 @@ A **RowType** element can have the following child elements:
 The following example shows a store function that uses a **CollectionType** element to specify that the function returns a collection of rows (as specified in the **RowType** element).
 
 
-```
+``` xml
    <Function Name="GetProducts" IsComposable="true" Schema="dbo">
      <ReturnType>
        <CollectionType>
@@ -1021,12 +1039,12 @@ A storage model namespace is different from the XML namespace of the **Schema** 
 
 The table below describes the attributes can be applied to the **Schema** element.
 
-| Attribute Name | Is Required | Value |
-|----------------|-------------|-------|
-| **Namespace** | Yes | The namespace of the storage model. The value of the **Namespace** attribute is used to form the fully qualified name of a type. For example, if an **EntityType** named *Customer* is in the ExampleModel.Store namespace, then the fully qualified name of the **EntityType** is ExampleModel.Store.Customer. <br/> The following strings cannot be used as the value for the **Namespace** attribute: **System**, **Transient**, or **Edm**. The value for the **Namespace** attribute cannot be the same as the value for the **Namespace** attribute in the CSDL Schema element. |
-| **Alias** | No | An identifier used in place of the namespace name. For example, if an **EntityType** named *Customer* is in the ExampleModel.Store namespace and the value of the **Alias** attribute is *StorageModel*, then you can use StorageModel.Customer as the fully qualified name of the **EntityType.** |
-| **Provider** | Yes | The data provider. |
-| **ProviderManifestToken** | Yes | A token that indicates to the provider which provider manifest to return. No format for the token is defined. Values for the token are defined by the provider. For information about SQL Server provider manifest tokens, see SqlClient for Entity Framework. |
+| Attribute Name            | Is Required | Value                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+|:--------------------------|:------------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Namespace**             | Yes         | The namespace of the storage model. The value of the **Namespace** attribute is used to form the fully qualified name of a type. For example, if an **EntityType** named *Customer* is in the ExampleModel.Store namespace, then the fully qualified name of the **EntityType** is ExampleModel.Store.Customer. <br/> The following strings cannot be used as the value for the **Namespace** attribute: **System**, **Transient**, or **Edm**. The value for the **Namespace** attribute cannot be the same as the value for the **Namespace** attribute in the CSDL Schema element. |
+| **Alias**                 | No          | An identifier used in place of the namespace name. For example, if an **EntityType** named *Customer* is in the ExampleModel.Store namespace and the value of the **Alias** attribute is *StorageModel*, then you can use StorageModel.Customer as the fully qualified name of the **EntityType.**                                                                                                                                                                                                                                                                                    |
+| **Provider**              | Yes         | The data provider.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| **ProviderManifestToken** | Yes         | A token that indicates to the provider which provider manifest to return. No format for the token is defined. Values for the token are defined by the provider. For information about SQL Server provider manifest tokens, see SqlClient for Entity Framework.                                                                                                                                                                                                                                                                                                                        |
 
  
 
@@ -1034,7 +1052,7 @@ The table below describes the attributes can be applied to the **Schema** elemen
 
 The following example shows a **Schema** element that contains an **EntityContainer** element, two **EntityType** elements, and one **Association** element.
 
-```
+``` xml
  <Schema Namespace="ExampleModel.Store"
        Alias="Self" Provider="System.Data.SqlClient"
        ProviderManifestToken="2008"
@@ -1134,7 +1152,7 @@ More than one annotation attribute may be applied to a given SSDL element. Metad
 
 The following example shows an EntityType element that has an annotation attribute applied to the **OrderId** property. The example also show an annotation element added to the **EntityType** element.
 
-```
+``` xml
  \<EntityType Name="Orders" xmlns:c="http://CustomNamespace">
    <Key>
      <PropertyRef Name="OrderId" />
@@ -1167,7 +1185,7 @@ More than one annotation element may be a child of a given SSDL element. Startin
 
 The following example shows an EntityType element that has an annotation element (**CustomElement**). The example also shows an annotation attribute applied to the **OrderId** property.
 
-```
+``` xml
  \<EntityType Name="Orders" xmlns:c="http://CustomNamespace">
    <Key>
      <PropertyRef Name="OrderId" />
@@ -1192,11 +1210,11 @@ Facets in store schema definition language (SSDL) represent constraints on colum
 
 The following table describes the facets that are supported in SSDL:
 
-| Facet | Description |
-|-------|-------------|
-| **Collation** | Specifies the collating sequence (or sorting sequence) to be used when performing comparison and ordering operations on values of the property. |
-| **FixedLength** | Specifies whether the length of the column value can vary. |
-| **MaxLength** | Specifies the maximum length of the column value. |
-| **Precision** | For properties of type **Decimal**, specifies the number of digits a property value can have. For properties of type **Time**, **DateTime**, and **DateTimeOffset**, specifies the number of digits for the fractional part of seconds of the column value. |
-| **Scale** | Specifies the number of digits to the right of the decimal point for the column value. |
-| **Unicode** | Indicates whether the column value is stored as Unicode. |
+| Facet           | Description                                                                                                                                                                                                                                                 |
+|:----------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Collation**   | Specifies the collating sequence (or sorting sequence) to be used when performing comparison and ordering operations on values of the property.                                                                                                             |
+| **FixedLength** | Specifies whether the length of the column value can vary.                                                                                                                                                                                                  |
+| **MaxLength**   | Specifies the maximum length of the column value.                                                                                                                                                                                                           |
+| **Precision**   | For properties of type **Decimal**, specifies the number of digits a property value can have. For properties of type **Time**, **DateTime**, and **DateTimeOffset**, specifies the number of digits for the fractional part of seconds of the column value. |
+| **Scale**       | Specifies the number of digits to the right of the decimal point for the column value.                                                                                                                                                                      |
+| **Unicode**     | Indicates whether the column value is stored as Unicode.                                                                                                                                                                                                    |

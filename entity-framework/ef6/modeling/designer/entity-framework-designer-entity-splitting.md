@@ -52,7 +52,7 @@ First we'll create a database with two tables that we are going to combine into 
     -   Select the **EntitySplitting** database from the drop down at the top of the query editor
     -   Copy the following SQL into the new query, then right-click on the query and select **Execute SQL**
 
-```
+``` SQL
 CREATE TABLE [dbo].[Person] (
 [PersonId] INT IDENTITY (1, 1) NOT NULL,
 [FirstName] NVARCHAR (200) NULL,
@@ -122,7 +122,7 @@ The **Person** entity type is now mapped to the **Person** and **PersonInfo
 
 -   Paste the following code in the Main method.
 
-```
+``` csharp
     using (var context = new EntitySplittingEntities())
     {
         var person = new Person

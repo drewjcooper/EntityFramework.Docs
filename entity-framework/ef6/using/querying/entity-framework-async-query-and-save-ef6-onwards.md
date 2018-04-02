@@ -48,7 +48,7 @@ We’ll be using the [Code First workflow](../ef6/entity-framework-code-first-to
     -   Click **Install**
 -   Add a **Model.cs** class with the following implementation
 
-```
+``` csharp
     using System.Collections.Generic;
     using System.Data.Entity;
 
@@ -88,7 +88,7 @@ Now that we have an EF model, let's write some code that uses it to perform some
 
 -   Replace the contents of **Program.cs** with the following code
 
-```
+``` csharp
     using System;
     using System.Linq;
 
@@ -166,7 +166,7 @@ Now that we have our program up and running, we can begin making use of the new 
 
 For a comprehensive list of available extension methods in the System.Data.Entity namespace, refer to the QueryableExtensions class. *You’ll also need to add “using System.Data.Entity” to your using statements.*
 
-```
+``` csharp
     using System;
     using System.Data.Entity;
     using System.Linq;
