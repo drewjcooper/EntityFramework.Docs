@@ -20,7 +20,11 @@ The following image shows the main windows that are used when working with the E
 ![EFDesigner](../ef6/media/efdesigner.png)
 
 
+## Prerequisites
 
+Visual Studio 2012 or Visual Studio 2010, Ultimate, Premium, Professional, or Web Express edition.
+
+ 
 
 ## Create the Database
 
