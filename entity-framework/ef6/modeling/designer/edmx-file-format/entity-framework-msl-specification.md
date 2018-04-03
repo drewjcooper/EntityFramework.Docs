@@ -291,7 +291,7 @@ The **LastName** and **FirstName** properties of the **Person** entity type have
    <Key>
      <PropertyRef Name="PersonID" />
    </Key>
-   \<Property Name="PersonID" Type="Int32" Nullable="false"
+   <Property Name="PersonID" Type="Int32" Nullable="false"
              annotation:StoreGeneratedPattern="Identity" />
    <Property Name="HireDate" Type="DateTime" />
    <Property Name="EnrollmentDate" Type="DateTime" />

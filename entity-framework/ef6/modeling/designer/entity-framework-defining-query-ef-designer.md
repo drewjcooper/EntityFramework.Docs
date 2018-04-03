@@ -76,9 +76,9 @@ In this step we will use the XML Editor to add a defining query and an entity ty
     -   The SQL statement to be executed is specified in the **DefiningQuery** element.
 
 ``` xml
-    \<!-- SSDL content -->
-    \<edmx:StorageModels>
-      \<Schema Namespace="SchoolModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="SchoolModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityContainer Name="SchoolModelStoreContainer">
            <EntitySet Name="GradeReport" EntityType="SchoolModel.Store.GradeReport">
               <DefiningQuery>
@@ -89,7 +89,7 @@ In this step we will use the XML Editor to add a defining query and an entity ty
                 ON StudentID = p.PersonID
               </DefiningQuery>
           </EntitySet>
-          \<EntitySet Name="Course" EntityType="SchoolModel.Store.Course" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Course" EntityType="SchoolModel.Store.Course" store:Type="Tables" Schema="dbo" />
 ```
 
 -   Add the **EntityType** element to the SSDL section of the .edmx. file as shown below. Note the following:

@@ -1081,18 +1081,18 @@ The following example shows a **Schema** element that contains an **EntityContai
      <Property Name="CustomerId" Type="int" Nullable="false" />
      <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
    </EntityType>
-   \<EntityType Name="Orders" xmlns:c="http://CustomNamespace">
+   <EntityType Name="Orders" xmlns:c="http://CustomNamespace">
      <Key>
        <PropertyRef Name="OrderId" />
      </Key>
-     \<Property Name="OrderId" Type="int" Nullable="false"
+     <Property Name="OrderId" Type="int" Nullable="false"
                c:CustomAttribute="someValue"/>
      <Property Name="ProductId" Type="int" Nullable="false" />
      <Property Name="Quantity" Type="int" Nullable="false" />
      <Property Name="CustomerId" Type="int" Nullable="false" />
-     \<c:CustomElement>
+     <c:CustomElement>
        Custom data here.
-     \</c:CustomElement>
+     </c:CustomElement>
    </EntityType>
    <Association Name="FK_CustomerOrders">
      <End Role="Customers"
@@ -1153,18 +1153,18 @@ More than one annotation attribute may be applied to a given SSDL element. Metad
 The following example shows an EntityType element that has an annotation attribute applied to the **OrderId** property. The example also show an annotation element added to the **EntityType** element.
 
 ``` xml
- \<EntityType Name="Orders" xmlns:c="http://CustomNamespace">
+ <EntityType Name="Orders" xmlns:c="http://CustomNamespace">
    <Key>
      <PropertyRef Name="OrderId" />
    </Key>
-   \<Property Name="OrderId" Type="int" Nullable="false"
+   <Property Name="OrderId" Type="int" Nullable="false"
              c:CustomAttribute="someValue"/>
    <Property Name="ProductId" Type="int" Nullable="false" />
    <Property Name="Quantity" Type="int" Nullable="false" />
    <Property Name="CustomerId" Type="int" Nullable="false" />
-   \<c:CustomElement>
+   <c:CustomElement>
      Custom data here.
-   \</c:CustomElement>
+   </c:CustomElement>
  </EntityType>
 ```
  
@@ -1186,18 +1186,18 @@ More than one annotation element may be a child of a given SSDL element. Startin
 The following example shows an EntityType element that has an annotation element (**CustomElement**). The example also shows an annotation attribute applied to the **OrderId** property.
 
 ``` xml
- \<EntityType Name="Orders" xmlns:c="http://CustomNamespace">
+ <EntityType Name="Orders" xmlns:c="http://CustomNamespace">
    <Key>
      <PropertyRef Name="OrderId" />
    </Key>
-   \<Property Name="OrderId" Type="int" Nullable="false"
+   <Property Name="OrderId" Type="int" Nullable="false"
              c:CustomAttribute="someValue"/>
    <Property Name="ProductId" Type="int" Nullable="false" />
    <Property Name="Quantity" Type="int" Nullable="false" />
    <Property Name="CustomerId" Type="int" Nullable="false" />
-   \<c:CustomElement>
+   <c:CustomElement>
      Custom data here.
-   \</c:CustomElement>
+   </c:CustomElement>
  </EntityType>
 ```
  

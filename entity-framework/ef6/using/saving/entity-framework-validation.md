@@ -65,7 +65,7 @@ A simple way to test this is to disable MVC’s client-side validation feature. 
 
 ``` xml
     <appSettings>
-        \<add key="ClientValidationEnabled"value="false"/>
+        <add key="ClientValidationEnabled"value="false"/>
         ...
     </appSettings>
 ```

@@ -282,20 +282,20 @@ The following happened when we dragged this source:
 -   The DataContext property on the parent Grid element was set to "{StaticResource **categoryViewSource** }".  The **categoryViewSource** resource serves as a binding source for the outer\\parent Grid element. The inner Grid elements then inherit the DataContext value from the parent Grid (the categoryDataGrid’s ItemsSource property is set to "{Binding}"). 
 
 ``` xml
-    \<Window.Resources>
-        \<CollectionViewSource x:Key="categoryViewSource"
+    <Window.Resources>
+        <CollectionViewSource x:Key="categoryViewSource"
                                 d:DesignSource="{d:DesignInstance {x:Type local:Category}, CreateList=True}"/>
-    \</Window.Resources>
+    </Window.Resources>
     <Grid DataContext="{StaticResource categoryViewSource}">
-        \<DataGrid x:Name="categoryDataGrid" AutoGenerateColumns="False" EnableRowVirtualization="True"
+        <DataGrid x:Name="categoryDataGrid" AutoGenerateColumns="False" EnableRowVirtualization="True"
                     ItemsSource="{Binding}" Margin="13,13,43,191"
                     RowDetailsVisibilityMode="VisibleWhenSelected">
-            \<DataGrid.Columns>
-                \<DataGridTextColumn x:Name="categoryIdColumn" Binding="{Binding CategoryId}"
+            <DataGrid.Columns>
+                <DataGridTextColumn x:Name="categoryIdColumn" Binding="{Binding CategoryId}"
                                     Header="Category Id" Width="SizeToHeader"/>
-                \<DataGridTextColumn x:Name="nameColumn" Binding="{Binding Name}"
+                <DataGridTextColumn x:Name="nameColumn" Binding="{Binding Name}"
                                     Header="Name" Width="SizeToHeader"/>
-            \</DataGrid.Columns>
+            </DataGrid.Columns>
         </DataGrid>
     </Grid>
 ```

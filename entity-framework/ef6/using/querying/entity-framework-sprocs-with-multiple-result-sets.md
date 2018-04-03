@@ -117,8 +117,8 @@ Once you have the model opened as XML then you need to do the following steps:
 -   Find the complex type and function import in your model:
 
 ``` xml
-    \<!-- CSDL content -->
-    \<edmx:ConceptualModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
 
     ...
 
@@ -134,7 +134,7 @@ Once you have the model opened as XML then you need to do the following steps:
 
     ...
 
-    \</edmx:ConceptualModels>
+    </edmx:ConceptualModels>
 ```
 
  
@@ -156,8 +156,8 @@ This tells the model that the stored procedure will return two collections, one 
 -   Find the function mapping element:
 
 ``` xml
-    \<!-- C-S mapping content -->
-    \<edmx:Mappings>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
 
     ...
 
@@ -173,7 +173,7 @@ This tells the model that the stored procedure will return two collections, one 
 
     ...
 
-    \</edmx:Mappings>
+    </edmx:Mappings>
 ```
 
  

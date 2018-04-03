@@ -1553,7 +1553,7 @@ The following example uses a **Function** element to define a function that retu
 
 ``` xml
  <Function Name="GetYearsInPrint">
-   \<ReturnType Type=="Edm.Int32">
+   <ReturnType Type=="Edm.Int32">
    <Parameter Name="book" Type="BooksModel.Book" />
    <DefiningExpression>
     Year(CurrentDateTime()) - Year(cast(book.PublishedDate as DateTime))
@@ -1594,8 +1594,8 @@ The following example uses a **FunctionImport** that returns books and publisher
 
 ``` xml
  <FunctionImport Name="GetBooksAndPublishers">
-   \<ReturnType Type=="Collection(BooksModel.Book )" EntitySet=”Books”>
-   \<ReturnType Type=="Collection(BooksModel.Publisher)" EntitySet=”Publishers”>
+   <ReturnType Type=="Collection(BooksModel.Book )" EntitySet=”Books”>
+   <ReturnType Type=="Collection(BooksModel.Publisher)" EntitySet=”Publishers”>
  </FunctionImport>
 ```
  
@@ -1839,7 +1839,7 @@ The table below describes the attributes can be applied to the **Using** element
 The following example demonstrates the **Using** element being used to import a namespace that is defined elsewhere. Note that the namespace for the **Schema** element shown is `BooksModel`. The `Address` property on the `Publisher`**EntityType** is a complex type that is defined in the `ExtendedBooksModel` namespace (imported with the **Using** element).
 
 ``` xml
- \<Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm"
+ <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm"
            xmlns:cg="http://schemas.microsoft.com/ado/2009/11/codegeneration"
            xmlns:store="http://schemas.microsoft.com/ado/2009/11/edm/EntityStoreSchemaGenerator"
            Namespace="BooksModel" Alias="Self">
@@ -1880,18 +1880,18 @@ Annotation attributes can be used to provide extra metadata about the elements i
 The following example shows an **EntityType** element with an annotation attribute (**CustomAttribute**). The example also shows an annotation element applied to the entity type element.
 
 ``` xml
- \<Schema Namespace="SchoolModel" Alias="Self"
+ <Schema Namespace="SchoolModel" Alias="Self"
          xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation"
          xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-   \<EntityContainer Name="SchoolEntities" annotation:LazyLoadingEnabled="true">
+   <EntityContainer Name="SchoolEntities" annotation:LazyLoadingEnabled="true">
      <EntitySet Name="People" EntityType="SchoolModel.Person" />
    </EntityContainer>
-   \<EntityType Name="Person" xmlns:p="http://CustomNamespace.com"
+   <EntityType Name="Person" xmlns:p="http://CustomNamespace.com"
                p:CustomAttribute="Data here.">
      <Key>
        <PropertyRef Name="PersonID" />
      </Key>
-     \<Property Name="PersonID" Type="Int32" Nullable="false"
+     <Property Name="PersonID" Type="Int32" Nullable="false"
                annotation:StoreGeneratedPattern="Identity" />
      <Property Name="LastName" Type="String" Nullable="false"
                MaxLength="50" Unicode="true" FixedLength="false" />
@@ -1899,9 +1899,9 @@ The following example shows an **EntityType** element with an annotation attribu
                MaxLength="50" Unicode="true" FixedLength="false" />
      <Property Name="HireDate" Type="DateTime" />
      <Property Name="EnrollmentDate" Type="DateTime" />
-     \<p:CustomElement>
+     <p:CustomElement>
        Custom metadata.
-     \</p:CustomElement>
+     </p:CustomElement>
    </EntityType>
  </Schema>
 ```
@@ -2093,7 +2093,7 @@ The following example shows facets applied to the properties of an entity type:
    <Key>
      <PropertyRef Name="ProductId" />
    </Key>
-   \<Property Type="Int32"
+   <Property Type="Int32"
              Name="ProductId" Nullable="false"
              a:StoreGeneratedPattern="Identity"
     xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />

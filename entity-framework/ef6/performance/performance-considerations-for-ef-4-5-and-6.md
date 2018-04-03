@@ -1168,7 +1168,7 @@ A good resource that shows how to enable table splitting is Gil Fink's "Table Sp
 Some users might experience resource contention that limits the parallelism they are expecting when the Garbage Collector is not properly configured. Whenever EF is used in a multithreaded scenario, or in any application that resembles a server-side system, make sure to enable Server Garbage Collection. This is done via a simple setting in your application config file:
 
 ``` xml
-\<?xmlversion="1.0" encoding="utf-8" ?>
+<?xmlversion="1.0" encoding="utf-8" ?>
 <configuration>
         <runtime>
                <gcServer enabled="true" />
