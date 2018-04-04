@@ -133,9 +133,12 @@
 
 ### [Get Started](ef6/get-started/entity-framework-ef-documentation.md)
 #### [Get Entity Framework](ef6/get-entity-framework.md)
-### [Working with DbContext](ef6/entity-framework-working-with-dbcontext.md)
-### [Get Help Using Entity Framework](ef6/get-help-using-entity-framework.md)
-### [Relationships and Navigation Properties](ef6/entity-framework-relationships-and-navigation-properties.md)
+#### [Working with DbContext](ef6/entity-framework-working-with-dbcontext.md)
+#### [Get Help Using Entity Framework](ef6/get-help-using-entity-framework.md)
+#### [Relationships and Navigation Properties](ef6/entity-framework-relationships-and-navigation-properties.md)
+#### [Entity Framework Tools](ef6/ado-net-entity-framework-tools.md)
+#### [Glossary](ef6/entity-framework-glossary.md)
+#### [School Database](ef6/entity-framework-school-database.md)
 
 
 ### Creating a Model
@@ -264,11 +267,6 @@
 #### [Version History](ef6/entity-framework-version-history.md)
 
 ### Miscellaneous
-#### [Entity Framework Tools](ef6/ado-net-entity-framework-tools.md)
-#### [Glossary](ef6/entity-framework-glossary.md)
-#### [School Database](ef6/entity-framework-school-database.md)
-#### [Power Tools](ef6/entity-framework-power-tools.md)
-
 #### Licenses
 ##### [EF5 (ENU)](ef6/miscellaneous/licenses/entity-framework-5-license.md)
 ##### [EF5 (CHS)](ef6/miscellaneous/licenses/ntity-framework-5-license-chs.md)

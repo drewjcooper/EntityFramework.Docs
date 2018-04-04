@@ -1,5 +1,5 @@
 ---
-title: "Walkthrough Prerequisites - EF6"
+title: "Prerequisites for Walkthroughs - EF6"
 author: divega
 ms.date: "2016-10-23"
 ms.prod: "entity-framework"
@@ -10,7 +10,7 @@ ms.topic: "article"
 ms.assetid: e83a6a06-e63b-4530-8656-614bf609b12b
 caps.latest.revision: 3
 ---
-# EF6 Walkthrough Prerequisites
+# Prerequisites for Entity Framework 6 Walkthroughs
 The EF6 documentation contains multiple walkthroughs to help you learn by using the features. Two of the most common prerequisites are:
 
 - A recent version of Visual Studio
